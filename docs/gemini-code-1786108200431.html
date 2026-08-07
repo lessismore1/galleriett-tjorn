@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="sv">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>GALLERIett — Tjörn</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script>
+			tailwind.config = {
+				theme: {
+					extend: {
+						colors: {
+							brand: '#C9CF1E', // Exakt limegrön nyans från loggan
+							'brand-dark': '#1a1a12'
+						}
+					}
+				}
+			};
+		</script>
+	</head>
+	<body
+		class="bg-neutral-50 text-neutral-900 font-sans antialiased min-h-screen flex flex-col justify-between"
+	>
+		<!-- HEADER / NAVIGATION (Mergad struktur) -->
+		<header class="w-full border-b border-neutral-200 bg-white sticky top-0 z-50">
+			<div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+				<!-- LOGO / BADGE (Inspirerad av loggan) -->
+				<a href="#" class="flex items-center gap-3 group">
+					<div
+						class="w-9 h-9 rounded-full bg-brand flex items-center justify-center font-bold text-xs text-brand-dark shadow-sm group-hover:scale-105 transition"
+					>
+						ett
+					</div>
+					<div class="text-xs font-semibold tracking-wider leading-tight uppercase">
+						GALLERI<br /><span class="text-neutral-500 font-normal">ett</span>
+					</div>
+				</a>
+
+				<!-- MAIN MENU (Claude-navigering) -->
+				<nav
+					class="hidden md:flex space-x-6 text-xs font-semibold tracking-wider text-neutral-600 uppercase"
+				>
+					<a href="#konstnarer" class="hover:text-black transition">Konstnärer</a>
+					<a href="#utstallningar" class="text-black border-b-2 border-brand pb-1">Utställningar</a>
+					<a href="#video" class="hover:text-black transition">Video</a>
+					<a href="#nyheter" class="hover:text-black transition">Nyheter</a>
+					<a href="#om" class="hover:text-black transition">Om</a>
+					<a href="#kontakt" class="hover:text-black transition">Kontakt</a>
+				</nav>
+
+				<button class="md:hidden text-neutral-600 focus:outline-none">
+					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="1.5"
+							d="M4 6h16M4 12h16M4 18h16"
+						></path>
+					</svg>
+				</button>
+			</div>
+		</header>
+
+		<!-- MAIN CONTENT -->
+		<main class="max-w-7xl mx-auto px-6 py-8 flex-grow space-y-12">
+			<!-- SUB-NAVIGATION / EXHIBITION TABS -->
+			<div class="flex justify-between items-center border-b border-neutral-200 pb-3">
+				<h1 class="text-xs uppercase tracking-widest font-bold text-neutral-400">Utställningar</h1>
+				<div class="flex space-x-6 text-xs font-semibold tracking-wider text-neutral-500 uppercase">
+					<a href="#" class="text-black border-b-2 border-brand pb-3 -mb-3">Pågående</a>
+					<a href="#" class="hover:text-black transition">Kommande</a>
+					<a href="#" class="hover:text-black transition">Arkiv</a>
+				</div>
+			</div>
+
+			<!-- HERO / FEATURED EXHIBITION -->
+			<section class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+				<div class="md:col-span-8 aspect-[16/9] bg-neutral-200 overflow-hidden relative rounded-sm">
+					<img
+						src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1200&q=80"
+						alt="Ljus & Horisont"
+						class="w-full h-full object-cover"
+					/>
+				</div>
+				<div class="md:col-span-4 space-y-4">
+					<span
+						class="inline-block px-2 py-0.5 bg-brand text-brand-dark font-bold text-[10px] uppercase tracking-wider rounded-xs"
+					>
+						Pågående
+					</span>
+					<h2 class="font-serif text-3xl text-neutral-900 leading-tight">
+						Sara Lindqvist — Vintergata
+					</h2>
+					<p class="text-sm text-neutral-600">Galleri Ett, Tjörn</p>
+					<p class="text-xs text-neutral-500 pt-2 border-t border-neutral-200">
+						12 aug – 20 sep 2026
+					</p>
+				</div>
+			</section>
+
+			<!-- GRID SECTION / AKTUELLT & NYHETER -->
+			<section class="space-y-6 pt-6">
+				<h3 class="text-xs uppercase tracking-widest text-neutral-400 font-bold">
+					Aktuellt & Press
+				</h3>
+
+				<div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+					<article class="space-y-3 group cursor-pointer">
+						<div class="aspect-[4/3] bg-neutral-100 overflow-hidden rounded-sm">
+							<img
+								src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=600&q=80"
+								alt="Utställningsbild"
+								class="w-full h-full object-cover group-hover:scale-103 transition duration-300"
+							/>
+						</div>
+						<p class="text-xs font-bold uppercase tracking-wider">Ljus & Horisont</p>
+						<p class="text-xs text-neutral-500">12 aug – 20 sep 2026</p>
+					</article>
+
+					<article class="space-y-3 group cursor-pointer">
+						<div class="aspect-[4/3] bg-neutral-100 overflow-hidden rounded-sm relative">
+							<img
+								src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=600&q=80"
+								alt="Skulptur"
+								class="w-full h-full object-cover group-hover:scale-103 transition duration-300"
+							/>
+							<div class="absolute inset-0 bg-black/20 flex items-center justify-center">
+								<div
+									class="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center text-black text-xs font-bold"
+								>
+									▶
+								</div>
+							</div>
+						</div>
+						<p class="text-xs font-bold uppercase tracking-wider">Kommande Utställning</p>
+						<p class="text-xs text-neutral-500">5 okt – 2 nov 2026</p>
+					</article>
+
+					<article class="space-y-3 group cursor-pointer">
+						<div class="aspect-[4/3] bg-neutral-100 overflow-hidden rounded-sm">
+							<img
+								src="https://images.unsplash.com/photo-1582562124811-c09040d0a901?auto=format&fit=crop&w=600&q=80"
+								alt="Tidningsartikel"
+								class="w-full h-full object-cover group-hover:scale-103 transition duration-300"
+							/>
+						</div>
+						<p class="text-xs font-bold uppercase tracking-wider">Recension i SvD</p>
+						<p class="text-xs text-neutral-500">3 augusti 2026</p>
+					</article>
+				</div>
+			</section>
+		</main>
+
+		<!-- FOOTER (Renodlad med diskret partner-rad) -->
+		<footer class="border-t border-neutral-200 bg-white py-6 text-xs text-neutral-500">
+			<div
+				class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4"
+			>
+				<p>© 2026 GALLERIett Tjörn. Alla rättigheter förbehållna.</p>
+				<div
+					class="flex items-center space-x-4 text-[11px] font-semibold tracking-wider text-neutral-400"
+				>
+					<span>I SAMARBETE MED:</span>
+					<a href="#" class="hover:text-black transition">TKS — TJÖRNS KONSTFÖRENING</a>
+					<span>|</span>
+					<a href="https://konstmedhorisont.se" target="_blank" class="hover:text-black transition"
+						>HORISONT.SE</a
+					>
+				</div>
+			</div>
+		</footer>
+	</body>
+</html>
