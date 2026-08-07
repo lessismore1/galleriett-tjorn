@@ -1,31 +1,21 @@
 # Galleri Ett
 
-Webbplats för Galleri Ett (Tjörn) — SvelteKit + static adapter (Cloudflare Pages-klar).
+Monorepo med samma upplägg som `konstmedhorisont`:
 
-## Kom igång
-
-```sh
-npm install
-npm run dev
-```
-
-## GUI-mockuper
-
-Referensdesign ligger i [`docs/gui-mockups/`](docs/gui-mockups/):
-
-| Mockup | Route |
+| Mapp | Innehåll |
 | --- | --- |
-| `01-start.png` | `/` |
-| `02-konstnarer.png` | `/konstnarer` |
-| `03-konstnar.png` | `/konstnarer/[slug]` |
-| `04-utstallningar.png` | `/utstallningar` |
-| `05-kontakt.png` | `/kontakt` |
+| `web/` | SvelteKit-webbplats |
+| `studio-galleriett/` | Sanity Studio |
+| `docs/` | GUI-mockuper och referensmaterial |
 
-Mockdata: `src/lib/data/mockData.js`
-
-## Bygg
+## Utveckling
 
 ```sh
-npm run build
-npm run preview
+# Webb
+cd web && npm install && npm run dev
+
+# Studio
+cd studio-galleriett && npm install && npm run dev
 ```
+
+GUI-mockuper: [`docs/gui-mockups/`](docs/gui-mockups/)

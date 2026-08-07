@@ -1,0 +1,15 @@
+# Ignorera alla node_modules i hela projektet
+**/node_modules/
+
+# SvelteKit-skräp (viktigt!)
+**/web/.svelte-kit/
+**/web/build/
+**/web/.output/
+
+# Sanity-skräp
+**/studio-galleriett/.sanity/
+**/studio-galleriett/dist/
+
+# System och miljö
+.DS_Store
+**/.env*
