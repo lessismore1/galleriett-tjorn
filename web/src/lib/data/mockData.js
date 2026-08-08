@@ -1,7 +1,7 @@
 /** Mockdata för Galleri Ett — baserad på GUI-mockuper i docs/gui-mockups */
 
 export const site = {
-	name: 'Galleri Ett',
+	name: 'GALLERIett',
 	tagline: 'Ett galleri för samtidskonst på Tjörn',
 	address: {
 		street: 'Skulptörvägen 12',

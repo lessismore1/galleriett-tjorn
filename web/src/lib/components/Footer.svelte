@@ -20,7 +20,7 @@
 		</a>
 
 		<div>
-			<p class="label">Galleri Ett</p>
+			<p class="brand-name">GALLERIett</p>
 			<p>{addr}</p>
 		</div>
 		<div>
@@ -43,7 +43,7 @@
 	</div>
 
 	<div class="container bottom">
-		<span>© Galleri Ett {new Date().getFullYear()}</span>
+		<span class="copy">© <span class="brand-name-inline">GALLERIett</span> {new Date().getFullYear()}</span>
 		<span>{site.credit}</span>
 	</div>
 </footer>
@@ -93,6 +93,14 @@
 		margin: 0 0 0.5rem;
 	}
 
+	.brand-name {
+		margin: 0 0 0.5rem;
+		font-size: 0.7rem;
+		letter-spacing: 0.08em;
+		color: var(--text-muted);
+		font-weight: 600;
+	}
+
 	p {
 		margin: 0;
 		font-size: 0.85rem;
@@ -111,6 +119,11 @@
 		text-transform: uppercase;
 		color: var(--text-muted);
 		flex-wrap: wrap;
+	}
+
+	.brand-name-inline {
+		text-transform: none;
+		letter-spacing: 0.08em;
 	}
 
 	@media (min-width: 800px) {

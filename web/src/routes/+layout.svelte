@@ -15,7 +15,7 @@
 		href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
 		rel="stylesheet"
 	/>
-	<title>Galleri Ett — Tjörn</title>
+	<title>GALLERIett — Tjörn</title>
 </svelte:head>
 
 <div class="site">
