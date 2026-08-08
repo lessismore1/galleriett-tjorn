@@ -245,9 +245,9 @@ export const exhibitions = [
 			{ title: 'Låg tid', image: '/images/work-6.jpg?v=3' }
 		],
 		installationViews: [
-			'/images/install-a.jpg',
-			'/images/install-b.jpg',
-			'/images/install-c.jpg'
+			'/images/install-a.jpg?v=3',
+			'/images/install-b.jpg?v=3',
+			'/images/install-c.jpg?v=3'
 		]
 	},
 	{
