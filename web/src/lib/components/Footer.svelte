@@ -16,7 +16,7 @@
 
 	<div class="container grid">
 		<a href="/" class="logo" aria-label={site.name}>
-			<span class="badge">ett</span>
+			<img src="/images/logo.webp" alt={site.name} width="48" height="48" />
 		</a>
 
 		<div>
@@ -82,15 +82,11 @@
 		grid-template-columns: 1fr;
 	}
 
-	.badge {
+	.logo img {
 		width: 3rem;
 		height: 3rem;
-		border-radius: 50%;
-		background: var(--brand);
-		display: grid;
-		place-items: center;
-		font-weight: 700;
-		font-size: 0.85rem;
+		display: block;
+		object-fit: contain;
 	}
 
 	.label {

@@ -10,8 +10,7 @@
 <header class="header">
 	<div class="container bar">
 		<a href="/" class="logo" aria-label={site.name}>
-			<span class="badge">ett</span>
-			<span class="wordmark">GALLERI<br /><em>ett</em></span>
+			<img src="/images/logo.webp" alt={site.name} width="48" height="48" />
 		</a>
 
 		<nav class="nav" aria-label="Huvudmeny">
@@ -44,33 +43,14 @@
 	.logo {
 		display: flex;
 		align-items: center;
-		gap: 0.65rem;
+		flex-shrink: 0;
 	}
 
-	.badge {
-		width: 2.15rem;
-		height: 2.15rem;
-		border-radius: 50%;
-		background: var(--brand);
-		display: grid;
-		place-items: center;
-		font-size: 0.75rem;
-		font-weight: 700;
-		color: var(--brand-dark);
-	}
-
-	.wordmark {
-		font-size: 0.72rem;
-		font-weight: 700;
-		letter-spacing: 0.08em;
-		line-height: 1.15;
-		text-transform: uppercase;
-	}
-
-	.wordmark em {
-		font-style: normal;
-		font-weight: 500;
-		color: var(--text-secondary);
+	.logo img {
+		width: 3rem;
+		height: 3rem;
+		display: block;
+		object-fit: contain;
 	}
 
 	.nav {
