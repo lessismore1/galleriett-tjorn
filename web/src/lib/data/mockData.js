@@ -40,7 +40,8 @@ export const nav = [
 
 export const artists = [
 	{
-		slug: 'sara-lindqvist',
+		id: '01',
+		slug: '01-sara-lindqvist',
 		name: 'Sara Lindqvist',
 		specialty: 'Måleri',
 		born: '1983, Göteborg, Sverige',
@@ -84,7 +85,8 @@ export const artists = [
 			}
 		],
 		exhibitions: [
-			{ year: 2026, title: 'Vintergata', venue: 'Galleri Ett, Tjörn' },
+			{ year: 2026, title: 'Vintergata', venue: 'GALLERIett, Tjörn' },
+			{ year: 2025, title: 'Ljus & Horisont', venue: 'GALLERIett, Tjörn' },
 			{ year: 2025, title: 'Ljuslinjer', venue: 'Galleri X, Göteborg' },
 			{ year: 2023, title: 'Stillhet', venue: 'Konsthallen, Malmö' },
 			{ year: 2021, title: 'Debutalbum', venue: 'Valand, Göteborg' }
@@ -101,7 +103,8 @@ export const artists = [
 		]
 	},
 	{
-		slug: 'erik-halvorsen',
+		id: '02',
+		slug: '02-erik-halvorsen',
 		name: 'Erik Halvorsen',
 		specialty: 'Skulptur',
 		born: '1978, Oslo, Norge',
@@ -119,7 +122,8 @@ export const artists = [
 		press: []
 	},
 	{
-		slug: 'maja-strom',
+		id: '03',
+		slug: '03-maja-strom',
 		name: 'Maja Ström',
 		specialty: 'Måleri',
 		born: '1990, Stockholm, Sverige',
@@ -136,7 +140,8 @@ export const artists = [
 		press: []
 	},
 	{
-		slug: 'johan-berg',
+		id: '04',
+		slug: '04-johan-berg',
 		name: 'Johan Berg',
 		specialty: 'Fotografi',
 		born: '1985, Malmö, Sverige',
@@ -153,7 +158,8 @@ export const artists = [
 		press: []
 	},
 	{
-		slug: 'annika-viden',
+		id: '05',
+		slug: '05-annika-viden',
 		name: 'Annika Vidén',
 		specialty: 'Installation',
 		born: '1982, Umeå, Sverige',
@@ -170,7 +176,8 @@ export const artists = [
 		press: []
 	},
 	{
-		slug: 'per-olofsson',
+		id: '06',
+		slug: '06-per-olofsson',
 		name: 'Per Olofsson',
 		specialty: 'Skulptur',
 		born: '1975, Tjörn, Sverige',
@@ -187,7 +194,8 @@ export const artists = [
 		press: []
 	},
 	{
-		slug: 'lisa-werner',
+		id: '07',
+		slug: '07-lisa-werner',
 		name: 'Lisa Werner',
 		specialty: 'Måleri',
 		born: '1988, Göteborg, Sverige',
@@ -204,7 +212,8 @@ export const artists = [
 		press: []
 	},
 	{
-		slug: 'tomas-akesson',
+		id: '08',
+		slug: '08-tomas-akesson',
 		name: 'Tomas Åkesson',
 		specialty: 'Skulptur',
 		born: '1980, Linköping, Sverige',
@@ -224,21 +233,21 @@ export const artists = [
 
 export const exhibitions = [
 	{
-		id: 405,
-		slug: 'sara-lindqvist-vintergata',
-		artistSlug: 'sara-lindqvist',
+		id: 105,
+		slug: '105-sara-lindqvist-vintergata',
+		artistSlug: '01-sara-lindqvist',
 		artist: 'Sara Lindqvist',
 		title: 'Vintergata',
 		status: 'ongoing',
 		start: '2026-08-12',
 		end: '2026-09-20',
 		datesLabel: '12 AUG – 20 SEP 2026',
-		location: 'Galleri Ett, Tjörn',
+		location: 'GALLERIett, Tjörn',
 		vernissage: '2026-08-12T18:00:00',
 		intro:
 			'I Vintergata möter Sara Lindqvist landskapet som minne och närvaro — ett måleri där hav, ljus och tystnad får ta plats.',
 		pressRelease:
-			'Sara Lindqvist visar nya målningar i utställningen Vintergata på Galleri Ett. Verken rör sig mellan horisont och inre landskap, med ett måleri som bygger lager av färg, ljus och stillhet. Utställningen pågår 12 augusti–20 september 2026.',
+			'Sara Lindqvist visar nya målningar i utställningen Vintergata på GALLERIett. Verken rör sig mellan horisont och inre landskap, med ett måleri som bygger lager av färg, ljus och stillhet. Utställningen pågår 12 augusti–20 september 2026.',
 		image: '/images/ex-405-hero.jpg',
 		cardImage: '/images/card-ongoing.jpg',
 		works: [
@@ -256,28 +265,28 @@ export const exhibitions = [
 		]
 	},
 	{
-		id: 404,
-		slug: 'erik-halvorsen-tystnadens-rum',
-		artistSlug: 'erik-halvorsen',
+		id: 104,
+		slug: '104-erik-halvorsen-tystnadens-rum',
+		artistSlug: '02-erik-halvorsen',
 		artist: 'Erik Halvorsen',
 		title: 'Tystnadens rum',
 		status: 'upcoming',
 		start: '2026-10-03',
 		end: '2026-11-02',
 		datesLabel: '3 OKT – 2 NOV 2026',
-		location: 'Galleri Ett, Tjörn',
+		location: 'GALLERIett, Tjörn',
 		vernissage: '2026-10-03T18:00:00',
 		intro: 'Erik Halvorsen visar skulpturer som formar tystnad och rum.',
 		pressRelease:
-			'Tystnadens rum är Erik Halvorsens första separatutställning på Galleri Ett. Skulpturerna arbetar med material, tyngd och tomrum.',
+			'Tystnadens rum är Erik Halvorsens första separatutställning på GALLERIett. Skulpturerna arbetar med material, tyngd och tomrum.',
 		image: '/images/card-upcoming.jpg',
 		cardImage: '/images/card-upcoming.jpg',
 		works: [],
 		installationViews: []
 	},
 	{
-		id: 403,
-		slug: 'langsvagen',
+		id: 103,
+		slug: '103-langsvagen',
 		artistSlug: null,
 		artist: 'Grupputställning',
 		title: 'Längs vägen / Along the Road',
@@ -285,7 +294,7 @@ export const exhibitions = [
 		start: '2026-04-12',
 		end: '2026-05-25',
 		datesLabel: '12 APR – 25 MAJ 2026',
-		location: 'Galleri Ett, Tjörn',
+		location: 'GALLERIett, Tjörn',
 		vernissage: '2026-04-12T15:00:00',
 		intro: 'En grupputställning om resa, plats och minne.',
 		pressRelease: 'Längs vägen samlar verk som speglar förflyttning och landskap.',
@@ -295,8 +304,8 @@ export const exhibitions = [
 		installationViews: []
 	},
 	{
-		id: 402,
-		slug: 'klara-kristalova-lust-for-life',
+		id: 102,
+		slug: '102-klara-kristalova-lust-for-life',
 		artistSlug: null,
 		artist: 'Klara Kristalova',
 		title: 'Lust for Life – Nordic',
@@ -304,7 +313,7 @@ export const exhibitions = [
 		start: '2026-02-01',
 		end: '2026-03-15',
 		datesLabel: '1 FEB – 15 MAR 2026',
-		location: 'Galleri Ett, Tjörn',
+		location: 'GALLERIett, Tjörn',
 		vernissage: null,
 		intro: 'Skulptur och berättelse i nordiskt ljus.',
 		pressRelease: '',
@@ -314,23 +323,42 @@ export const exhibitions = [
 		installationViews: []
 	},
 	{
-		id: 401,
-		slug: 'ljus-och-horisont',
-		artistSlug: 'sara-lindqvist',
+		id: 101,
+		slug: '101-ljus-och-horisont',
+		artistSlug: '01-sara-lindqvist',
+		artistSlugs: [
+			'01-sara-lindqvist',
+			'02-erik-halvorsen',
+			'07-lisa-werner',
+			'03-maja-strom'
+		],
 		artist: 'Sara Lindqvist m.fl.',
 		title: 'Ljus & Horisont',
 		status: 'past',
 		start: '2025-11-01',
 		end: '2025-12-15',
 		datesLabel: '1 NOV – 15 DEC 2025',
-		location: 'Galleri Ett, Tjörn',
-		vernissage: null,
-		intro: 'En utställning om ljus, hav och horisont.',
-		pressRelease: '',
-		image: '/images/ex-thumb-2.jpg',
+		location: 'GALLERIett, Tjörn',
+		vernissage: '2025-11-01T15:00:00',
+		intro:
+			'En grupputställning om ljus, hav och horisont — där måleri, skulptur och fotografi möts i den bohuslänska kustens skiftningar.',
+		pressRelease:
+			'GALLERIett presenterar Ljus & Horisont, en grupputställning med Sara Lindqvist, Erik Halvorsen, Lisa Werner och Maja Ström.\n\nUtställningen tar avstamp i horisontlinjen som både geografisk och inre gräns. Verken rör sig mellan öppet hav, dämpat dagsljus och det stilla mörker som präglar Västkusten under senhösten.\n\nSara Lindqvist bidrar med måleri i lager av ljus och stillhet. Erik Halvorsen visar skulptur där material och rum samspelar. Lisa Werner arbetar med figur och färg i dämpad skala, medan Maja Ström utforskar abstrakta färgytor i stort format.\n\nLjus & Horisont är den första utställningen i GALLERIetts nya numrering och markerar starten på galleriets utställningsarkiv.\n\nVernissage 1 november 2025 kl. 15–18. Utställningen pågår till 15 december 2025.',
+		image: '/images/ex-101-hero.jpg',
 		cardImage: '/images/ex-thumb-2.jpg',
-		works: [],
-		installationViews: []
+		works: [
+			{ title: 'Horisont I — Sara Lindqvist', image: '/images/work-1.jpg?v=2' },
+			{ title: 'Kustljus — Sara Lindqvist', image: '/images/work-2.jpg?v=2' },
+			{ title: 'Tyst form — Erik Halvorsen', image: '/images/work-3.jpg?v=2' },
+			{ title: 'Figur vid fönster — Lisa Werner', image: '/images/work-4.jpg?v=2' },
+			{ title: 'Färgyta III — Maja Ström', image: '/images/work-5.jpg?v=2' },
+			{ title: 'Stillhet — Sara Lindqvist', image: '/images/work-6.jpg?v=3' }
+		],
+		installationViews: [
+			'/images/install-101-a.jpg',
+			'/images/install-101-b.jpg',
+			'/images/install-101-c.jpg'
+		]
 	}
 ];
 

@@ -119,7 +119,7 @@
 	<section class="band band-pad">
 		<div class="container">
 			<div class="section-head">
-				<h2 class="label">{data.related.length === 1 ? 'Konstnär' : 'Relaterade konstnärer'}</h2>
+				<h2 class="label">{data.related.length === 1 ? 'Konstnär' : 'Utställande konstnärer'}</h2>
 				<a class="link-arrow" href="/konstnarer">Visa alla konstnärer</a>
 			</div>
 			<div class="artists" class:single={data.related.length === 1}>

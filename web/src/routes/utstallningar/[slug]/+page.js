@@ -6,9 +6,14 @@ export function load({ params }) {
 	const exhibition = exhibitions.find((e) => e.slug === params.slug);
 	if (!exhibition) throw error(404, 'Utställningen hittades inte');
 
-	const related = exhibition.artistSlug
-		? artists.filter((a) => a.slug === exhibition.artistSlug)
-		: [];
+	const relatedSlugs = exhibition.artistSlugs?.length
+		? exhibition.artistSlugs
+		: exhibition.artistSlug
+			? [exhibition.artistSlug]
+			: [];
+	const related = relatedSlugs
+		.map((slug) => artists.find((a) => a.slug === slug))
+		.filter(Boolean);
 	const index = exhibitions.findIndex((e) => e.slug === params.slug);
 	const prev = exhibitions[index + 1] ?? null;
 	const next = exhibitions[index - 1] ?? null;
