@@ -1,6 +1,7 @@
 :root {
 	--brand: #c9cf1e;
 	--brand-dark: #1a1a12;
+	--brand-edge: 8px;
 	--text: #1a1a12;
 	--text-secondary: #5c5c52;
 	--text-muted: #8a8a7e;
@@ -33,6 +34,20 @@ body {
 	-webkit-font-smoothing: antialiased;
 	overflow-x: clip;
 	max-width: 100%;
+	padding-left: var(--brand-edge);
+}
+
+/* Familjevarumärke: vänster signalkant (lime = GALLERIett) */
+body::before {
+	content: '';
+	position: fixed;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: var(--brand-edge);
+	background: var(--brand);
+	z-index: 200;
+	pointer-events: none;
 }
 
 img {
