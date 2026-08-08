@@ -24,7 +24,7 @@
 			<p>{addr}</p>
 		</div>
 		<div>
-			<p class="label">Besök oss</p>
+			<p class="label">Öppet</p>
 			<p>{site.hours}</p>
 		</div>
 		<div>
