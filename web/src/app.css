@@ -21,6 +21,7 @@
 
 html {
 	scroll-behavior: smooth;
+	overflow-x: clip;
 }
 
 body {
@@ -30,6 +31,8 @@ body {
 	background: var(--bg);
 	line-height: 1.5;
 	-webkit-font-smoothing: antialiased;
+	overflow-x: clip;
+	max-width: 100%;
 }
 
 img {
@@ -53,7 +56,9 @@ h3,
 
 .container {
 	width: min(100% - 2 * var(--pad), var(--max));
+	max-width: 100%;
 	margin-inline: auto;
+	box-sizing: border-box;
 }
 
 .label {
@@ -119,6 +124,8 @@ h3,
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
+	width: 100%;
+	overflow-x: clip;
 }
 
 .site main {
@@ -148,4 +155,5 @@ h3,
 	align-items: baseline;
 	gap: 1rem;
 	margin-bottom: 1.5rem;
+	flex-wrap: wrap;
 }

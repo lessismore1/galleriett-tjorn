@@ -102,6 +102,7 @@
 
 	.partner-list {
 		display: flex;
+		flex-wrap: wrap;
 		gap: 1.5rem;
 		font-size: 0.7rem;
 		font-weight: 600;
