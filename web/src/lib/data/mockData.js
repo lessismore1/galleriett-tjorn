@@ -10,17 +10,20 @@ export const site = {
 		country: 'Sverige'
 	},
 	hours: 'Ons – Sön 13–18 eller efter överenskommelse',
-	phone: '+46 (0) 709 42 51 95',
+	phone: '+46 (0) 70-060 1006',
 	email: 'info@galleriett-tjorn.se',
 	social: {
-		instagram: 'https://instagram.com/',
-		facebook: 'https://facebook.com/'
+		instagram: 'https://www.instagram.com/galleriett.tjorn',
+		facebook: 'https://www.facebook.com/galleriett.tjorn'
 	},
 	partners: [
-		{ name: 'Konst med Horisont', url: 'https://horisont.se' },
-		{ name: 'Tjörns Konstförening', short: 'TKS' }
+		{ name: 'Konst med Horisont', url: 'https://konstmedhorisont.se' },
+		{ name: 'Tjörns Konstförening', url: 'https://www.tjornkonst.se', short: 'TKS' }
 	],
-	credit: 'Webbplats av Studio Horisont',
+	credit: {
+		name: 'Ronny Carlansson',
+		url: 'https://www.linkedin.com/in/ronnycarlansson/'
+	},
 	mapsUrl: 'https://maps.google.com/?q=Marinvägen+9,+Rönnäng'
 };
 
