@@ -2,28 +2,35 @@
 	import { about, site } from '$lib/data/mockData.js';
 </script>
 
-<section class="container">
-	<p class="label">{about.label}</p>
-	<h1 class="serif">{about.headline}</h1>
-	<img src={about.image} alt="Galleri Ett" />
-	<p class="body">{about.body}</p>
-	<p class="meta">
-		{site.address.street}, {site.address.postal}<br />
-		{site.hours}<br />
-		<a href={`mailto:${site.email}`}>{site.email}</a>
-	</p>
-	<a class="link-arrow" href="/kontakt">Kontakta oss</a>
+<section class="band-soft band-pad">
+	<div class="container narrow">
+		<p class="label">{about.label}</p>
+		<h1 class="serif">{about.headline}</h1>
+	</div>
+</section>
+
+<section class="band band-pad">
+	<div class="container narrow">
+		<img src={about.image} alt="Galleri Ett" />
+		<p class="body">{about.body}</p>
+		<p class="meta">
+			{site.address.street}, {site.address.postal}<br />
+			{site.hours}<br />
+			<a href={`mailto:${site.email}`}>{site.email}</a>
+		</p>
+		<a class="link-arrow" href="/kontakt">Kontakta oss</a>
+	</div>
 </section>
 
 <style>
-	.container {
-		padding-block: 3rem;
+	.narrow {
 		max-width: 48rem;
 	}
 
 	h1 {
 		font-size: clamp(2rem, 5vw, 3.2rem);
-		margin: 0.75rem 0 1.5rem;
+		margin: 0.75rem 0 0;
+		font-weight: 500;
 	}
 
 	img {
@@ -31,12 +38,14 @@
 		aspect-ratio: 16 / 9;
 		object-fit: cover;
 		margin-bottom: 1.5rem;
+		background: #e8e8e2;
 	}
 
 	.body {
 		color: var(--text-secondary);
 		font-size: 1.05rem;
 		max-width: 40rem;
+		line-height: 1.7;
 	}
 
 	.meta {

@@ -41,35 +41,37 @@
 	{/if}
 </section>
 
-<section class="section container">
-	<div class="section-head">
-		<h2 class="label">Aktuellt</h2>
-		<a class="link-arrow" href="/utstallningar">Se alla utställningar</a>
-	</div>
-	<div class="cards">
-		{#each featuredExhibitions as item}
-			<a class="card" href={`/utstallningar/${item.slug}`}>
+<section class="section band">
+	<div class="container">
+		<div class="section-head">
+			<h2 class="label">Aktuellt</h2>
+			<a class="link-arrow" href="/utstallningar">Se alla utställningar</a>
+		</div>
+		<div class="cards">
+			{#each featuredExhibitions as item}
+				<a class="card" href={`/utstallningar/${item.slug}`}>
+					<div class="media">
+						<img src={cardSrc(item)} alt="{item.artist} — {item.title}" />
+						<span class="tag" class:muted={item.status !== 'ongoing'}>{statusLabel(item.status)}</span
+						>
+					</div>
+					<h3 class="serif">{item.artist} – {item.title}</h3>
+					<p>{item.datesLabel}</p>
+				</a>
+			{/each}
+			<a class="card" href="/nyheter">
 				<div class="media">
-					<img src={cardSrc(item)} alt="{item.artist} — {item.title}" />
-					<span class="tag" class:muted={item.status !== 'ongoing'}>{statusLabel(item.status)}</span
-					>
+					<img src={featuredNews.image} alt={featuredNews.title} />
+					<span class="tag muted">{featuredNews.category}</span>
 				</div>
-				<h3 class="serif">{item.artist} – {item.title}</h3>
-				<p>{item.datesLabel}</p>
+				<h3 class="serif">{featuredNews.title}</h3>
+				<p>{featuredNews.dateLabel}</p>
 			</a>
-		{/each}
-		<a class="card" href="/nyheter">
-			<div class="media">
-				<img src={featuredNews.image} alt={featuredNews.title} />
-				<span class="tag muted">{featuredNews.category}</span>
-			</div>
-			<h3 class="serif">{featuredNews.title}</h3>
-			<p>{featuredNews.dateLabel}</p>
-		</a>
+		</div>
 	</div>
 </section>
 
-<section class="about">
+<section class="about band-soft">
 	<div class="container about-grid">
 		<div>
 			<p class="label">{about.label}</p>
@@ -81,22 +83,24 @@
 	</div>
 </section>
 
-<section class="section container">
-	<div class="section-head">
-		<h2 class="label">Nyheter</h2>
-		<a class="link-arrow" href="/nyheter">Till nyheter</a>
-	</div>
-	<div class="news">
-		{#each news.slice(0, 3) as item}
-			<a class="news-item" href="/nyheter">
-				<img src={item.thumb ?? item.image} alt="" />
-				<div>
-					<p class="label">{item.category}</p>
-					<strong class="serif">{item.title}</strong>
-					<p class="muted">{item.dateLabel}</p>
-				</div>
-			</a>
-		{/each}
+<section class="section band">
+	<div class="container">
+		<div class="section-head">
+			<h2 class="label">Nyheter</h2>
+			<a class="link-arrow" href="/nyheter">Till nyheter</a>
+		</div>
+		<div class="news">
+			{#each news.slice(0, 3) as item}
+				<a class="news-item" href="/nyheter">
+					<img src={item.thumb ?? item.image} alt="" />
+					<div>
+						<p class="label">{item.category}</p>
+						<strong class="serif">{item.title}</strong>
+						<p class="muted">{item.dateLabel}</p>
+					</div>
+				</a>
+			{/each}
+		</div>
 	</div>
 </section>
 
@@ -222,7 +226,6 @@
 	}
 
 	.about {
-		background: var(--bg-soft);
 		padding-block: 3.5rem;
 	}
 

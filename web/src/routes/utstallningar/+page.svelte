@@ -13,8 +13,8 @@
 	const list = $derived(exhibitions.filter((e) => e.status === tab));
 </script>
 
-<section class="container">
-	<div class="head">
+<section class="band">
+	<div class="container head">
 		<h1 class="serif">Utställningar</h1>
 		<div class="tabs">
 			{#each tabs as t}
@@ -22,24 +22,28 @@
 			{/each}
 		</div>
 	</div>
+</section>
 
-	<ul class="list">
-		{#each list as ex}
-			<li>
-				<a href={`/utstallningar/${ex.slug}`}>
-					<span class="id">{ex.id}</span>
-					<img src={ex.image} alt="" />
-					<div>
-						<strong class="serif">{ex.artist} | {ex.title}</strong>
-						<p>{ex.datesLabel}</p>
-					</div>
-					<span class="plus" aria-hidden="true">+</span>
-				</a>
-			</li>
-		{:else}
-			<li class="empty">Inga utställningar i {statusLabels[tab].toLowerCase()}.</li>
-		{/each}
-	</ul>
+<section class="band-soft">
+	<div class="container">
+		<ul class="list">
+			{#each list as ex}
+				<li>
+					<a href={`/utstallningar/${ex.slug}`}>
+						<span class="id">{ex.id}</span>
+						<img src={ex.image} alt="" />
+						<div>
+							<strong class="serif">{ex.artist} | {ex.title}</strong>
+							<p>{ex.datesLabel}</p>
+						</div>
+						<span class="plus" aria-hidden="true">+</span>
+					</a>
+				</li>
+			{:else}
+				<li class="empty">Inga utställningar i {statusLabels[tab].toLowerCase()}.</li>
+			{/each}
+		</ul>
+	</div>
 </section>
 
 <style>
@@ -50,12 +54,12 @@
 		gap: 1rem;
 		flex-wrap: wrap;
 		padding-block: 2.5rem 1rem;
-		border-bottom: 1px solid var(--border);
 	}
 
 	h1 {
 		font-size: clamp(2.2rem, 5vw, 3.5rem);
 		margin: 0;
+		font-weight: 500;
 	}
 
 	.tabs {
@@ -84,7 +88,8 @@
 	.list {
 		list-style: none;
 		padding: 0;
-		margin: 0 0 3rem;
+		margin: 0;
+		padding-block: 0.5rem 3rem;
 	}
 
 	.list a {
@@ -98,13 +103,15 @@
 
 	.id {
 		font-size: 0.75rem;
-		color: var(--text-muted);
+		color: var(--brand-dark);
+		font-weight: 600;
 	}
 
 	img {
 		width: 110px;
 		height: 80px;
 		object-fit: cover;
+		background: #e8e8e2;
 	}
 
 	strong {

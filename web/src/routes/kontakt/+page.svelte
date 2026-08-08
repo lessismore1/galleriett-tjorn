@@ -4,83 +4,84 @@
 	const addr = `${site.address.street}, ${site.address.postal}, ${site.address.region}, ${site.address.country}`;
 </script>
 
-<section class="container hero">
-	<div>
-		<p class="label accent">Kontakt</p>
-		<h1 class="serif">Vi ser fram emot ditt besök</h1>
-		<p class="lead">
-			Har du frågor om utställningar, konstverk eller samarbeten? Hör gärna av dig – vi svarar
-			så snart vi kan.
-		</p>
-		<a class="link-arrow" href="#formular">Skicka ett meddelande</a>
+<section class="band">
+	<div class="container hero">
+		<div>
+			<p class="label accent">Kontakt</p>
+			<h1 class="serif">Vi ser fram emot ditt besök</h1>
+			<p class="lead">
+				Har du frågor om utställningar, konstverk eller samarbeten? Hör gärna av dig – vi svarar
+				så snart vi kan.
+			</p>
+			<a class="link-arrow" href="#formular">Skicka ett meddelande</a>
+		</div>
+		<img src="/images/gallery-interior-clean.jpg" alt="Galleriinteriör" />
 	</div>
-	<img
-		src="https://images.unsplash.com/photo-1578301978018-3005759f48f7?auto=format&fit=crop&w=1200&q=80"
-		alt="Galleriinteriör"
-	/>
 </section>
 
-<section class="container grid" id="formular">
-	<form
-		class="form"
-		onsubmit={(e) => {
-			e.preventDefault();
-			alert('Tack! Formuläret är ännu en mockup — kopplas till backend senare.');
-		}}
-	>
-		<h2 class="label">Skicka ett meddelande</h2>
-		<label>
-			Namn
-			<input name="name" type="text" placeholder="Ditt namn" required />
-		</label>
-		<label>
-			E-post
-			<input name="email" type="email" placeholder="din@email.se" required />
-		</label>
-		<label>
-			Ämne
-			<input name="subject" type="text" placeholder="Ämne" />
-		</label>
-		<label>
-			Meddelande
-			<textarea name="message" rows="5" placeholder="Skriv ditt meddelande här..." required
-			></textarea>
-		</label>
-		<button class="btn" type="submit">Skicka meddelande →</button>
-	</form>
-
-	<div>
-		<h2 class="label">Kontaktinformation</h2>
-		<ul class="info">
-			<li>
-				<span>Besöksadress</span>
-				{addr}
-			</li>
-			<li>
-				<span>Öppettider</span>
-				{site.hours}
-			</li>
-			<li>
-				<span>Telefon</span>
-				<a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a>
-			</li>
-			<li>
-				<span>E-post</span>
-				<a href={`mailto:${site.email}`}>{site.email}</a>
-			</li>
-		</ul>
-	</div>
-
-	<div>
-		<h2 class="label">Hitta hit</h2>
-		<div class="map" aria-hidden="true">Karta</div>
-		<a class="link-arrow" href={site.mapsUrl} target="_blank" rel="noreferrer"
-			>Visa på Google Maps</a
+<section class="band-soft band-pad" id="formular">
+	<div class="container grid">
+		<form
+			class="form"
+			onsubmit={(e) => {
+				e.preventDefault();
+				alert('Tack! Formuläret är ännu en mockup — kopplas till backend senare.');
+			}}
 		>
+			<h2 class="label">Skicka ett meddelande</h2>
+			<label>
+				Namn
+				<input name="name" type="text" placeholder="Ditt namn" required />
+			</label>
+			<label>
+				E-post
+				<input name="email" type="email" placeholder="din@email.se" required />
+			</label>
+			<label>
+				Ämne
+				<input name="subject" type="text" placeholder="Ämne" />
+			</label>
+			<label>
+				Meddelande
+				<textarea name="message" rows="5" placeholder="Skriv ditt meddelande här..." required
+				></textarea>
+			</label>
+			<button class="btn" type="submit">Skicka meddelande →</button>
+		</form>
+
+		<div>
+			<h2 class="label">Kontaktinformation</h2>
+			<ul class="info">
+				<li>
+					<span>Besöksadress</span>
+					{addr}
+				</li>
+				<li>
+					<span>Öppettider</span>
+					{site.hours}
+				</li>
+				<li>
+					<span>Telefon</span>
+					<a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a>
+				</li>
+				<li>
+					<span>E-post</span>
+					<a href={`mailto:${site.email}`}>{site.email}</a>
+				</li>
+			</ul>
+		</div>
+
+		<div>
+			<h2 class="label">Hitta hit</h2>
+			<div class="map" aria-hidden="true">Karta</div>
+			<a class="link-arrow" href={site.mapsUrl} target="_blank" rel="noreferrer"
+				>Visa på Google Maps</a
+			>
+		</div>
 	</div>
 </section>
 
-<section class="visit">
+<section class="band band-pad">
 	<div class="container visit-grid">
 		<div>
 			<h2 class="serif">Besök Galleri Ett</h2>
@@ -90,10 +91,7 @@
 			</p>
 			<a class="link-arrow" href="/om">Planera ditt besök</a>
 		</div>
-		<img
-			src="https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1200&q=80"
-			alt="Galleriets byggnad"
-		/>
+		<img src="/images/about-building.jpg" alt="Galleriets byggnad" />
 	</div>
 </section>
 
@@ -132,7 +130,6 @@
 	.grid {
 		display: grid;
 		gap: 2.5rem;
-		padding-bottom: 3rem;
 	}
 
 	.form {
@@ -198,31 +195,28 @@
 		text-transform: uppercase;
 	}
 
-	.visit {
-		background: var(--bg-soft);
-		padding-block: 3rem;
-	}
-
 	.visit-grid {
 		display: grid;
 		gap: 1.5rem;
 		align-items: center;
 	}
 
-	.visit h2 {
+	.visit-grid h2 {
 		font-size: clamp(1.8rem, 4vw, 2.4rem);
 		margin: 0 0 0.75rem;
+		font-weight: 500;
 	}
 
-	.visit p {
+	.visit-grid p {
 		color: var(--text-secondary);
 		margin-bottom: 1rem;
 	}
 
-	.visit img {
+	.visit-grid img {
 		width: 100%;
 		aspect-ratio: 16 / 10;
 		object-fit: cover;
+		background: #e8e8e2;
 	}
 
 	@media (min-width: 900px) {

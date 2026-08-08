@@ -124,3 +124,28 @@ h3,
 .site main {
 	flex: 1;
 }
+
+/* Full-bleed section backgrounds (mockup: vit ↔ soft) */
+.band {
+	background: var(--bg);
+}
+
+.band-soft {
+	background: var(--bg-soft);
+}
+
+.band-pad {
+	padding-block: 3rem;
+}
+
+.band-pad-lg {
+	padding-block: 3.5rem;
+}
+
+.section-head {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 1rem;
+	margin-bottom: 1.5rem;
+}
