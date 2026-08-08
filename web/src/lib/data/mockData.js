@@ -347,7 +347,7 @@ export const news = [
 	},
 	{
 		slug: 'paletten',
-		category: 'Press',
+		category: 'Media',
 		title: 'Galleriet i konstmagasinet Paletten',
 		date: '2026-07-28',
 		dateLabel: '28 JULI 2026',

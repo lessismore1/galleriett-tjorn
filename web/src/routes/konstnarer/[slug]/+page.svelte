@@ -63,11 +63,11 @@
 	<div class="container subnav-inner">
 		<strong class="artist-name serif">{artist.name}</strong>
 		<div class="subnav-links">
-			<a href="#works">Works</a>
-			<a href="#biography">Biography</a>
-			<a href="#exhibitions">Exhibitions</a>
-			<a href="#news">News</a>
-			<a href="#press">Press</a>
+			<a href="#works">Verk</a>
+			<a href="#biography">Biografi</a>
+			<a href="#exhibitions">Utställningar</a>
+			<a href="#news">Nyheter</a>
+			<a href="#press">Media</a>
 		</div>
 	</div>
 </nav>
@@ -75,7 +75,7 @@
 <section id="works" class="band band-pad">
 	<div class="container">
 		<div class="section-head">
-			<h2 class="serif">Works</h2>
+			<h2 class="serif">Verk</h2>
 			{#if artist.works.length}
 				<a class="link-arrow" href="#works">Visa alla verk</a>
 			{/if}
@@ -99,7 +99,7 @@
 <section id="biography" class="band-soft band-pad">
 	<div class="container bio">
 		<div>
-			<h2 class="serif">Biography</h2>
+			<h2 class="serif">Biografi</h2>
 			<p>{artist.bio}</p>
 			{#if artist.website}
 				<a class="link-arrow" href={artist.website} target="_blank" rel="noreferrer">Hemsida</a>
@@ -131,7 +131,7 @@
 <section id="exhibitions" class="band band-pad">
 	<div class="container">
 		<div class="section-head">
-			<h2 class="serif">Exhibitions</h2>
+			<h2 class="serif">Utställningar</h2>
 			<a class="link-arrow" href="/utstallningar">Visa alla</a>
 		</div>
 		<ul class="list">
@@ -151,7 +151,7 @@
 <section id="news" class="band-soft band-pad">
 	<div class="container">
 		<div class="section-head">
-			<h2 class="serif">News</h2>
+			<h2 class="serif">Nyheter</h2>
 			<a class="link-arrow" href="/nyheter">Visa alla</a>
 		</div>
 		<div class="news">
@@ -172,7 +172,7 @@
 <section id="press" class="band band-pad">
 	<div class="container">
 		<div class="section-head">
-			<h2 class="serif">Press</h2>
+			<h2 class="serif">Media</h2>
 		</div>
 		{#if artist.press.length}
 			<div class="press">

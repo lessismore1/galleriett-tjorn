@@ -46,9 +46,9 @@
 <nav class="band subnav" aria-label="Sektioner">
 	<div class="container subnav-inner">
 		<div class="subnav-links">
-			<a href="#press-release">Press release</a>
-			<a href="#works">Works</a>
-			<a href="#installation">Installation view</a>
+			<a href="#press-release">Pressmeddelande</a>
+			<a href="#works">Verk</a>
+			<a href="#installation">Installation</a>
 		</div>
 		<span class="dela">Dela</span>
 	</div>
@@ -57,7 +57,7 @@
 <section id="press-release" class="band band-pad">
 	<div class="container press">
 		<div class="text">
-			<h2 class="serif">Press release</h2>
+			<h2 class="serif">Pressmeddelande</h2>
 			{#each ex.pressRelease.split('\n').filter(Boolean) as para}
 				<p>{para}</p>
 			{/each}
@@ -76,7 +76,7 @@
 <section id="works" class="band-soft band-pad">
 	<div class="container">
 		<div class="section-head">
-			<h2 class="serif">Works</h2>
+			<h2 class="serif">Verk</h2>
 			{#if ex.works.length}
 				<a class="link-arrow" href={`/konstnarer/${ex.artistSlug ?? ''}`}>Visa alla verk</a>
 			{/if}
@@ -101,12 +101,12 @@
 <section id="installation" class="band-soft band-pad install-band">
 	<div class="container">
 		<div class="section-head">
-			<h2 class="serif">Installation view</h2>
+			<h2 class="serif">Installation</h2>
 		</div>
 		{#if ex.installationViews.length}
 			<div class="install" style={`--cols: ${Math.min(ex.installationViews.length, 3)}`}>
 				{#each ex.installationViews as src, i}
-					<img {src} alt="Installation view {i + 1}" />
+					<img {src} alt="Installation {i + 1}" />
 				{/each}
 			</div>
 		{:else}
@@ -119,7 +119,7 @@
 	<section class="band band-pad">
 		<div class="container">
 			<div class="section-head">
-				<h2 class="label">{data.related.length === 1 ? 'Konstnär' : 'Related artists'}</h2>
+				<h2 class="label">{data.related.length === 1 ? 'Konstnär' : 'Relaterade konstnärer'}</h2>
 				<a class="link-arrow" href="/konstnarer">Visa alla konstnärer</a>
 			</div>
 			<div class="artists" class:single={data.related.length === 1}>
