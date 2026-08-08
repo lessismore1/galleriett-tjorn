@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { site } from '$lib/data/mockData.js';
 
-	const addr = `${site.address.street}, ${site.address.postal}, ${site.address.region}, ${site.address.country}`;
+	const addr = `${site.address.street}, ${site.address.postal}`;
 </script>
 
 <section class="band">
@@ -86,7 +86,7 @@
 		<div>
 			<h2 class="serif">Besök Galleri Ett</h2>
 			<p>
-				Vi ligger i Skärhamn på Tjörn — välkommen in för utställningar, samtal och en kopp
+				Vi ligger i Rönnäng på Tjörn — välkommen in för utställningar, samtal och en kopp
 				kaffe.
 			</p>
 			<a class="link-arrow" href="/om">Planera ditt besök</a>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { site } from '$lib/data/mockData.js';
 
-	const addr = `${site.address.street}, ${site.address.postal}, ${site.address.region}, ${site.address.country}`;
+	const addr = `${site.address.street}, ${site.address.postal}`;
 </script>
 
 <footer class="footer">

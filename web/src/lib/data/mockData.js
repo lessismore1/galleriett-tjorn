@@ -4,8 +4,8 @@ export const site = {
 	name: 'GALLERIett',
 	tagline: 'Ett galleri för samtidskonst på Tjörn',
 	address: {
-		street: 'Skulptörvägen 12',
-		postal: '471 78 Skärhamn',
+		street: 'Marinvägen 9, Hall 1',
+		postal: '471 41 Rönnäng (Stansvik)',
 		region: 'Tjörn',
 		country: 'Sverige'
 	},
@@ -21,7 +21,7 @@ export const site = {
 		{ name: 'Tjörns Konstförening', short: 'TKS' }
 	],
 	credit: 'Webbplats av Studio Horisont',
-	mapsUrl: 'https://maps.google.com/?q=Skulptörvägen+12,+Skärhamn'
+	mapsUrl: 'https://maps.google.com/?q=Marinvägen+9,+Rönnäng'
 };
 
 export const nav = [
