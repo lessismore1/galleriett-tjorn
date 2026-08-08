@@ -19,7 +19,7 @@
 		<div>
 			<h1 class="serif">Konstnärer</h1>
 			<p>
-				Galleri Ett representerar konstnärer inom måleri, skulptur, fotografi och installation —
+				GALLERIett representerar konstnärer inom måleri, skulptur, fotografi och installation —
 				med fokus på samtidskonst.
 			</p>
 			<a class="link-arrow" href="/om">Om vårt arbete</a>
@@ -64,7 +64,7 @@
 		<div>
 			<h2 class="serif">Vill du veta mer?</h2>
 			<p>Har du frågor om konstnärer eller verk? Hör gärna av dig.</p>
-			<a class="link-arrow" href="/kontakt">Kontakta Galleri Ett</a>
+			<a class="link-arrow" href="/kontakt">Kontakta GALLERIett</a>
 		</div>
 		<img src="/images/about-building.jpg" alt="Galleriets byggnad" />
 	</div>

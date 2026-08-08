@@ -30,6 +30,13 @@
 		background: rgba(255, 255, 255, 0.92);
 		backdrop-filter: blur(8px);
 		border-bottom: 1px solid var(--border);
+		transition: transform 0.28s ease, opacity 0.28s ease;
+	}
+
+	:global(body.subnav-stuck) .header {
+		transform: translateY(-100%);
+		opacity: 0;
+		pointer-events: none;
 	}
 
 	.bar {
