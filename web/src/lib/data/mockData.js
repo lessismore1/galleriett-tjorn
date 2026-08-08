@@ -17,12 +17,10 @@ export const site = {
 		facebook: 'https://www.facebook.com/galleriett.tjorn'
 	},
 	partners: [
-		{
-			name: 'TKS',
-			fullName: 'Tjörns Konst & Konsthantverk sällskap',
-			url: 'https://tjornkonst.se'
-		},
-		{ name: 'Konst med Horisont', url: 'https://konstmedhorisont.se' }
+		{ name: 'tjornkonst.se', url: 'https://tjornkonst.se' },
+		{ name: 'konstmedhorisont.se', url: 'https://konstmedhorisont.se' },
+		{ name: 'kustkonst.se', url: null },
+		{ name: 'ronnang.se', url: 'https://ronnang.se' }
 	],
 	credit: {
 		name: 'Ronny Carlansson',

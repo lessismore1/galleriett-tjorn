@@ -2,23 +2,11 @@
 	import { site } from '$lib/data/mockData.js';
 
 	const addr = `${site.address.street}, ${site.address.postal}`;
+	const ownPartners = site.partners.slice(0, 3);
+	const morePartners = site.partners.slice(3);
 </script>
 
 <footer class="footer">
-	<div class="container partners">
-		<p class="partners-line">
-			<span class="label">I samarbete med:</span>
-			{#each site.partners as p, i}
-				{#if i > 0}<span class="sep" aria-hidden="true">·</span>{/if}
-				{#if p.url}
-					<a href={p.url} target="_blank" rel="noreferrer">{p.name}</a>
-				{:else}
-					<span>{p.name}</span>
-				{/if}
-			{/each}
-		</p>
-	</div>
-
 	<div class="container grid">
 		<div class="col identity">
 			<div class="block">
@@ -39,6 +27,34 @@
 			<div class="block">
 				<p class="label">Öppet</p>
 				<p class="body">{site.hours}</p>
+			</div>
+
+			<div class="block">
+				<p class="label">I samarbete</p>
+				<div class="partners">
+					<p class="body partners-row">
+						{#each ownPartners as p, i}
+							{#if i > 0}<span class="sep" aria-hidden="true">·</span>{/if}
+							{#if p.url}
+								<a href={p.url} target="_blank" rel="noreferrer">{p.name}</a>
+							{:else}
+								<span class="soon" title="Kommer snart">{p.name}</span>
+							{/if}
+						{/each}
+					</p>
+					{#if morePartners.length}
+						<p class="body partners-row">
+							{#each morePartners as p, i}
+								{#if i > 0}<span class="sep" aria-hidden="true">·</span>{/if}
+								{#if p.url}
+									<a href={p.url} target="_blank" rel="noreferrer">{p.name}</a>
+								{:else}
+									<span class="soon" title="Kommer snart">{p.name}</span>
+								{/if}
+							{/each}
+						</p>
+					{/if}
+				</div>
 			</div>
 		</div>
 
@@ -91,41 +107,10 @@
 		padding-bottom: 2.5rem;
 	}
 
-	.partners {
-		padding-block: 0.85rem;
-		border-bottom: 1px solid var(--border);
-	}
-
-	.partners-line {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: baseline;
-		gap: 0.45rem 0.65rem;
-		margin: 0;
-		font-size: 0.7rem;
-		font-weight: 600;
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
-		color: var(--text-muted);
-	}
-
-	.partners-line .label {
-		margin: 0;
-	}
-
-	.partners-line a:hover {
-		color: var(--text);
-	}
-
-	.sep {
-		color: var(--text-muted);
-		opacity: 0.7;
-	}
-
 	.grid {
 		display: grid;
 		gap: 2.5rem;
-		padding-block: 2.75rem 1rem;
+		padding-block: 1.25rem 1rem;
 		grid-template-columns: 1fr;
 	}
 
@@ -156,6 +141,28 @@
 		color: var(--text-secondary);
 	}
 
+	.partners {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+	}
+
+	.partners-row {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.35rem 0.5rem;
+	}
+
+	.sep {
+		color: var(--text-muted);
+	}
+
+	.soon {
+		color: var(--text-muted);
+		cursor: default;
+	}
+
 	.credit a {
 		display: inline-flex;
 		align-items: center;
@@ -184,10 +191,6 @@
 			grid-template-columns: 1.4fr 1fr 1fr;
 			align-items: start;
 			gap: 2rem;
-		}
-
-		.middle {
-			padding-top: 0;
 		}
 
 		.right {
