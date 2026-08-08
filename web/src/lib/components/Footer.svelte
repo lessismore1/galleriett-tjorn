@@ -6,16 +6,17 @@
 
 <footer class="footer">
 	<div class="container partners">
-		<span class="label">I samarbete med</span>
-		<div class="partner-list">
-			{#each site.partners as p}
+		<p class="partners-line">
+			<span class="label">I samarbete med:</span>
+			{#each site.partners as p, i}
+				{#if i > 0}<span class="sep" aria-hidden="true">·</span>{/if}
 				{#if p.url}
 					<a href={p.url} target="_blank" rel="noreferrer">{p.name}</a>
 				{:else}
 					<span>{p.name}</span>
 				{/if}
 			{/each}
-		</div>
+		</p>
 	</div>
 
 	<div class="container grid">
@@ -91,19 +92,16 @@
 	}
 
 	.partners {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		gap: 1rem;
 		padding-block: 0.85rem;
 		border-bottom: 1px solid var(--border);
-		flex-wrap: wrap;
 	}
 
-	.partner-list {
+	.partners-line {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 1.5rem;
+		align-items: baseline;
+		gap: 0.45rem 0.65rem;
+		margin: 0;
 		font-size: 0.7rem;
 		font-weight: 600;
 		letter-spacing: 0.04em;
@@ -111,8 +109,17 @@
 		color: var(--text-muted);
 	}
 
-	.partner-list a:hover {
+	.partners-line .label {
+		margin: 0;
+	}
+
+	.partners-line a:hover {
 		color: var(--text);
+	}
+
+	.sep {
+		color: var(--text-muted);
+		opacity: 0.7;
 	}
 
 	.grid {
