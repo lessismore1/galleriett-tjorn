@@ -9,7 +9,7 @@ export const site = {
 		region: 'Tjörn',
 		country: 'Sverige'
 	},
-	hours: 'Ons – Sön 12–17 eller efter överenskommelse',
+	hours: 'Ons – Sön 13–18 eller efter överenskommelse',
 	phone: '+46 (0) 709 42 51 95',
 	email: 'info@galleriett-tjorn.se',
 	social: {
