@@ -107,7 +107,7 @@
 <style>
 	.hero {
 		position: relative;
-		min-height: min(72vh, 680px);
+		min-height: min(58vh, 560px);
 		display: grid;
 		align-items: end;
 		color: #fff;

@@ -5,7 +5,7 @@
 	--text-secondary: #5c5c52;
 	--text-muted: #8a8a7e;
 	--bg: #ffffff;
-	--bg-soft: #f9f8f4;
+	--bg-soft: #f3f2ec;
 	--border: #e5e5e0;
 	--font-sans: 'Inter', system-ui, sans-serif;
 	--font-serif: 'Playfair Display', Georgia, serif;
@@ -135,11 +135,11 @@ h3,
 }
 
 .band-pad {
-	padding-block: 3rem;
+	padding-block: 2.25rem;
 }
 
 .band-pad-lg {
-	padding-block: 3.5rem;
+	padding-block: 3rem;
 }
 
 .section-head {

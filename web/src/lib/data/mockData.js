@@ -54,32 +54,28 @@ export const artists = [
 				year: 2026,
 				medium: 'Olja på duk',
 				dimensions: '120 × 90 cm',
-				image:
-					'https://images.unsplash.com/photo-1541961017774-22349e4a1262?auto=format&fit=crop&w=600&q=80'
+				image: '/images/work-1.jpg'
 			},
 			{
 				title: 'Silentium',
 				year: 2025,
 				medium: 'Olja på duk',
 				dimensions: '100 × 80 cm',
-				image:
-					'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=600&q=80'
+				image: '/images/work-2.jpg'
 			},
 			{
 				title: 'Horisont i dimma',
 				year: 2025,
 				medium: 'Olja på duk',
 				dimensions: '140 × 100 cm',
-				image:
-					'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80'
+				image: '/images/work-3.jpg'
 			},
 			{
 				title: 'Nattljus',
 				year: 2024,
 				medium: 'Olja på duk',
 				dimensions: '80 × 60 cm',
-				image:
-					'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?auto=format&fit=crop&w=600&q=80'
+				image: '/images/work-4.jpg'
 			}
 		],
 		exhibitions: [
@@ -238,19 +234,21 @@ export const exhibitions = [
 			'I Vintergata möter Sara Lindqvist landskapet som minne och närvaro — ett måleri där hav, ljus och tystnad får ta plats.',
 		pressRelease:
 			'Sara Lindqvist visar nya målningar i utställningen Vintergata på Galleri Ett. Verken rör sig mellan horisont och inre landskap, med ett måleri som bygger lager av färg, ljus och stillhet. Utställningen pågår 12 augusti–20 september 2026.',
-		image: '/images/hero.jpg',
+		image: '/images/ex-405-hero.jpg',
 		cardImage: '/images/card-ongoing.jpg',
 		works: [
-			{
-				title: 'Vintergata',
-				image: '/images/card-ongoing.jpg'
-			},
-			{
-				title: 'Silentium',
-				image: '/images/gallery-interior-clean.jpg'
-			}
+			{ title: 'Vintergata', image: '/images/work-1.jpg?v=2' },
+			{ title: 'Silentium', image: '/images/work-2.jpg?v=2' },
+			{ title: 'Horisont i dimma', image: '/images/work-3.jpg?v=2' },
+			{ title: 'Nattljus', image: '/images/work-4.jpg?v=2' },
+			{ title: 'Innan regnet', image: '/images/work-5.jpg?v=2' },
+			{ title: 'Låg tid', image: '/images/work-6.jpg?v=3' }
 		],
-		installationViews: ['/images/hero.jpg', '/images/gallery-interior-clean.jpg']
+		installationViews: [
+			'/images/install-a.jpg',
+			'/images/install-b.jpg',
+			'/images/install-c.jpg'
+		]
 	},
 	{
 		id: 404,

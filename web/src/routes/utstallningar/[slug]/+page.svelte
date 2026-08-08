@@ -14,8 +14,11 @@
 					{
 						label: 'Vernissage',
 						value: new Date(ex.vernissage).toLocaleString('sv-SE', {
-							dateStyle: 'long',
-							timeStyle: 'short'
+							day: 'numeric',
+							month: 'long',
+							year: 'numeric',
+							hour: '2-digit',
+							minute: '2-digit'
 						})
 					}
 				]
@@ -28,14 +31,14 @@
 	<div class="container top">
 		<a class="back" href="/utstallningar">← Till utställningar</a>
 		<div class="hero">
-			<div>
+			<div class="hero-copy">
 				<p class="label">Utställning {ex.id}</p>
 				<h1 class="serif">{ex.artist}</h1>
 				<p class="title serif">{ex.title}</p>
 				<p class="dates">{ex.datesLabel}</p>
 				<p class="intro">{ex.intro}</p>
 			</div>
-			<img src={ex.image} alt="{ex.artist} — {ex.title}" />
+			<img class="hero-img" src={ex.image} alt="{ex.artist} — {ex.title}" />
 		</div>
 	</div>
 </section>
@@ -59,14 +62,14 @@
 				<p>{para}</p>
 			{/each}
 		</div>
-		<dl>
+		<aside class="facts">
 			{#each facts as fact}
-				<div>
-					<dt>{fact.label}</dt>
-					<dd>{fact.value}</dd>
+				<div class="fact">
+					<span class="fact-label">{fact.label}</span>
+					<span class="fact-value">{fact.value}</span>
 				</div>
 			{/each}
-		</dl>
+		</aside>
 	</div>
 </section>
 
@@ -75,14 +78,16 @@
 		<div class="section-head">
 			<h2 class="serif">Works</h2>
 			{#if ex.works.length}
-				<a class="link-arrow" href="#works">Visa alla verk</a>
+				<a class="link-arrow" href={`/konstnarer/${ex.artistSlug ?? ''}`}>Visa alla verk</a>
 			{/if}
 		</div>
 		{#if ex.works.length}
-			<div class="grid">
+			<div class="works" style={`--cols: ${Math.min(ex.works.length, 6)}`}>
 				{#each ex.works as work}
 					<figure>
-						<img src={work.image} alt={work.title} />
+						<div class="work-media">
+							<img src={work.image} alt={work.title} />
+						</div>
 						<figcaption>{work.title}</figcaption>
 					</figure>
 				{/each}
@@ -93,15 +98,15 @@
 	</div>
 </section>
 
-<section id="installation" class="band band-pad">
+<section id="installation" class="band-soft band-pad install-band">
 	<div class="container">
 		<div class="section-head">
 			<h2 class="serif">Installation view</h2>
 		</div>
 		{#if ex.installationViews.length}
-			<div class="install">
-				{#each ex.installationViews as src}
-					<img {src} alt="Installation view" />
+			<div class="install" style={`--cols: ${Math.min(ex.installationViews.length, 3)}`}>
+				{#each ex.installationViews as src, i}
+					<img {src} alt="Installation view {i + 1}" />
 				{/each}
 			</div>
 		{:else}
@@ -111,18 +116,18 @@
 </section>
 
 {#if data.related.length}
-	<section class="band-soft band-pad">
+	<section class="band band-pad">
 		<div class="container">
 			<div class="section-head">
-				<h2 class="label">Related artists</h2>
+				<h2 class="label">{data.related.length === 1 ? 'Konstnär' : 'Related artists'}</h2>
 				<a class="link-arrow" href="/konstnarer">Visa alla konstnärer</a>
 			</div>
-			<div class="artists">
+			<div class="artists" class:single={data.related.length === 1}>
 				{#each data.related as a}
 					<a href={`/konstnarer/${a.slug}`}>
 						<img src={a.image} alt={a.name} />
 						<strong class="serif">{a.name}</strong>
-						<span>{a.specialty}</span>
+						<span>{a.specialty} →</span>
 					</a>
 				{/each}
 			</div>
@@ -151,7 +156,7 @@
 
 <style>
 	.top {
-		padding-block: 2rem 2.5rem;
+		padding-block: 1.35rem 1.75rem;
 	}
 
 	.back {
@@ -163,39 +168,47 @@
 
 	.hero {
 		display: grid;
-		gap: 2rem;
-		padding-top: 1.25rem;
-		align-items: center;
+		gap: 1.5rem;
+		padding-top: 0.85rem;
+		align-items: start;
+	}
+
+	.hero-copy {
+		padding-top: 0;
 	}
 
 	h1 {
-		font-size: clamp(2.2rem, 5vw, 3.4rem);
-		margin: 0.5rem 0 0.25rem;
+		font-size: clamp(2rem, 4.5vw, 3rem);
+		margin: 0.35rem 0 0.15rem;
 		font-weight: 500;
 	}
 
 	.title {
-		font-size: clamp(1.4rem, 3vw, 2rem);
-		margin: 0 0 0.75rem;
+		font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+		margin: 0 0 0.5rem;
 		font-style: italic;
 	}
 
 	.dates {
 		color: var(--text-muted);
-		font-size: 0.85rem;
+		font-size: 0.8rem;
 		letter-spacing: 0.04em;
+		margin: 0 0 0.75rem;
 	}
 
 	.intro {
 		color: var(--text-secondary);
 		max-width: 34rem;
-		line-height: 1.65;
+		line-height: 1.55;
+		margin: 0;
+		font-size: 0.95rem;
 	}
 
-	.hero img {
+	.hero-img {
 		width: 100%;
-		aspect-ratio: 4 / 3;
+		aspect-ratio: 16 / 11;
 		object-fit: cover;
+		object-position: center;
 		background: #e8e8e2;
 	}
 
@@ -225,7 +238,7 @@
 		letter-spacing: 0.06em;
 		text-transform: uppercase;
 		color: var(--text-muted);
-		padding: 1rem 0;
+		padding: 0.75rem 0;
 		white-space: nowrap;
 	}
 
@@ -244,78 +257,116 @@
 
 	.press {
 		display: grid;
-		gap: 2.5rem;
+		gap: 2rem;
+		align-items: start;
 	}
 
 	.text h2 {
-		font-size: clamp(1.6rem, 3vw, 2.2rem);
-		margin: 0 0 1.25rem;
+		font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+		margin: 0 0 0.85rem;
 		font-weight: 500;
 	}
 
 	.text p {
 		color: var(--text-secondary);
 		max-width: 40rem;
-		line-height: 1.7;
-		margin: 0 0 1rem;
+		line-height: 1.6;
+		margin: 0 0 0.75rem;
+		font-size: 0.95rem;
 	}
 
-	dl {
-		margin: 0;
+	.facts {
+		border-top: 1px solid var(--border);
 	}
 
-	dl > div {
-		padding: 0.85rem 0;
+	.fact {
+		padding: 0.45rem 0;
 		border-bottom: 1px solid var(--border);
+		display: grid;
+		gap: 0.1rem;
 	}
 
-	dt {
-		font-size: 0.65rem;
-		letter-spacing: 0.06em;
+	.fact-label {
+		font-size: 0.6rem;
+		letter-spacing: 0.08em;
 		text-transform: uppercase;
 		color: var(--text-muted);
 		font-weight: 700;
 	}
 
-	dd {
-		margin: 0.25rem 0 0;
+	.fact-value {
+		font-size: 0.9rem;
+		color: var(--text);
+		word-break: break-word;
+		line-height: 1.35;
 	}
 
-	.grid {
+	.works {
 		display: grid;
-		gap: 1rem;
-		grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+		gap: 0.85rem;
+		grid-template-columns: repeat(var(--cols, 6), minmax(0, 1fr));
 	}
 
-	.grid img,
-	.install img {
-		width: 100%;
+	.works figure {
+		margin: 0;
+		min-width: 0;
+	}
+
+	.work-media {
 		aspect-ratio: 4 / 3;
+		overflow: hidden;
+		background: #ddd;
+	}
+
+	.work-media img {
+		width: 100%;
+		height: 100%;
 		object-fit: cover;
-		background: #e8e8e2;
+		object-position: center;
+		display: block;
+		transform: scale(1.06);
+	}
+
+	.works figcaption {
+		font-size: 0.65rem;
+		margin-top: 0.3rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		font-weight: 600;
+		color: var(--text);
+	}
+
+	.install-band {
+		padding-top: 0;
 	}
 
 	.install {
 		display: grid;
-		gap: 1rem;
+		gap: 0.85rem;
+		grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
 	}
 
-	figcaption {
-		font-size: 0.75rem;
-		margin-top: 0.35rem;
-		color: var(--text-muted);
+	.install img {
+		width: 100%;
+		aspect-ratio: 16 / 10;
+		object-fit: cover;
+		background: #ddd;
 	}
 
 	.artists {
 		display: grid;
 		gap: 1.25rem;
-		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+
+	.artists.single {
+		grid-template-columns: minmax(0, 180px);
 	}
 
 	.artists img {
 		aspect-ratio: 1;
 		object-fit: cover;
-		margin-bottom: 0.55rem;
+		margin-bottom: 0.45rem;
 		background: #e8e8e2;
 	}
 
@@ -339,7 +390,7 @@
 		display: flex;
 		justify-content: space-between;
 		gap: 1rem;
-		padding-block: 2rem 3rem;
+		padding-block: 1.5rem 2.25rem;
 	}
 
 	.pager .right {
@@ -348,7 +399,7 @@
 
 	.pager strong {
 		display: block;
-		margin-top: 0.3rem;
+		margin-top: 0.25rem;
 		font-weight: 500;
 	}
 
@@ -357,10 +408,29 @@
 		margin: 0;
 	}
 
-	@media (min-width: 900px) {
-		.hero,
+	@media (max-width: 900px) {
+		.works {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.install {
+			grid-template-columns: 1fr;
+		}
+
+		.artists:not(.single) {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (min-width: 901px) {
+		.hero {
+			grid-template-columns: 0.95fr 1.15fr;
+			align-items: center;
+		}
+
 		.press {
-			grid-template-columns: 1fr 1.1fr;
+			grid-template-columns: 1.35fr 0.75fr;
+			gap: 3rem;
 		}
 	}
 </style>
