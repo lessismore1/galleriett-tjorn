@@ -77,7 +77,7 @@
 			<p class="label">{about.label}</p>
 			<h2 class="serif">{about.headline}</h2>
 			<p class="body">{about.body}</p>
-			<a class="link-arrow" href="/om">Läs mer om Galleri Ett</a>
+			<a class="link-arrow" href="/om">Läs mer om GALLERIett</a>
 		</div>
 		<img src={about.image} alt="Galleri Ett vid kusten" />
 	</div>

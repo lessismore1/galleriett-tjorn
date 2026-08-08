@@ -84,7 +84,7 @@
 <section class="band band-pad">
 	<div class="container visit-grid">
 		<div>
-			<h2 class="serif">Besök Galleri Ett</h2>
+			<h2 class="serif">Besök GALLERIett</h2>
 			<p>
 				Vi ligger i Rönnäng på Tjörn — välkommen in för utställningar, samtal och en kopp
 				kaffe.

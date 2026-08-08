@@ -51,7 +51,7 @@ export const artists = [
 			'Sara Lindqvist arbetar med måleri där landskap, ljus och minne möts i lager av färg och tystnad.',
 		bio: 'Sara Lindqvist är verksam i Göteborg och arbetar främst med olja på duk. Hennes verk rör sig mellan horisontlinjer, dimma och inre landskap. Hon har ställt ut nationellt och internationellt och finns representerad i flera privata och offentliga samlingar.',
 		website: 'https://example.com',
-		image: '/images/artists-hero.jpg',
+		image: '/images/artist-sara.jpg',
 		heroImage: '/images/hero.jpg',
 		works: [
 			{
@@ -378,9 +378,9 @@ export const news = [
 ];
 
 export const about = {
-	label: 'Om Galleri Ett',
+	label: 'Om GALLERIett',
 	headline: 'Ett galleri för samtidskonst på Tjörn',
-	body: 'Galleri Ett visar måleri, skulptur och fotografi med fokus på samtidskonst i en unik miljö vid Bohusläns kust. Vi arbetar nära konstnärer och besökare — med utställningar, samtal och möten.',
+	body: 'GALLERIett visar måleri, skulptur och fotografi med fokus på samtidskonst i en unik miljö vid Bohusläns kust. Vi arbetar nära konstnärer och besökare — med utställningar, samtal och möten.',
 	image: '/images/about-building.jpg'
 };
 
