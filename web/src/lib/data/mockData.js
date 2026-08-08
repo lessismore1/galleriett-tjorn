@@ -18,7 +18,11 @@ export const site = {
 	},
 	partners: [
 		{ name: 'Konst med Horisont', url: 'https://konstmedhorisont.se' },
-		{ name: 'Tjörns Konstförening', url: 'https://www.tjornkonst.se', short: 'TKS' }
+		{
+			name: 'TKS',
+			fullName: 'Tjörns Konst & Konsthantverk sällskap',
+			url: 'https://tjornkonst.se'
+		}
 	],
 	credit: {
 		name: 'Ronny Carlansson',
@@ -109,7 +113,7 @@ export const artists = [
 		intro: 'Erik Halvorsen skulpterar rum och tystnad i sten, brons och trä.',
 		bio: 'Halvorsen arbetar med skulptur där materialets tyngd möter arkitektonisk klarhet.',
 		website: null,
-		image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80',
+		image: '/images/artist-erik.jpg',
 		heroImage:
 			'https://images.unsplash.com/photo-1515405295570-fc052892ebd2?auto=format&fit=crop&w=1600&q=80',
 		works: [],
@@ -127,7 +131,7 @@ export const artists = [
 		intro: 'Maja Ström målar färgytor där känsla och struktur möts.',
 		bio: 'Ström arbetar med abstrakt måleri i stora format.',
 		website: null,
-		image: 'https://images.unsplash.com/photo-1534528741775-53994d69b58c?auto=format&fit=crop&w=800&q=80',
+		image: '/images/artist-maja.jpg',
 		heroImage: null,
 		works: [],
 		exhibitions: [],
@@ -144,7 +148,7 @@ export const artists = [
 		intro: 'Johan Berg fotograferar landskap och vardag i nordiskt ljus.',
 		bio: 'Berg arbetar med analog och digital fotografi.',
 		website: null,
-		image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
+		image: '/images/artist-johan.jpg',
 		heroImage: null,
 		works: [],
 		exhibitions: [],
@@ -161,7 +165,7 @@ export const artists = [
 		intro: 'Annika Vidén skapar installationer där rum, ljus och objekt samspelar.',
 		bio: 'Vidén arbetar med platsbunden konst och installation.',
 		website: null,
-		image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80',
+		image: '/images/artist-annika.jpg',
 		heroImage: null,
 		works: [],
 		exhibitions: [],
@@ -178,7 +182,7 @@ export const artists = [
 		intro: 'Per Olofsson arbetar med skulptur i trä och sten, ofta med havet som tema.',
 		bio: 'Olofsson är baserad på Tjörn och arbetar nära landskapets material.',
 		website: null,
-		image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=800&q=80',
+		image: '/images/artist-per.jpg',
 		heroImage: null,
 		works: [],
 		exhibitions: [],
@@ -195,7 +199,7 @@ export const artists = [
 		intro: 'Lisa Werner målar figurer och rum i dämpad färgskala.',
 		bio: 'Werner arbetar med figurativt måleri.',
 		website: null,
-		image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=800&q=80',
+		image: '/images/artist-lisa.jpg',
 		heroImage: null,
 		works: [],
 		exhibitions: [],
@@ -212,7 +216,7 @@ export const artists = [
 		intro: 'Tomas Åkesson skulpterar i metall och betong med arkitektonisk precision.',
 		bio: 'Åkesson arbetar med skulptur och offentlig konst.',
 		website: null,
-		image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80',
+		image: '/images/artist-tomas.jpg',
 		heroImage: null,
 		works: [],
 		exhibitions: [],
