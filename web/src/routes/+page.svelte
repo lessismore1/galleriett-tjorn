@@ -10,11 +10,25 @@
 	const ongoing = getOngoingExhibition();
 	const featuredExhibitions = exhibitions.filter((e) => e.status !== 'past').slice(0, 2);
 	const featuredNews = news[0];
+
+	function cardSrc(item: { cardImage?: string; image: string }) {
+		return item.cardImage ?? item.image;
+	}
+
+	function statusLabel(status: string) {
+		if (status === 'ongoing') return statusLabels.ongoing;
+		if (status === 'upcoming') return statusLabels.upcoming;
+		return statusLabels.past;
+	}
 </script>
 
 <section class="hero">
 	{#if ongoing}
-		<img src={ongoing.image} alt="{ongoing.artist} — {ongoing.title}" class="hero-img" />
+		<img
+			src="/images/hero.jpg"
+			alt="{ongoing.artist} — {ongoing.title}"
+			class="hero-img"
+		/>
 		<div class="container hero-copy">
 			<p class="label hero-label">Pågående utställning</p>
 			<h1 class="serif">
@@ -35,21 +49,20 @@
 	<div class="cards">
 		{#each featuredExhibitions as item}
 			<a class="card" href={`/utstallningar/${item.slug}`}>
-				<img src={item.image} alt="{item.artist} — {item.title}" />
-				<span class="tag" class:muted={item.status !== 'ongoing'}>
-					{item.status === 'ongoing'
-						? statusLabels.ongoing
-						: item.status === 'upcoming'
-							? statusLabels.upcoming
-							: statusLabels.past}
-				</span>
+				<div class="media">
+					<img src={cardSrc(item)} alt="{item.artist} — {item.title}" />
+					<span class="tag" class:muted={item.status !== 'ongoing'}>{statusLabel(item.status)}</span
+					>
+				</div>
 				<h3 class="serif">{item.artist} – {item.title}</h3>
 				<p>{item.datesLabel}</p>
 			</a>
 		{/each}
 		<a class="card" href="/nyheter">
-			<img src={featuredNews.image} alt={featuredNews.title} />
-			<span class="tag muted">{featuredNews.category}</span>
+			<div class="media">
+				<img src={featuredNews.image} alt={featuredNews.title} />
+				<span class="tag muted">{featuredNews.category}</span>
+			</div>
 			<h3 class="serif">{featuredNews.title}</h3>
 			<p>{featuredNews.dateLabel}</p>
 		</a>
@@ -76,10 +89,10 @@
 	<div class="news">
 		{#each news.slice(0, 3) as item}
 			<a class="news-item" href="/nyheter">
-				<img src={item.image} alt="" />
+				<img src={item.thumb ?? item.image} alt="" />
 				<div>
 					<p class="label">{item.category}</p>
-					<strong>{item.title}</strong>
+					<strong class="serif">{item.title}</strong>
 					<p class="muted">{item.dateLabel}</p>
 				</div>
 			</a>
@@ -90,11 +103,12 @@
 <style>
 	.hero {
 		position: relative;
-		min-height: min(78vh, 720px);
+		min-height: min(72vh, 680px);
 		display: grid;
 		align-items: end;
 		color: #fff;
-		background: #222;
+		background: #1a1a12;
+		overflow: hidden;
 	}
 
 	.hero-img {
@@ -103,13 +117,19 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		object-position: 60% center;
 	}
 
 	.hero::after {
 		content: '';
 		position: absolute;
 		inset: 0;
-		background: linear-gradient(90deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.15));
+		background: linear-gradient(
+			105deg,
+			rgba(20, 20, 16, 0.72) 0%,
+			rgba(20, 20, 16, 0.35) 42%,
+			rgba(20, 20, 16, 0.08) 100%
+		);
 	}
 
 	.hero-copy {
@@ -120,7 +140,7 @@
 	}
 
 	.hero-label {
-		color: rgba(255, 255, 255, 0.85);
+		color: rgba(255, 255, 255, 0.9);
 		border-bottom: 1px solid var(--brand);
 		display: inline-block;
 		padding-bottom: 0.35rem;
@@ -131,6 +151,7 @@
 		font-size: clamp(2.4rem, 6vw, 4rem);
 		margin: 0 0 0.75rem;
 		font-style: italic;
+		font-weight: 500;
 	}
 
 	h1 em {
@@ -139,8 +160,9 @@
 
 	.dates {
 		margin: 0 0 1.5rem;
-		letter-spacing: 0.06em;
+		letter-spacing: 0.08em;
 		font-size: 0.85rem;
+		font-weight: 500;
 	}
 
 	.section {
@@ -158,29 +180,45 @@
 	.cards {
 		display: grid;
 		gap: 1.5rem;
-		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		grid-template-columns: repeat(3, 1fr);
 	}
 
-	.card img {
+	.media {
+		position: relative;
+		margin-bottom: 0.85rem;
+		overflow: hidden;
+		background: #e8e8e2;
+	}
+
+	.media img {
 		aspect-ratio: 4 / 3;
 		object-fit: cover;
 		width: 100%;
-		margin-bottom: 0.75rem;
+		transition: transform 0.5s ease;
 	}
 
-	.card .tag {
-		margin-bottom: 0.5rem;
+	.card:hover .media img {
+		transform: scale(1.03);
+	}
+
+	.media .tag {
+		position: absolute;
+		top: 0.65rem;
+		left: 0.65rem;
+		margin: 0;
 	}
 
 	.card h3 {
-		font-size: 1.25rem;
+		font-size: 1.2rem;
 		margin: 0 0 0.35rem;
+		font-weight: 500;
 	}
 
 	.card p {
 		margin: 0;
 		font-size: 0.8rem;
 		color: var(--text-muted);
+		letter-spacing: 0.02em;
 	}
 
 	.about {
@@ -197,42 +235,47 @@
 	.about h2 {
 		font-size: clamp(1.8rem, 4vw, 2.6rem);
 		margin: 0.75rem 0 1rem;
+		font-weight: 500;
 	}
 
 	.body {
 		color: var(--text-secondary);
 		max-width: 36rem;
 		margin-bottom: 1.25rem;
+		line-height: 1.65;
 	}
 
 	.about img {
 		width: 100%;
 		aspect-ratio: 16 / 10;
 		object-fit: cover;
+		object-position: center;
 	}
 
 	.news {
 		display: grid;
-		gap: 1.25rem;
-		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 1.5rem;
+		grid-template-columns: repeat(3, 1fr);
 	}
 
 	.news-item {
 		display: grid;
-		grid-template-columns: 72px 1fr;
-		gap: 0.85rem;
+		grid-template-columns: 84px 1fr;
+		gap: 0.9rem;
 		align-items: start;
 	}
 
 	.news-item img {
-		width: 72px;
-		height: 72px;
+		width: 84px;
+		height: 84px;
 		object-fit: cover;
+		background: #e8e8e2;
 	}
 
 	.news-item strong {
 		display: block;
-		font-size: 0.95rem;
+		font-size: 1.05rem;
+		font-weight: 500;
 		margin: 0.15rem 0;
 	}
 
@@ -242,7 +285,18 @@
 		color: var(--text-muted);
 	}
 
-	@media (min-width: 900px) {
+	@media (max-width: 900px) {
+		.cards,
+		.news {
+			grid-template-columns: 1fr;
+		}
+
+		.about-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (min-width: 901px) {
 		.about-grid {
 			grid-template-columns: 1fr 1.15fr;
 		}

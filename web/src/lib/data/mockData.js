@@ -46,9 +46,8 @@ export const artists = [
 			'Sara Lindqvist arbetar med måleri där landskap, ljus och minne möts i lager av färg och tystnad.',
 		bio: 'Sara Lindqvist är verksam i Göteborg och arbetar främst med olja på duk. Hennes verk rör sig mellan horisontlinjer, dimma och inre landskap. Hon har ställt ut nationellt och internationellt och finns representerad i flera privata och offentliga samlingar.',
 		website: 'https://example.com',
-		image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80',
-		heroImage:
-			'https://images.unsplash.com/photo-1541961017774-22349e4a1262?auto=format&fit=crop&w=1600&q=80',
+		image: '/images/artists-hero.jpg',
+		heroImage: '/images/hero.jpg',
 		works: [
 			{
 				title: 'Vintergata',
@@ -239,24 +238,19 @@ export const exhibitions = [
 			'I Vintergata möter Sara Lindqvist landskapet som minne och närvaro — ett måleri där hav, ljus och tystnad får ta plats.',
 		pressRelease:
 			'Sara Lindqvist visar nya målningar i utställningen Vintergata på Galleri Ett. Verken rör sig mellan horisont och inre landskap, med ett måleri som bygger lager av färg, ljus och stillhet. Utställningen pågår 12 augusti–20 september 2026.',
-		image:
-			'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1400&q=80',
+		image: '/images/hero.jpg',
+		cardImage: '/images/card-ongoing.jpg',
 		works: [
 			{
 				title: 'Vintergata',
-				image:
-					'https://images.unsplash.com/photo-1541961017774-22349e4a1262?auto=format&fit=crop&w=600&q=80'
+				image: '/images/card-ongoing.jpg'
 			},
 			{
 				title: 'Silentium',
-				image:
-					'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=600&q=80'
+				image: '/images/gallery-interior-clean.jpg'
 			}
 		],
-		installationViews: [
-			'https://images.unsplash.com/photo-1578301978018-3005759f48f7?auto=format&fit=crop&w=1200&q=80',
-			'https://images.unsplash.com/photo-1515405295570-fc052892ebd2?auto=format&fit=crop&w=1200&q=80'
-		]
+		installationViews: ['/images/hero.jpg', '/images/gallery-interior-clean.jpg']
 	},
 	{
 		id: 404,
@@ -273,8 +267,8 @@ export const exhibitions = [
 		intro: 'Erik Halvorsen visar skulpturer som formar tystnad och rum.',
 		pressRelease:
 			'Tystnadens rum är Erik Halvorsens första separatutställning på Galleri Ett. Skulpturerna arbetar med material, tyngd och tomrum.',
-		image:
-			'https://images.unsplash.com/photo-1515405295570-fc052892ebd2?auto=format&fit=crop&w=1400&q=80',
+		image: '/images/card-upcoming.jpg',
+		cardImage: '/images/card-upcoming.jpg',
 		works: [],
 		installationViews: []
 	},
@@ -292,8 +286,8 @@ export const exhibitions = [
 		vernissage: '2026-04-12T15:00:00',
 		intro: 'En grupputställning om resa, plats och minne.',
 		pressRelease: 'Längs vägen samlar verk som speglar förflyttning och landskap.',
-		image:
-			'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1400&q=80',
+		image: '/images/card-news.jpg',
+		cardImage: '/images/card-news.jpg',
 		works: [],
 		installationViews: []
 	},
@@ -311,8 +305,8 @@ export const exhibitions = [
 		vernissage: null,
 		intro: 'Skulptur och berättelse i nordiskt ljus.',
 		pressRelease: '',
-		image:
-			'https://images.unsplash.com/photo-1561214115-f2f134cc4912?auto=format&fit=crop&w=1400&q=80',
+		image: '/images/ex-thumb-1.jpg',
+		cardImage: '/images/ex-thumb-1.jpg',
 		works: [],
 		installationViews: []
 	},
@@ -330,8 +324,8 @@ export const exhibitions = [
 		vernissage: null,
 		intro: 'En utställning om ljus, hav och horisont.',
 		pressRelease: '',
-		image:
-			'https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=1400&q=80',
+		image: '/images/ex-thumb-2.jpg',
+		cardImage: '/images/ex-thumb-2.jpg',
 		works: [],
 		installationViews: []
 	}
@@ -344,8 +338,8 @@ export const news = [
 		title: 'Recension i Dagens Nyheter',
 		date: '2026-08-03',
 		dateLabel: '3 AUGUSTI 2026',
-		image:
-			'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80',
+		image: '/images/card-news.jpg',
+		thumb: '/images/news-1.jpg',
 		excerpt: 'DN skriver om den pågående utställningen på Galleri Ett.'
 	},
 	{
@@ -354,8 +348,8 @@ export const news = [
 		title: 'Galleriet i konstmagasinet Paletten',
 		date: '2026-07-28',
 		dateLabel: '28 JULI 2026',
-		image:
-			'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=800&q=80',
+		image: '/images/news-1.jpg',
+		thumb: '/images/news-1.jpg',
 		excerpt: 'Reportage om Galleri Ett och samtidskonsten på Tjörn.'
 	},
 	{
@@ -364,8 +358,8 @@ export const news = [
 		title: 'Sommarvernissage med konstnärssamtal',
 		date: '2026-07-15',
 		dateLabel: '15 JULI 2026',
-		image:
-			'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=800&q=80',
+		image: '/images/news-2.jpg',
+		thumb: '/images/news-2.jpg',
 		excerpt: 'Vernissage och samtal med deltagande konstnärer.'
 	},
 	{
@@ -374,8 +368,8 @@ export const news = [
 		title: 'Ny konstnär till hösten 2026',
 		date: '2026-07-08',
 		dateLabel: '8 JULI 2026',
-		image:
-			'https://images.unsplash.com/photo-1515405295570-fc052892ebd2?auto=format&fit=crop&w=800&q=80',
+		image: '/images/news-3.jpg',
+		thumb: '/images/news-3.jpg',
 		excerpt: 'Galleri Ett välkomnar en ny konstnär till höstens program.'
 	}
 ];
@@ -384,8 +378,7 @@ export const about = {
 	label: 'Om Galleri Ett',
 	headline: 'Ett galleri för samtidskonst på Tjörn',
 	body: 'Galleri Ett visar måleri, skulptur och fotografi med fokus på samtidskonst i en unik miljö vid Bohusläns kust. Vi arbetar nära konstnärer och besökare — med utställningar, samtal och möten.',
-	image:
-		'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1400&q=80'
+	image: '/images/about-building.jpg'
 };
 
 export const statusLabels = {
