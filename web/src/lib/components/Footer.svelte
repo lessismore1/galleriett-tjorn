@@ -102,14 +102,14 @@
 <style>
 	.footer {
 		background: var(--bg-soft);
-		margin-top: 4rem;
+		margin-top: 2.5rem;
 		border-top: 1px solid var(--border);
 		padding-bottom: 2.5rem;
 	}
 
 	.grid {
 		display: grid;
-		gap: 2.5rem;
+		gap: 1.15rem;
 		padding-block: 1.25rem 1rem;
 		grid-template-columns: 1fr;
 	}
@@ -117,13 +117,13 @@
 	.col {
 		display: flex;
 		flex-direction: column;
-		gap: 1.75rem;
+		gap: 1.15rem;
 	}
 
 	.block {
 		display: flex;
 		flex-direction: column;
-		gap: 0.45rem;
+		gap: 0.4rem;
 	}
 
 	.label {
@@ -193,6 +193,10 @@
 			gap: 2rem;
 		}
 
+		.col {
+			gap: 1.15rem;
+		}
+
 		.right {
 			align-items: flex-end;
 			text-align: right;
@@ -200,6 +204,13 @@
 
 		.right .social {
 			justify-content: flex-end;
+		}
+	}
+
+	@media (max-width: 799px) {
+		.footer {
+			margin-top: 2rem;
+			padding-bottom: 2rem;
 		}
 	}
 </style>

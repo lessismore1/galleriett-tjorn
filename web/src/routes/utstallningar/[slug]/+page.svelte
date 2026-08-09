@@ -290,6 +290,12 @@
 		backdrop-filter: blur(8px);
 	}
 
+	#press-release,
+	#works,
+	#installation {
+		scroll-margin-top: 4.25rem;
+	}
+
 	.subnav.stuck {
 		position: fixed;
 		top: 0;
@@ -301,10 +307,10 @@
 
 	.subnav-inner {
 		display: flex;
-		justify-content: space-between;
 		align-items: center;
-		gap: 1rem;
+		gap: 0.75rem;
 		min-height: 3.25rem;
+		min-width: 0;
 	}
 
 	.subnav-home {
@@ -330,7 +336,7 @@
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		max-width: min(42vw, 22rem);
+		max-width: 9.5rem;
 	}
 
 	.ex-name .sep {
@@ -341,9 +347,24 @@
 
 	.subnav-links {
 		display: flex;
-		gap: 1.35rem;
+		gap: 1.1rem;
+		flex: 1;
+		min-width: 0;
 		overflow-x: auto;
-		margin-left: auto;
+		overscroll-behavior-x: contain;
+		scroll-snap-type: x proximity;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+		mask-image: linear-gradient(to right, #000 0%, #000 calc(100% - 1.5rem), transparent 100%);
+	}
+
+	.subnav-links::-webkit-scrollbar {
+		display: none;
+	}
+
+	.subnav-links a {
+		scroll-snap-align: start;
+		flex-shrink: 0;
 	}
 
 	.subnav a,
@@ -365,7 +386,58 @@
 
 	.dela {
 		flex-shrink: 0;
-		margin-left: 0.5rem;
+		margin-left: 0.25rem;
+	}
+
+	@media (max-width: 899px) {
+		.ex-name {
+			display: none;
+		}
+
+		.subnav-links {
+			mask-image: linear-gradient(to right, #000 0%, #000 calc(100% - 1.25rem), transparent 100%);
+		}
+
+		.subnav:not(.stuck) .subnav-links {
+			mask-image: none;
+		}
+
+		.dela {
+			display: none;
+		}
+
+		.pager {
+			grid-template-columns: 1fr;
+			gap: 1.35rem;
+		}
+
+		.pager .right,
+		.pager .all {
+			text-align: left;
+			justify-self: stretch;
+		}
+
+		.pager strong {
+			font-size: 1.05rem;
+			line-height: 1.3;
+		}
+
+		.pager > span:empty {
+			display: none;
+		}
+	}
+
+	@media (min-width: 900px) {
+		.ex-name {
+			max-width: min(42vw, 22rem);
+		}
+
+		.subnav-links {
+			flex: 0 1 auto;
+			margin-left: auto;
+			mask-image: none;
+			overflow-x: visible;
+		}
 	}
 
 	.press {
@@ -502,7 +574,7 @@
 		grid-template-columns: 1fr auto 1fr;
 		gap: 1rem;
 		align-items: start;
-		padding-block: 1.5rem 2.25rem;
+		padding-block: 1.5rem;
 	}
 
 	.pager .right {

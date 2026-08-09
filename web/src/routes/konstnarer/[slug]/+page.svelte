@@ -291,6 +291,14 @@
 		backdrop-filter: blur(8px);
 	}
 
+	#works,
+	#biography,
+	#exhibitions,
+	#news,
+	#press {
+		scroll-margin-top: 4.25rem;
+	}
+
 	.subnav.stuck {
 		position: fixed;
 		top: 0;
@@ -302,10 +310,10 @@
 
 	.subnav-inner {
 		display: flex;
-		justify-content: space-between;
 		align-items: center;
-		gap: 1rem;
+		gap: 0.75rem;
 		min-height: 3.25rem;
+		min-width: 0;
 	}
 
 	.subnav-home {
@@ -326,15 +334,34 @@
 		font-weight: 500;
 		letter-spacing: 0.04em;
 		text-transform: uppercase;
-		flex-shrink: 0;
+		flex-shrink: 1;
+		min-width: 0;
 		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		max-width: 9.5rem;
 	}
 
 	.subnav-links {
 		display: flex;
-		gap: 1.25rem;
+		gap: 1.1rem;
+		flex: 1;
+		min-width: 0;
 		overflow-x: auto;
-		margin-left: auto;
+		overscroll-behavior-x: contain;
+		scroll-snap-type: x proximity;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+		mask-image: linear-gradient(to right, #000 0%, #000 calc(100% - 1.5rem), transparent 100%);
+	}
+
+	.subnav-links::-webkit-scrollbar {
+		display: none;
+	}
+
+	.subnav-links a {
+		scroll-snap-align: start;
+		flex-shrink: 0;
 	}
 
 	.subnav a {
@@ -350,6 +377,36 @@
 	.subnav a:hover {
 		color: var(--text);
 		box-shadow: inset 0 -2px 0 var(--brand);
+	}
+
+	@media (max-width: 899px) {
+		.artist-name {
+			display: none;
+		}
+
+		.subnav-links {
+			mask-image: linear-gradient(to right, #000 0%, #000 calc(100% - 1.25rem), transparent 100%);
+		}
+
+		.subnav:not(.stuck) .subnav-links {
+			mask-image: none;
+		}
+	}
+
+	@media (min-width: 900px) {
+		.artist-name {
+			flex-shrink: 0;
+			max-width: none;
+			overflow: visible;
+			text-overflow: unset;
+		}
+
+		.subnav-links {
+			flex: 0 1 auto;
+			margin-left: auto;
+			mask-image: none;
+			overflow-x: visible;
+		}
 	}
 
 	.works {
