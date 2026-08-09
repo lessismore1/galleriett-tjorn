@@ -192,10 +192,10 @@ export const artists = [
 		exhibitions: [
 			{
 				year: 2026,
-				id: 104,
+				id: 106,
 				title: 'Tystnadens rum',
 				venue: 'GALLERIett, Tjörn',
-				slug: '104-erik-halvorsen-tystnadens-rum'
+				slug: '106-erik-halvorsen-tystnadens-rum'
 			},
 			{
 				year: 2025,
@@ -514,45 +514,129 @@ export const artists = [
 			}
 		],
 		press: []
+	},
+	{
+		id: '09',
+		slug: '09-robert-oldergaarden',
+		name: 'Robert Oldergaarden',
+		specialty: 'Glas',
+		born: '1967, Öland, Sverige',
+		education: [
+			'Keramikstudier, Capellagården, 1987–1989',
+			'Riksglasskolan i Orrefors, 1989–1997',
+			'Lärarhögskolan i Malmö – Lunds universitet, 1997–1999'
+		],
+		lives: 'Triberga, Öland, Sverige',
+		representedIn: ['Sverige', 'Europa'],
+		intro:
+			'Robert Oldergaarden är glaskonstnär och glasmästare med över 30 års erfarenhet. Han arbetar i varmt och kallt glas — ofta i den avancerade Graaltekniken — med inspiration från Ölands natur, fågelliv och historia.',
+		bio: 'Robert Oldergaarden (född 5 februari 1967) är en svensk glaskonstnär och glasmästare verksam på Öland. Han växte upp på ön, började tidigt med keramik och övergick vid 20 års ålder till glaskonst. Under sent 1980-tal kom han som lärling till Orrefors Kosta Boda och lärde sig traditionella tekniker av dåtidens främsta mästare. Därefter arbetade han närmare tio år som lärare på Riksglasskolan i Orrefors, där han utbildade en ny generation glasblåsare och formgivare.\n\nSedan 2010-talet driver han Robert Oldergaarden Glashytta på familjegården i Triberga på sydöstra Öland — en gård som varit i släktens ägo sedan 1700-talet. Här ryms hytta, slipverkstad, ateljé och butik; besökare kan ofta se hantverket på plats.\n\nOldergaarden arbetar med både varmt och kallt glas. Hans signum är unikt konstglas i Graal- och Arielteknik. Inspirationen hämtas från Ölands natur, fågellivet och sagornas värld, liksom lokal historia och vikingatiden — bland annat en stor silverskatt som hans förfäder en gång plöjde upp på ägorna. Han ställer ut i Sverige och internationellt, bland annat i Venedig, Belgien, Nederländerna och på konstmässan i Louvren i Paris.',
+		website: 'https://oldergaard.se/',
+		image: '/images/artist-robert.jpg',
+		heroImage: null,
+		works: [
+			{
+				title: 'Glasverk I',
+				year: 2026,
+				medium: 'Glas, Graal',
+				dimensions: '',
+				image: '/images/work-robert-a.jpg'
+			},
+			{
+				title: 'Glasverk II',
+				year: 2026,
+				medium: 'Glas',
+				dimensions: '',
+				image: '/images/work-robert-b.jpg'
+			},
+			{
+				title: 'Glasverk III',
+				year: 2026,
+				medium: 'Glas, Ariel',
+				dimensions: '',
+				image: '/images/work-robert-c.jpg'
+			},
+			{
+				title: 'Glasverk IV',
+				year: 2026,
+				medium: 'Glas',
+				dimensions: '',
+				image: '/images/work-robert-d.jpg'
+			},
+			{
+				title: 'Glas på disk',
+				year: 2026,
+				medium: 'Glas',
+				dimensions: '',
+				image: '/images/work-robert-e.jpg'
+			}
+		],
+		exhibitions: [
+			{
+				year: 2026,
+				id: 104,
+				title: 'Ljus Färg Form',
+				venue: 'GALLERIett, Tjörn',
+				slug: '104-ljus-farg-form'
+			}
+		],
+		press: []
+	},
+	{
+		id: '10',
+		slug: '10-kattis-palmnas',
+		name: 'Kattis Palmnäs',
+		specialty: 'Måleri',
+		born: '1971, Sverige',
+		education: [],
+		lives: 'Floda, Lerums kommun, Sverige',
+		representedIn: ['Sverige', 'Torrevieja', 'Marbella'],
+		intro:
+			'Kattis Palmnäs är konstnär och mönsterformgivare med ett färgstarkt, energifyllt uttryck. Genom måleri, mönster och projekt vill hon sprida glädje, reflektion och mod att stå upp för vem man är.',
+		bio: 'Katja Katarina ”Kattis” Palmnäs, född 22 januari 1971, är en svensk konstnär, mönsterformgivare och entreprenör baserad i Floda, Lerums kommun. Hon driver sin kreativa verksamhet genom bolaget Tim Tiger K Palmnäs Art AB.\n\nPalmnäs beskriver sig som en född kreatör. Redan som barn sökte hon leran i sandlådan för att skulptera — driven av fart, skaparglädje och ett intuitivt, snabbt arbetssätt. Hennes stil är mångfacetterad: hon experimenterar med material, texturer och tekniker, och rör sig mellan färgstark popkonst, abstrakta ansikten, djurmotiv och natur. Målet är att fånga starka känslor och inspirera betraktaren att våga släppa rädslor.\n\nHon har ställt ut bland annat på Nääs Fabriker, Hägernäs Strands Galleri och i Stockholm, och öppnade hösten 2024 ett eget galleri vid Bagges Torg i Lerum. Verken finns även representerade i Torrevieja och Marbella. Utöver originalmålningar och konsttryck designar hon mönster åt aktörer som Nordiska Designkompaniet.\n\nEtt centralt inslag är engagemanget för medmänniskor: hon har deltagit i flera välgörenhetsgalor där målningar auktionerats ut till förmån för hjälporganisationer.',
+		website: 'https://kpalmnasart.se/',
+		image: '/images/artist-kattis.jpg',
+		heroImage: null,
+		works: [
+			{
+				title: 'Porträtt med jordgubbar',
+				year: 2026,
+				medium: 'Akryl på duk',
+				dimensions: '',
+				image: '/images/work-kattis-a.jpg'
+			},
+			{
+				title: 'Verk II',
+				year: 2025,
+				medium: 'Akryl på duk',
+				dimensions: '',
+				image: '/images/work-kattis-b.jpg'
+			},
+			{
+				title: 'Verk III',
+				year: 2025,
+				medium: 'Akryl på duk',
+				dimensions: '',
+				image: '/images/work-kattis-c.jpg'
+			}
+		],
+		exhibitions: [
+			{
+				year: 2026,
+				id: 104,
+				title: 'Ljus Färg Form',
+				venue: 'GALLERIett, Tjörn',
+				slug: '104-ljus-farg-form'
+			}
+		],
+		press: []
 	}
 ];
 
 export const exhibitions = [
 	{
-		id: 105,
-		slug: '105-sara-lindqvist-vintergata',
-		artistSlug: '01-sara-lindqvist',
-		artist: 'Sara Lindqvist',
-		title: 'Vintergata',
-		status: 'ongoing',
-		start: '2026-08-12',
-		end: '2026-09-20',
-		datesLabel: '12 AUG – 20 SEP 2026',
-		location: 'GALLERIett, Tjörn',
-		vernissage: '2026-08-12T18:00:00',
-		intro:
-			'I Vintergata möter Sara Lindqvist landskapet som minne och närvaro — ett måleri där hav, ljus och tystnad får ta plats.',
-		pressRelease:
-			'Sara Lindqvist visar nya målningar i utställningen Vintergata på GALLERIett. Verken rör sig mellan horisont och inre landskap, med ett måleri som bygger lager av färg, ljus och stillhet. Utställningen pågår 12 augusti–20 september 2026.',
-		image: '/images/ex-405-hero.jpg',
-		cardImage: '/images/card-ongoing.jpg',
-		works: [
-			{ title: 'Vintergata', image: '/images/work-1.jpg?v=2' },
-			{ title: 'Silentium', image: '/images/work-2.jpg?v=2' },
-			{ title: 'Horisont i dimma', image: '/images/work-3.jpg?v=2' },
-			{ title: 'Nattljus', image: '/images/work-4.jpg?v=2' },
-			{ title: 'Innan regnet', image: '/images/work-5.jpg?v=2' },
-			{ title: 'Låg tid', image: '/images/work-6.jpg?v=3' }
-		],
-		installationViews: [
-			'/images/install-a.jpg?v=3',
-			'/images/install-b.jpg?v=3',
-			'/images/install-c.jpg?v=3'
-		]
-	},
-	{
-		id: 104,
-		slug: '104-erik-halvorsen-tystnadens-rum',
+		id: 106,
+		slug: '106-erik-halvorsen-tystnadens-rum',
 		artistSlug: '02-erik-halvorsen',
 		artist: 'Erik Halvorsen',
 		title: 'Tystnadens rum',
@@ -579,6 +663,73 @@ export const exhibitions = [
 			'/images/install-104-a.jpg',
 			'/images/install-104-b.jpg',
 			'/images/install-104-c.jpg'
+		]
+	},
+	{
+		id: 105,
+		slug: '105-sara-lindqvist-vintergata',
+		artistSlug: '01-sara-lindqvist',
+		artist: 'Sara Lindqvist',
+		title: 'Vintergata',
+		status: 'upcoming',
+		start: '2026-08-12',
+		end: '2026-09-20',
+		datesLabel: '12 AUG – 20 SEP 2026',
+		location: 'GALLERIett, Tjörn',
+		vernissage: '2026-08-12T18:00:00',
+		intro:
+			'I Vintergata möter Sara Lindqvist landskapet som minne och närvaro — ett måleri där hav, ljus och tystnad får ta plats.',
+		pressRelease:
+			'Sara Lindqvist visar nya målningar i utställningen Vintergata på GALLERIett. Verken rör sig mellan horisont och inre landskap, med ett måleri som bygger lager av färg, ljus och stillhet. Utställningen pågår 12 augusti–20 september 2026.',
+		image: '/images/work-1.jpg',
+		cardImage: '/images/work-1.jpg',
+		works: [
+			{ title: 'Vintergata', image: '/images/work-1.jpg' },
+			{ title: 'Silentium', image: '/images/work-2.jpg' },
+			{ title: 'Horisont i dimma', image: '/images/work-3.jpg' },
+			{ title: 'Nattljus', image: '/images/work-4.jpg' },
+			{ title: 'Innan regnet', image: '/images/work-5.jpg' },
+			{ title: 'Låg tid', image: '/images/work-6.jpg' }
+		],
+		installationViews: [
+			'/images/install-a.jpg?v=3',
+			'/images/install-b.jpg?v=3',
+			'/images/install-c.jpg?v=3'
+		]
+	},
+	{
+		id: 104,
+		slug: '104-ljus-farg-form',
+		artistSlug: '10-kattis-palmnas',
+		artistSlugs: ['10-kattis-palmnas', '09-robert-oldergaarden'],
+		artist: 'Kattis Palmnäs & Robert Oldergaarden',
+		title: 'Ljus Färg Form',
+		status: 'ongoing',
+		start: '2026-08-01',
+		end: '2026-08-09',
+		datesLabel: '1 – 9 AUG 2026',
+		location: 'GALLERIett, Tjörn',
+		vernissage: '2026-08-01T13:00:00',
+		intro:
+			'Två uttryck — en utställning. Kattis Palmnäs färgsprakande måleri möter Robert Oldergaarden unika glaskonst, där glasets ljus möter dukens färgexplosion.',
+		pressRelease:
+			'Välkommen till utställningen Ljus Färg Form med Kattis Palmnäs och Robert Oldergaarden, 1–9 augusti 2026.\n\nRobert Oldergaarden är mästarutbildad glaskonstnär med rötter från Orrefors/Kosta Boda och tidigare lärare vid Riksglasskolan. Idag verkar han i sin egen hytta på Öland och skapar magiska, stämningsfulla och lysande glasverk.\n\nKattis Palmnäs (K. Palmnäs ART) är känd för storskaliga, färgsprakande akrylmålningar och uttrycksfulla porträtt. Hennes konst sprider energi och har nått bland annat kungliga samlingar hos Prins Albert av Monaco.\n\nTillsammans skapar deras verk en unik helhet där glasets ljus möter dukens färg. Vernissage 1 augusti kl. 13. Öppet alla dagar kl. 13–18. Fri entré.',
+		image: '/images/ex-104-ljus-farg-form.jpg',
+		cardImage: '/images/ex-104-ljus-farg-form.jpg',
+		works: [
+			{ title: 'Porträtt med jordgubbar — Kattis Palmnäs', image: '/images/work-kattis-a.jpg' },
+			{ title: 'Verk II — Kattis Palmnäs', image: '/images/work-kattis-b.jpg' },
+			{ title: 'Verk III — Kattis Palmnäs', image: '/images/work-kattis-c.jpg' },
+			{ title: 'Glasverk I — Robert Oldergaarden', image: '/images/work-robert-a.jpg' },
+			{ title: 'Glasverk II — Robert Oldergaarden', image: '/images/work-robert-b.jpg' },
+			{ title: 'Glasverk III — Robert Oldergaarden', image: '/images/work-robert-c.jpg' },
+			{ title: 'Glasverk IV — Robert Oldergaarden', image: '/images/work-robert-d.jpg' },
+			{ title: 'Glas på disk — Robert Oldergaarden', image: '/images/work-robert-e.jpg' }
+		],
+		installationViews: [
+			'/images/install-104-ljus-a.jpg',
+			'/images/install-104-ljus-b.jpg',
+			'/images/install-104-ljus-c.jpg'
 		]
 	},
 	{
@@ -765,7 +916,9 @@ export function getOngoingExhibitions() {
 }
 
 export function getUpcomingExhibitions() {
-	return sortByIdDesc(exhibitions.filter((e) => e.status === 'upcoming'));
+	return [...exhibitions.filter((e) => e.status === 'upcoming')].sort((a, b) =>
+		String(a.start).localeCompare(String(b.start))
+	);
 }
 
 /** Arkivår = år före innevarande kalenderår */

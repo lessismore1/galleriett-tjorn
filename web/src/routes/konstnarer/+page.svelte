@@ -4,7 +4,7 @@
 	let filter = $state('Alla konstnärer');
 	let query = $state('');
 
-	const filters = ['Alla konstnärer', 'Måleri', 'Skulptur', 'Fotografi', 'Installation'];
+	const filters = ['Alla konstnärer', 'Måleri', 'Skulptur', 'Glas', 'Fotografi', 'Installation'];
 
 	const filtered = $derived(
 		artists

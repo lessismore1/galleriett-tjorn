@@ -1,16 +1,17 @@
 <script lang="ts">
 	import {
 		about,
-		getOngoingExhibition,
+		getOngoingExhibitions,
+		getUpcomingExhibitions,
 		news,
-		exhibitions,
 		statusLabels,
 		getRotatedSponsors
 	} from '$lib/data/mockData.js';
 	import SponsorsCarousel from '$lib/components/SponsorsCarousel.svelte';
 
-	const ongoing = getOngoingExhibition();
-	const featuredExhibitions = exhibitions.filter((e) => e.status !== 'past').slice(0, 2);
+	const ongoingList = getOngoingExhibitions();
+	const ongoing = ongoingList[0];
+	const featuredExhibitions = [...ongoingList, ...getUpcomingExhibitions()].slice(0, 2);
 	const featuredNews = news[0];
 	const homeSponsors = getRotatedSponsors();
 
@@ -28,7 +29,7 @@
 <section class="hero">
 	{#if ongoing}
 		<img
-			src="/images/hero.jpg"
+			src={ongoing.image}
 			alt="{ongoing.artist} — {ongoing.title}"
 			class="hero-img"
 		/>
