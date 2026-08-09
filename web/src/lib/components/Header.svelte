@@ -2,25 +2,68 @@
 	import { page } from '$app/state';
 	import { nav, site } from '$lib/data/mockData.js';
 
+	let open = $state(false);
+
 	function isActive(href: string) {
 		return page.url.pathname === href || page.url.pathname.startsWith(href + '/');
 	}
+
+	function close() {
+		open = false;
+	}
+
+	function toggle() {
+		open = !open;
+	}
+
+	$effect(() => {
+		// Stäng menyn vid navigation
+		page.url.pathname;
+		open = false;
+	});
+
+	$effect(() => {
+		if (typeof document === 'undefined') return;
+		document.body.classList.toggle('menu-open', open);
+		return () => document.body.classList.remove('menu-open');
+	});
 </script>
+
+<svelte:window
+	onkeydown={(e) => {
+		if (e.key === 'Escape') close();
+	}}
+/>
 
 <header class="header">
 	<div class="container bar">
-		<a href="/" class="logo" aria-label={site.name}>
+		<a href="/" class="logo" aria-label={site.name} onclick={close}>
 			<img src="/images/logo.webp" alt={site.name} width="48" height="48" />
 		</a>
 
-		<nav class="nav" aria-label="Huvudmeny">
+		<button
+			class="toggle"
+			type="button"
+			aria-label={open ? 'Stäng meny' : 'Öppna meny'}
+			aria-expanded={open}
+			aria-controls="main-nav"
+			onclick={toggle}
+		>
+			<span class="bars" class:open aria-hidden="true"></span>
+		</button>
+
+		<nav id="main-nav" class="nav" class:open aria-label="Huvudmeny">
 			{#each nav as item}
-				<a href={item.href} class:active={isActive(item.href)}>{item.label}</a>
+				<a href={item.href} class:active={isActive(item.href)} onclick={close}>{item.label}</a>
 			{/each}
-			<a href="?lang=en" class="lang" aria-label="English">EN</a>
+			<a href="?lang=en" class="lang" aria-label="English" onclick={close}>EN</a>
 		</nav>
 	</div>
 </header>
+
+{#if open}
+	<button class="backdrop" type="button" aria-label="Stäng meny" onclick={close}></button>
+{/if}
 
 <style>
 	.header {
@@ -60,6 +103,61 @@
 		object-fit: contain;
 	}
 
+	.toggle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.75rem;
+		height: 2.75rem;
+		margin: -0.35rem -0.35rem -0.35rem 0;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		cursor: pointer;
+		color: var(--text);
+		z-index: 52;
+	}
+
+	.bars {
+		position: relative;
+		display: block;
+		width: 1.35rem;
+		height: 2px;
+		background: currentColor;
+		transition: background 0.2s ease;
+	}
+
+	.bars::before,
+	.bars::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		width: 100%;
+		height: 2px;
+		background: currentColor;
+		transition: transform 0.2s ease;
+	}
+
+	.bars::before {
+		top: -6px;
+	}
+
+	.bars::after {
+		top: 6px;
+	}
+
+	.bars.open {
+		background: transparent;
+	}
+
+	.bars.open::before {
+		transform: translateY(6px) rotate(45deg);
+	}
+
+	.bars.open::after {
+		transform: translateY(-6px) rotate(-45deg);
+	}
+
 	.nav {
 		display: none;
 		gap: 1.35rem;
@@ -85,9 +183,63 @@
 		margin-left: 0.5rem;
 	}
 
+	.backdrop {
+		position: fixed;
+		inset: 0;
+		z-index: 40;
+		border: 0;
+		padding: 0;
+		background: rgba(26, 26, 18, 0.35);
+		cursor: pointer;
+	}
+
+	@media (max-width: 899px) {
+		.nav.open {
+			display: flex;
+			position: absolute;
+			top: 100%;
+			left: 0;
+			right: 0;
+			flex-direction: column;
+			align-items: stretch;
+			gap: 0;
+			padding: 0.35rem 0 0.5rem;
+			background: rgba(255, 255, 255, 0.98);
+			border-bottom: 1px solid var(--border);
+			box-shadow: 0 12px 24px rgba(26, 26, 18, 0.08);
+			z-index: 51;
+		}
+
+		.nav.open a {
+			padding: 0.85rem var(--pad);
+			border-bottom: 1px solid var(--border);
+		}
+
+		.nav.open a:last-child {
+			border-bottom: 0;
+		}
+
+		.nav.open .lang {
+			margin-left: 0;
+		}
+
+		.nav.open a.active {
+			box-shadow: inset 3px 0 0 var(--brand);
+			padding-bottom: 0.85rem;
+		}
+	}
+
 	@media (min-width: 900px) {
+		.toggle {
+			display: none;
+		}
+
 		.nav {
 			display: flex;
+		}
+
+		.backdrop {
+			display: none;
 		}
 	}
 </style>

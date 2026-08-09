@@ -43,6 +43,10 @@ body {
 	padding-left: var(--brand-edge);
 }
 
+body.menu-open {
+	overflow: hidden;
+}
+
 /* Familjevarumärke: vänster signalkant (lime = GALLERIett) */
 body::before {
 	content: '';
