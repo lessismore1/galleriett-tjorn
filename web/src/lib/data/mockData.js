@@ -426,8 +426,8 @@ export const exhibitions = [
 		intro: 'En grupputställning om resa, plats och minne.',
 		pressRelease:
 			'GALLERIett presenterar Längs vägen / Along the Road, en grupputställning med Johan Berg, Annika Vidén och Tomas Åkesson.\n\nUtställningen tar avstamp i förflyttning — vägen som fysisk sträcka och som inre rörelse. Verken rör sig mellan kustväg, tillfälliga rum och markörer i landskapet.\n\nJohan Berg bidrar med fotografi i nordiskt ljus. Annika Vidén bygger installationer där passage och ljus styr blicken. Tomas Åkesson visar skulptur i stål och betong med arkitektonisk skärpa.\n\nVernissage 12 april 2026 kl. 15. Utställningen pågår till 25 maj 2026.',
-		image: '/images/card-news.jpg',
-		cardImage: '/images/card-news.jpg',
+		image: '/images/ex-103-hero.jpg',
+		cardImage: '/images/ex-103-hero.jpg',
 		works: [
 			{ title: 'Väg 160 — Johan Berg', image: '/images/work-1-clean.jpg' },
 			{ title: 'Morgon vid kajen — Johan Berg', image: '/images/work-2-clean.jpg' },
