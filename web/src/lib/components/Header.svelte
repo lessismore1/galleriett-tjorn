@@ -224,7 +224,10 @@
 		}
 
 		.nav.open a.active {
-			box-shadow: inset 3px 0 0 var(--brand);
+			color: var(--text);
+			font-weight: 700;
+			background: var(--bg-soft);
+			box-shadow: none;
 			padding-bottom: 0.85rem;
 		}
 	}
