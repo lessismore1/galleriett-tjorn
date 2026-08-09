@@ -1,9 +1,16 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { site } from '$lib/data/mockData.js';
+	import Seo from '$lib/components/Seo.svelte';
 
 	let { data } = $props();
 	const ex = $derived(data.exhibition);
+
+	const pageTitle = $derived(`${ex.artist} | ${ex.title} · GALLERIett`);
+	const pageDescription = $derived(
+		ex.intro?.trim() ||
+			`${ex.artist} — ${ex.title}. ${ex.datesLabel}. Utställning på GALLERIett, Tjörn.`
+	);
 
 	const facts = $derived([
 		{ label: 'Konstnär', value: ex.artist },
@@ -55,6 +62,8 @@
 		};
 	});
 </script>
+
+<Seo title={pageTitle} description={pageDescription} image={ex.image} type="article" />
 
 <section class="band-soft">
 	<div class="container top">

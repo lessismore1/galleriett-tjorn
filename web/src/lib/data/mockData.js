@@ -706,6 +706,50 @@ export const statusLabels = {
 	past: 'Arkiv'
 };
 
+/** Kalenderår för utställning (utifrån start) */
+/** @param {{ start: string }} ex */
+export function exhibitionYear(ex) {
+	return Number(String(ex.start).slice(0, 4));
+}
+
+export function getCurrentExhibitionYear() {
+	return new Date().getFullYear();
+}
+
+/** @param {typeof exhibitions[number][]} list */
+function sortByIdDesc(list) {
+	return [...list].sort((a, b) => b.id - a.id);
+}
+
+/** Årets utställningar (kalenderår), fallande */
+export function getYearExhibitions(year = getCurrentExhibitionYear()) {
+	return sortByIdDesc(exhibitions.filter((e) => exhibitionYear(e) === year));
+}
+
+export function getOngoingExhibitions() {
+	return sortByIdDesc(exhibitions.filter((e) => e.status === 'ongoing'));
+}
+
+export function getUpcomingExhibitions() {
+	return sortByIdDesc(exhibitions.filter((e) => e.status === 'upcoming'));
+}
+
+/** Arkivår = år före innevarande kalenderår */
+export function getArchiveYears() {
+	const current = getCurrentExhibitionYear();
+	const years = [
+		...new Set(exhibitions.map(exhibitionYear).filter((y) => y < current))
+	];
+	return years.sort((a, b) => b - a);
+}
+
+/** @param {number} year */
+export function getArchiveExhibitions(year) {
+	const current = getCurrentExhibitionYear();
+	if (year >= current) return [];
+	return getYearExhibitions(year);
+}
+
 /** @param {string} slug */
 export function getArtist(slug) {
 	return artists.find((a) => a.slug === slug);

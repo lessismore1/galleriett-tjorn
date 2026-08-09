@@ -13,12 +13,14 @@ export function load({ params }) {
 			: [];
 	const related = relatedSlugs
 		.map((slug) => artists.find((a) => a.slug === slug))
-		.filter(Boolean);
+		.filter((a) => Boolean(a));
+	/** @type {NonNullable<(typeof artists)[number]>[]} */
+	const relatedArtists = /** @type {any} */ (related);
 	const index = exhibitions.findIndex((e) => e.slug === params.slug);
 	const prev = exhibitions[index + 1] ?? null;
 	const next = exhibitions[index - 1] ?? null;
 
-	return { exhibition, related, prev, next };
+	return { exhibition, related: relatedArtists, prev, next };
 }
 
 /** @type {import('./$types').EntryGenerator} */
