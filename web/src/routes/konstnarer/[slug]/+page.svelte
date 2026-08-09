@@ -75,7 +75,7 @@
 <section id="works" class="band band-pad">
 	<div class="container">
 		<div class="section-head">
-			<h2 class="serif">Verk</h2>
+			<h2 class="serif section-title">Verk</h2>
 			{#if artist.works.length}
 				<a class="link-arrow" href="#works">Visa alla verk</a>
 			{/if}
@@ -99,7 +99,9 @@
 <section id="biography" class="band-soft band-pad">
 	<div class="container bio">
 		<div>
-			<h2 class="serif">Biografi</h2>
+			<div class="section-head">
+				<h2 class="serif section-title">Biografi</h2>
+			</div>
 			<p>{artist.bio}</p>
 			{#if artist.website}
 				<a class="link-arrow" href={artist.website} target="_blank" rel="noreferrer">Hemsida</a>
@@ -131,7 +133,7 @@
 <section id="exhibitions" class="band band-pad">
 	<div class="container">
 		<div class="section-head">
-			<h2 class="serif">Utställningar</h2>
+			<h2 class="serif section-title">Utställningar</h2>
 			<a class="link-arrow" href="/utstallningar">Visa alla</a>
 		</div>
 		<ul class="list">
@@ -151,7 +153,7 @@
 <section id="news" class="band-soft band-pad">
 	<div class="container">
 		<div class="section-head">
-			<h2 class="serif">Nyheter</h2>
+			<h2 class="serif section-title">Nyheter</h2>
 			<a class="link-arrow" href="/nyheter">Visa alla</a>
 		</div>
 		<div class="news">
@@ -172,7 +174,7 @@
 <section id="press" class="band band-pad">
 	<div class="container">
 		<div class="section-head">
-			<h2 class="serif">Media</h2>
+			<h2 class="serif section-title">Media</h2>
 		</div>
 		{#if artist.press.length}
 			<div class="press">
@@ -198,7 +200,7 @@
 					<a href={`/konstnarer/${a.slug}`}>
 						<img src={a.image} alt={a.name} />
 						<strong class="serif">{a.name}</strong>
-						<span>{a.specialty}</span>
+						<span class="label">{a.specialty}</span>
 					</a>
 				{/each}
 			</div>
@@ -360,16 +362,17 @@
 		gap: 2rem;
 	}
 
-	.bio h2 {
-		font-size: clamp(1.6rem, 3vw, 2.2rem);
-		margin: 0 0 1rem;
-		font-weight: 500;
+	.bio .section-head {
+		margin-bottom: 1.1rem;
 	}
 
 	.bio p {
+		font-family: var(--font-sans);
+		font-size: var(--text-body);
 		color: var(--text-secondary);
 		max-width: 40rem;
-		line-height: 1.7;
+		line-height: 1.65;
+		margin: 0;
 	}
 
 	dl {
@@ -377,22 +380,24 @@
 	}
 
 	dl > div {
-		padding: 0.85rem 0;
+		padding: 0.55rem 0;
 		border-bottom: 1px solid var(--border);
 	}
 
 	dt {
-		font-size: 0.65rem;
-		letter-spacing: 0.06em;
+		font-family: var(--font-sans);
+		font-size: var(--text-label);
+		letter-spacing: var(--track-label);
 		text-transform: uppercase;
 		color: var(--text-muted);
-		margin-bottom: 0.25rem;
-		font-weight: 700;
+		margin-bottom: 0.2rem;
+		font-weight: 600;
 	}
 
 	dd {
 		margin: 0;
-		font-size: 0.9rem;
+		font-family: var(--font-sans);
+		font-size: var(--text-body);
 	}
 
 	.list {
@@ -495,11 +500,8 @@
 		font-size: 0.95rem;
 	}
 
-	.related span {
-		font-size: 0.65rem;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-		color: var(--text-muted);
+	.related .label {
+		margin: 0;
 	}
 
 	.next strong {

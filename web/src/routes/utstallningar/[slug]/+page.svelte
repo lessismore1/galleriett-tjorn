@@ -57,7 +57,9 @@
 <section id="press-release" class="band band-pad">
 	<div class="container press">
 		<div class="text">
-			<h2 class="serif">Pressmeddelande</h2>
+			<div class="section-head">
+				<h2 class="serif section-title">Pressmeddelande</h2>
+			</div>
 			{#each ex.pressRelease.split('\n').filter(Boolean) as para}
 				<p>{para}</p>
 			{/each}
@@ -76,7 +78,7 @@
 <section id="works" class="band-soft band-pad">
 	<div class="container">
 		<div class="section-head">
-			<h2 class="serif">Verk</h2>
+			<h2 class="serif section-title">Verk</h2>
 			{#if ex.works.length}
 				<a class="link-arrow" href={`/konstnarer/${ex.artistSlug ?? ''}`}>Visa alla verk</a>
 			{/if}
@@ -101,7 +103,7 @@
 <section id="installation" class="band-soft band-pad install-band">
 	<div class="container">
 		<div class="section-head">
-			<h2 class="serif">Installation</h2>
+			<h2 class="serif section-title">Installation</h2>
 		</div>
 		{#if ex.installationViews.length}
 			<div class="install" style={`--cols: ${Math.min(ex.installationViews.length, 3)}`}>
@@ -119,7 +121,9 @@
 	<section class="band band-pad">
 		<div class="container">
 			<div class="section-head">
-				<h2 class="label">{data.related.length === 1 ? 'Konstnär' : 'Utställande konstnärer'}</h2>
+				<h2 class="serif section-title">
+					{data.related.length === 1 ? 'Konstnär' : 'Utställande konstnärer'}
+				</h2>
 				<a class="link-arrow" href="/konstnarer">Visa alla konstnärer</a>
 			</div>
 			<div class="artists" class:single={data.related.length === 1}>
@@ -127,7 +131,7 @@
 					<a href={`/konstnarer/${a.slug}`}>
 						<img src={a.image} alt={a.name} />
 						<strong class="serif">{a.name}</strong>
-						<span>{a.specialty} →</span>
+						<span class="label">{a.specialty}</span>
 					</a>
 				{/each}
 			</div>
@@ -160,8 +164,9 @@
 	}
 
 	.back {
-		font-size: 0.7rem;
-		letter-spacing: 0.06em;
+		font-family: var(--font-sans);
+		font-size: var(--text-label);
+		letter-spacing: var(--track-label);
 		text-transform: uppercase;
 		color: var(--text-secondary);
 	}
@@ -190,18 +195,21 @@
 	}
 
 	.dates {
+		font-family: var(--font-sans);
 		color: var(--text-muted);
-		font-size: 0.8rem;
-		letter-spacing: 0.04em;
+		font-size: var(--text-meta);
+		letter-spacing: var(--track-label);
+		text-transform: uppercase;
 		margin: 0 0 0.75rem;
 	}
 
 	.intro {
+		font-family: var(--font-sans);
 		color: var(--text-secondary);
 		max-width: 34rem;
-		line-height: 1.55;
+		line-height: 1.6;
 		margin: 0;
-		font-size: 0.95rem;
+		font-size: var(--text-body);
 	}
 
 	.hero-img {
@@ -232,10 +240,12 @@
 		overflow-x: auto;
 	}
 
-	.subnav a {
-		font-size: 0.7rem;
+	.subnav a,
+	.dela {
+		font-family: var(--font-sans);
+		font-size: var(--text-label);
 		font-weight: 600;
-		letter-spacing: 0.06em;
+		letter-spacing: var(--track-label);
 		text-transform: uppercase;
 		color: var(--text-muted);
 		padding: 0.75rem 0;
@@ -247,32 +257,23 @@
 		box-shadow: inset 0 -2px 0 var(--brand);
 	}
 
-	.dela {
-		font-size: 0.7rem;
-		font-weight: 600;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-		color: var(--text-muted);
-	}
-
 	.press {
 		display: grid;
 		gap: 2rem;
 		align-items: start;
 	}
 
-	.text h2 {
-		font-size: clamp(1.4rem, 2.5vw, 1.85rem);
-		margin: 0 0 0.85rem;
-		font-weight: 500;
+	.text .section-head {
+		margin-bottom: 1.1rem;
 	}
 
 	.text p {
+		font-family: var(--font-sans);
 		color: var(--text-secondary);
 		max-width: 40rem;
-		line-height: 1.6;
-		margin: 0 0 0.75rem;
-		font-size: 0.95rem;
+		line-height: 1.65;
+		margin: 0 0 0.85rem;
+		font-size: var(--text-body);
 	}
 
 	.facts {
@@ -280,25 +281,27 @@
 	}
 
 	.fact {
-		padding: 0.45rem 0;
+		padding: 0.55rem 0;
 		border-bottom: 1px solid var(--border);
 		display: grid;
-		gap: 0.1rem;
+		gap: 0.2rem;
 	}
 
 	.fact-label {
-		font-size: 0.6rem;
-		letter-spacing: 0.08em;
+		font-family: var(--font-sans);
+		font-size: var(--text-label);
+		letter-spacing: var(--track-label);
 		text-transform: uppercase;
 		color: var(--text-muted);
-		font-weight: 700;
+		font-weight: 600;
 	}
 
 	.fact-value {
-		font-size: 0.9rem;
+		font-family: var(--font-sans);
+		font-size: var(--text-body);
 		color: var(--text);
 		word-break: break-word;
-		line-height: 1.35;
+		line-height: 1.4;
 	}
 
 	.works {
@@ -328,12 +331,14 @@
 	}
 
 	.works figcaption {
-		font-size: 0.65rem;
-		margin-top: 0.3rem;
-		letter-spacing: 0.04em;
+		font-family: var(--font-sans);
+		font-size: var(--text-label);
+		margin-top: 0.4rem;
+		letter-spacing: var(--track-label);
 		text-transform: uppercase;
 		font-weight: 600;
-		color: var(--text);
+		color: var(--text-secondary);
+		line-height: 1.35;
 	}
 
 	.install-band {
@@ -366,20 +371,19 @@
 	.artists img {
 		aspect-ratio: 1;
 		object-fit: cover;
-		margin-bottom: 0.45rem;
+		margin-bottom: 0.55rem;
 		background: #e8e8e2;
 	}
 
 	.artists strong {
 		display: block;
 		font-weight: 500;
+		font-size: 1.05rem;
+		margin-bottom: 0.2rem;
 	}
 
-	.artists span {
-		font-size: 0.65rem;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-		color: var(--text-muted);
+	.artists .label {
+		margin: 0;
 	}
 
 	.pager-band {
@@ -401,11 +405,15 @@
 		display: block;
 		margin-top: 0.25rem;
 		font-weight: 500;
+		font-family: var(--font-serif);
+		font-size: 1rem;
 	}
 
 	.empty {
+		font-family: var(--font-sans);
 		color: var(--text-muted);
 		margin: 0;
+		font-size: var(--text-body);
 	}
 
 	@media (max-width: 900px) {

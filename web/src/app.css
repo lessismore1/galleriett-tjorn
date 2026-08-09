@@ -12,6 +12,12 @@
 	--font-serif: 'Playfair Display', Georgia, serif;
 	--max: 1440px;
 	--pad: clamp(1rem, 3vw, 1.5rem);
+	/* Typografi B: gemensam trappa */
+	--text-label: 0.7rem;
+	--text-body: 0.95rem;
+	--text-meta: 0.8rem;
+	--text-h2: 1.75rem;
+	--track-label: 0.08em;
 }
 
 *,
@@ -77,8 +83,9 @@ h3,
 }
 
 .label {
-	font-size: 0.7rem;
-	letter-spacing: 0.08em;
+	font-family: var(--font-sans);
+	font-size: var(--text-label);
+	letter-spacing: var(--track-label);
 	text-transform: uppercase;
 	color: var(--text-muted);
 	font-weight: 600;
@@ -90,9 +97,10 @@ h3,
 	gap: 0.5rem;
 	background: var(--brand);
 	color: var(--brand-dark);
-	font-size: 0.7rem;
+	font-family: var(--font-sans);
+	font-size: var(--text-label);
 	font-weight: 700;
-	letter-spacing: 0.06em;
+	letter-spacing: var(--track-label);
 	text-transform: uppercase;
 	padding: 0.85rem 1.25rem;
 	border: none;
@@ -107,9 +115,10 @@ h3,
 	display: inline-flex;
 	align-items: center;
 	gap: 0.4rem;
-	font-size: 0.7rem;
+	font-family: var(--font-sans);
+	font-size: var(--text-label);
 	font-weight: 700;
-	letter-spacing: 0.06em;
+	letter-spacing: var(--track-label);
 	text-transform: uppercase;
 }
 
@@ -120,9 +129,10 @@ h3,
 
 .tag {
 	display: inline-block;
-	font-size: 0.65rem;
+	font-family: var(--font-sans);
+	font-size: var(--text-label);
 	font-weight: 700;
-	letter-spacing: 0.06em;
+	letter-spacing: var(--track-label);
 	text-transform: uppercase;
 	padding: 0.3rem 0.55rem;
 	background: var(--brand);
@@ -164,11 +174,21 @@ h3,
 	padding-block: 3rem;
 }
 
+/* D: sektionshuvud med tunn linje */
 .section-head {
 	display: flex;
 	justify-content: space-between;
 	align-items: baseline;
 	gap: 1rem;
 	margin-bottom: 1.5rem;
+	padding-bottom: 0.7rem;
+	border-bottom: 1px solid var(--border);
 	flex-wrap: wrap;
+}
+
+.section-title {
+	margin: 0;
+	font-size: clamp(1.5rem, 2.2vw, var(--text-h2));
+	font-weight: 500;
+	line-height: 1.15;
 }

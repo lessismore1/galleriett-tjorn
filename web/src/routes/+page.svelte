@@ -179,6 +179,8 @@
 		align-items: baseline;
 		gap: 1rem;
 		margin-bottom: 1.5rem;
+		padding-bottom: 0.7rem;
+		border-bottom: 1px solid var(--border);
 	}
 
 	.cards {
