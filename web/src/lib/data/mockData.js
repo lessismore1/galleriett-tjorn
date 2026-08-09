@@ -254,35 +254,35 @@ export const artists = [
 		bio: 'Olofsson är baserad på Tjörn och arbetar nära landskapets material — drivved, granit och salt.',
 		website: null,
 		image: '/images/artist-per.jpg',
-		heroImage: '/images/ex-thumb-3.jpg',
+		heroImage: '/images/ex-102-hero.jpg',
 		works: [
 			{
 				title: 'Tidvatten I',
 				year: 2026,
 				medium: 'Ek och granit',
 				dimensions: '95 × 40 × 35 cm',
-				image: '/images/work-e.jpg'
+				image: '/images/work-102-a.jpg'
 			},
 			{
 				title: 'Drivved',
 				year: 2025,
 				medium: 'Trä',
 				dimensions: '140 × 28 × 22 cm',
-				image: '/images/work-f.jpg'
+				image: '/images/work-102-b.jpg'
 			},
 			{
 				title: 'Klint',
 				year: 2025,
 				medium: 'Sten',
 				dimensions: '55 × 45 × 40 cm',
-				image: '/images/work-5-clean.jpg'
+				image: '/images/work-102-c.jpg'
 			},
 			{
 				title: 'Saltlinje',
 				year: 2024,
 				medium: 'Trä och stål',
 				dimensions: '110 × 30 × 20 cm',
-				image: '/images/work-6-clean.jpg'
+				image: '/images/work-102-d.jpg'
 			}
 		],
 		exhibitions: [{ year: 2026, title: 'Tidvatten', venue: 'GALLERIett, Tjörn' }],
@@ -457,20 +457,20 @@ export const exhibitions = [
 		intro: 'Skulptur i trä och sten — nära havet, nära materialet.',
 		pressRelease:
 			'GALLERIett presenterar Tidvatten, Per Olofssons separatutställning med skulptur i ek, granit, drivved och stål.\n\nOlofsson är baserad på Tjörn och arbetar nära landskapets egna material. Verken bär spår av tidvatten, erosion och hantverk — utan att illustrera kustens vyer. Tyngd och yta möts i former som känns både lokala och tidlösa.\n\nVernissage 1 februari 2026 kl. 15. Utställningen pågår till 15 mars 2026.',
-		image: '/images/ex-thumb-3.jpg',
-		cardImage: '/images/ex-thumb-1.jpg',
+		image: '/images/ex-102-hero.jpg',
+		cardImage: '/images/ex-102-hero.jpg',
 		works: [
-			{ title: 'Tidvatten I', image: '/images/work-e.jpg' },
-			{ title: 'Drivved', image: '/images/work-f.jpg' },
-			{ title: 'Klint', image: '/images/work-5-clean.jpg' },
-			{ title: 'Saltlinje', image: '/images/work-6-clean.jpg' },
-			{ title: 'Skär', image: '/images/work-a.jpg' },
-			{ title: 'Ebb', image: '/images/work-b.jpg' }
+			{ title: 'Tidvatten I', image: '/images/work-102-a.jpg' },
+			{ title: 'Drivved', image: '/images/work-102-b.jpg' },
+			{ title: 'Klint', image: '/images/work-102-c.jpg' },
+			{ title: 'Saltlinje', image: '/images/work-102-d.jpg' },
+			{ title: 'Skär', image: '/images/work-102-e.jpg' },
+			{ title: 'Ebb', image: '/images/work-102-f.jpg' }
 		],
 		installationViews: [
-			'/images/install-1.jpg',
-			'/images/install-c.jpg',
-			'/images/install-3.jpg'
+			'/images/install-102-a.jpg',
+			'/images/install-102-b.jpg',
+			'/images/install-102-c.jpg'
 		]
 	},
 	{
