@@ -837,6 +837,44 @@ export const exhibitions = [
 
 export const news = [
 	{
+		id: 102,
+		slug: '102-robert-oldergaarden-louvren-edsbruk',
+		category: 'Media',
+		title: 'Robert nobbar Manhattan – men tackar ja till Louvren och Edsbruk',
+		date: '2025-07-09',
+		dateLabel: '9 JULI 2025',
+		image: '/images/artist-robert.jpg',
+		thumb: '/images/artist-robert.jpg',
+		excerpt:
+			'Glaskonstnären Robert Oldergaarden har ställt ut på Louvren — och valt att visa konstglas i Edsbruk.',
+		clickable: true,
+		artistSlug: '09-robert-oldergaarden',
+		source: {
+			name: 'Västerviks-Tidningen',
+			url: 'https://www.vt.se/nyheter/edsbruk/artikel/robert-nobbar-manhattan-men-tackar-ja-till-louvren-och-edsbruk/lyv0yepl'
+		},
+		body: 'Glaskonstnären Robert Oldergaarden har ställt ut konst på Louvren och sålt glas till shejkar — men väljer att också visa sin konst i den gamla kvarnen i lilla Edsbruk.\n\n– Jag blåser med munnen och formar med handen, det är min melodi, säger Robert Oldergaarden.\n\nHans intresse för hantverk började tidigt. Efter glasskolan i Orrefors och många år vid bruket och Riksglasskolan driver han idag egen glashytta på släktgården på Öland. Den internationella banan har gått via Japan, Monaco och Louvren — samtidigt som han tackar nej till Manhattan för att hinna sköta butiker och möta människor på närmare håll.\n\n– När jag kom till Edsbruk blev jag helt förälskad i stället, och jag älskar människorna. Jag lever för att möta människor, jag är inte uppe i det blå bara för att jag är framgångsrik.'
+	},
+	{
+		id: 101,
+		slug: '101-kattis-palmnas-galleri-bagges-torg',
+		category: 'Media',
+		title: 'Kattis Palmnäs öppnar nytt galleri på Bagges Torg',
+		date: '2024-09-21',
+		dateLabel: '21 SEPTEMBER 2024',
+		image: '/images/artist-kattis.jpg',
+		thumb: '/images/artist-kattis.jpg',
+		excerpt:
+			'Lerums Tidning om Kattis Palmnäs nya galleri vid Bagges Torg — en lokal plats för färgstark konst.',
+		clickable: true,
+		artistSlug: '10-kattis-palmnas',
+		source: {
+			name: 'Lerums Tidning',
+			url: 'https://www.lerumstidning.se/nyheter/snart-finns-det-chans-att-se-konst-i-kattis-palmnas-nya-galleri-pa-bagges-torg-.95cada5f-8c87-4c86-bc06-3b8dfeba6860'
+		},
+		body: 'Kattis Palmnäs har etablerat sig med ett färgstarkt, energifyllt måleri — och expanderade hösten 2024 lokalt genom att öppna ett eget galleri vid Bagges Torg i Lerum.\n\nI Lerums Tidning berättas om chansen att se hennes konst på plats i det nya galleriet: en mötespunkt där målningar, uttryck och publik kan mötas i vardagen.\n\nPalmnäs är verksam via Tim Tiger K Palmnäs Art AB och arbetar med storskaliga akrylmålningar, porträtt och mönster. Galleriet i Lerum kompletterar hennes närvaro på andra orter och i samarbeten utanför Sverige.'
+	},
+	{
 		slug: 'recension-dn',
 		category: 'Nyhet',
 		title: 'Recension i Dagens Nyheter',
@@ -844,7 +882,8 @@ export const news = [
 		dateLabel: '3 AUGUSTI 2026',
 		image: '/images/card-news.jpg',
 		thumb: '/images/news-1.jpg',
-		excerpt: 'DN skriver om den pågående utställningen på Galleri Ett.'
+		excerpt: 'DN skriver om den pågående utställningen på Galleri Ett.',
+		clickable: false
 	},
 	{
 		slug: 'paletten',
@@ -854,7 +893,8 @@ export const news = [
 		dateLabel: '28 JULI 2026',
 		image: '/images/news-1.jpg',
 		thumb: '/images/news-1.jpg',
-		excerpt: 'Reportage om Galleri Ett och samtidskonsten på Tjörn.'
+		excerpt: 'Reportage om Galleri Ett och samtidskonsten på Tjörn.',
+		clickable: false
 	},
 	{
 		slug: 'sommarvernissage',
@@ -864,7 +904,8 @@ export const news = [
 		dateLabel: '15 JULI 2026',
 		image: '/images/news-2.jpg',
 		thumb: '/images/news-2.jpg',
-		excerpt: 'Vernissage och samtal med deltagande konstnärer.'
+		excerpt: 'Vernissage och samtal med deltagande konstnärer.',
+		clickable: false
 	},
 	{
 		slug: 'ny-konstnar-host',
@@ -874,9 +915,14 @@ export const news = [
 		dateLabel: '8 JULI 2026',
 		image: '/images/news-3.jpg',
 		thumb: '/images/news-3.jpg',
-		excerpt: 'Galleri Ett välkomnar en ny konstnär till höstens program.'
+		excerpt: 'Galleri Ett välkomnar en ny konstnär till höstens program.',
+		clickable: false
 	}
 ];
+
+export function getNewsArticle(slug) {
+	return news.find((n) => n.slug === slug && n.clickable);
+}
 
 export const about = {
 	label: 'Om GALLERIett',

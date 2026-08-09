@@ -95,7 +95,7 @@
 		</div>
 		<div class="news">
 			{#each news.slice(0, 3) as item}
-				<a class="news-item" href="/nyheter">
+				<a class="news-item" href={item.clickable ? `/nyheter/${item.slug}` : '/nyheter'}>
 					<img src={item.thumb ?? item.image} alt="" />
 					<div>
 						<p class="label">{item.category}</p>
