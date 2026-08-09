@@ -29,6 +29,40 @@ export const site = {
 	mapsUrl: 'https://maps.google.com/?q=Marinvägen+9,+Rönnäng'
 };
 
+/** Sponsorer — visas i karusell + /sponsorer */
+export const sponsors = [
+	{
+		id: 'tks',
+		name: 'Tjörns Konst & Konsthantverk Sällskap',
+		shortName: 'TKS',
+		logo: '/images/sponsors/tks.webp',
+		url: 'https://tjornkonst.se'
+	},
+	{
+		id: 'tjorns-sparbank',
+		name: 'Tjörns Sparbank',
+		shortName: 'Tjörns Sparbank',
+		logo: '/images/sponsors/tjorns-sparbank.webp',
+		url: 'https://www.tjorns-sparbank.se/'
+	},
+	{
+		id: 'galleriett',
+		name: 'GALLERIett',
+		shortName: 'GALLERIett',
+		logo: '/images/sponsors/galleriett.webp',
+		url: '/'
+	}
+];
+
+/** Jämlik dagsrotation — ingen personlig spårning */
+export function getRotatedSponsors(list = sponsors, date = new Date()) {
+	if (!list.length) return [];
+	const start = new Date(date.getFullYear(), 0, 0);
+	const dayOfYear = Math.floor((date.getTime() - start.getTime()) / 86400000);
+	const offset = dayOfYear % list.length;
+	return [...list.slice(offset), ...list.slice(0, offset)];
+}
+
 export const nav = [
 	{ href: '/konstnarer', label: 'Konstnärer' },
 	{ href: '/utstallningar', label: 'Utställningar' },

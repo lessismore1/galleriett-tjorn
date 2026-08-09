@@ -4,12 +4,15 @@
 		getOngoingExhibition,
 		news,
 		exhibitions,
-		statusLabels
+		statusLabels,
+		getRotatedSponsors
 	} from '$lib/data/mockData.js';
+	import SponsorsCarousel from '$lib/components/SponsorsCarousel.svelte';
 
 	const ongoing = getOngoingExhibition();
 	const featuredExhibitions = exhibitions.filter((e) => e.status !== 'past').slice(0, 2);
 	const featuredNews = news[0];
+	const homeSponsors = getRotatedSponsors();
 
 	function cardSrc(item: { cardImage?: string; image: string }) {
 		return item.cardImage ?? item.image;
@@ -104,6 +107,17 @@
 	</div>
 </section>
 
+<section class="section band-soft sponsors">
+	<div class="container">
+		<div class="section-head">
+			<h2 class="label">Sponsorer</h2>
+			<a class="link-arrow" href="/sponsorer">Till sponsorer</a>
+		</div>
+		<p class="sponsors-lead">Ett varmt tack till alla sponsorer</p>
+		<SponsorsCarousel sponsors={homeSponsors} />
+	</div>
+</section>
+
 <style>
 	.hero {
 		position: relative;
@@ -170,7 +184,11 @@
 	}
 
 	.section {
-		padding-block: 3.5rem;
+		padding-block: 2rem;
+	}
+
+	.section.sponsors {
+		padding-block: 1.5rem 1.75rem;
 	}
 
 	.section-head {
@@ -178,8 +196,8 @@
 		justify-content: space-between;
 		align-items: baseline;
 		gap: 1rem;
-		margin-bottom: 1.5rem;
-		padding-bottom: 0.7rem;
+		margin-bottom: 1rem;
+		padding-bottom: 0.55rem;
 		border-bottom: 1px solid var(--border);
 	}
 
@@ -288,6 +306,15 @@
 		margin: 0;
 		font-size: 0.75rem;
 		color: var(--text-muted);
+	}
+
+	.sponsors-lead {
+		margin: 0 0 0.85rem;
+		font-size: var(--text-label);
+		letter-spacing: var(--track-label);
+		text-transform: uppercase;
+		color: var(--text-muted);
+		font-weight: 600;
 	}
 
 	@media (max-width: 900px) {
