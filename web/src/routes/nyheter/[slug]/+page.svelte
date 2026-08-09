@@ -3,7 +3,7 @@
 
 	let { data } = $props();
 	const article = $derived(data.article);
-	const artist = $derived(data.artist);
+	const relatedArtists = $derived(data.relatedArtists);
 	const paragraphs = $derived(
 		String(article.body ?? '')
 			.split('\n')
@@ -45,17 +45,21 @@
 	</div>
 </section>
 
-{#if artist}
+{#if relatedArtists.length}
 	<section class="band-soft related-band">
 		<div class="container">
-			<p class="label">Relaterad konstnär</p>
-			<a class="related" href={`/konstnarer/${artist.slug}`}>
-				<img src={artist.image} alt="" />
-				<div>
-					<strong class="serif">{artist.name}</strong>
-					<span class="label">{artist.specialty}</span>
-				</div>
-			</a>
+			<p class="label">{relatedArtists.length === 1 ? 'Relaterad konstnär' : 'Relaterade konstnärer'}</p>
+			<div class="related-list">
+				{#each relatedArtists as artist}
+					<a class="related" href={`/konstnarer/${artist.slug}`}>
+						<img src={artist.image} alt="" />
+						<div>
+							<strong class="serif">{artist.name}</strong>
+							<span class="label">{artist.specialty}</span>
+						</div>
+					</a>
+				{/each}
+			</div>
 		</div>
 	</section>
 {/if}
@@ -122,12 +126,17 @@
 		margin: 0 0 1rem;
 	}
 
+	.related-list {
+		display: grid;
+		gap: 1.25rem;
+		grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+	}
+
 	.related {
 		display: grid;
 		grid-template-columns: 96px 1fr;
 		gap: 1rem;
 		align-items: center;
-		max-width: 28rem;
 	}
 
 	.related img {

@@ -1,6 +1,14 @@
 <script lang="ts">
-	import { news } from '$lib/data/mockData.js';
+	import { getNewsIndex } from '$lib/data/mockData.js';
 	import Seo from '$lib/components/Seo.svelte';
+
+	let filter = $state('Alla');
+	const filters = ['Alla', 'Från galleriet', 'Media'];
+	const list = getNewsIndex();
+
+	const filtered = $derived(
+		list.filter((item) => filter === 'Alla' || item.category === filter)
+	);
 </script>
 
 <Seo
@@ -16,8 +24,14 @@
 
 <section class="band-soft band-pad">
 	<div class="container">
+		<div class="filters">
+			{#each filters as f}
+				<button type="button" class:active={filter === f} onclick={() => (filter = f)}>{f}</button>
+			{/each}
+		</div>
+
 		<div class="grid">
-			{#each news as item}
+			{#each filtered as item}
 				{#if item.clickable}
 					<a class="card" href={`/nyheter/${item.slug}`}>
 						<img src={item.image} alt="" />
@@ -51,10 +65,37 @@
 		font-weight: 500;
 	}
 
+	.filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		border-bottom: 1px solid var(--border);
+		padding-bottom: 0.75rem;
+		margin-bottom: 2rem;
+	}
+
+	.filters button {
+		background: none;
+		border: none;
+		font: inherit;
+		font-size: 0.7rem;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+		cursor: pointer;
+		padding: 0 0 0.75rem;
+	}
+
+	.filters button.active {
+		color: var(--text);
+		box-shadow: inset 0 -2px 0 var(--brand);
+	}
+
 	.grid {
 		display: grid;
 		gap: 2rem;
-		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
 
 	.card {
@@ -97,5 +138,17 @@
 
 	.label {
 		margin: 0;
+	}
+
+	@media (max-width: 1100px) {
+		.grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 600px) {
+		.grid {
+			grid-template-columns: 1fr;
+		}
 	}
 </style>

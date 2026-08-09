@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { artists, news } from '$lib/data/mockData.js';
+	import { artists, getArtistNews, getArtistPress } from '$lib/data/mockData.js';
 
 	let { data } = $props();
 	const artist = $derived(data.artist);
@@ -11,7 +11,8 @@
 	});
 
 	const related = $derived(artists.filter((a) => a.slug !== artist.slug).slice(0, 3));
-	const artistNews = $derived(news.slice(0, 3));
+	const artistNews = $derived(getArtistNews(artist.slug));
+	const artistMedia = $derived(getArtistPress(artist.slug));
 
 	let sentinelEl = $state<HTMLElement | null>(null);
 	let subnavEl = $state<HTMLElement | null>(null);
@@ -167,18 +168,22 @@
 			<h2 class="serif section-title">Nyheter</h2>
 			<a class="link-arrow" href="/nyheter">Visa alla</a>
 		</div>
-		<div class="news">
-			{#each artistNews as item}
-				<a class="news-item" href="/nyheter">
-					<img src={item.thumb ?? item.image} alt="" />
-					<div>
-						<p class="label">{item.category}</p>
-						<strong class="serif">{item.title}</strong>
-						<p class="muted">{item.dateLabel}</p>
-					</div>
-				</a>
-			{/each}
-		</div>
+		{#if artistNews.length}
+			<div class="news">
+				{#each artistNews as item}
+					<a class="news-item" href={`/nyheter/${item.slug}`}>
+						<img src={item.thumb ?? item.image} alt="" />
+						<div>
+							<p class="label">{item.category}</p>
+							<strong class="serif">{item.title}</strong>
+							<p class="muted">{item.dateLabel}</p>
+						</div>
+					</a>
+				{/each}
+			</div>
+		{:else}
+			<p class="empty">Inga nyheter publicerade ännu.</p>
+		{/if}
 	</div>
 </section>
 
@@ -187,8 +192,22 @@
 		<div class="section-head">
 			<h2 class="serif section-title">Media</h2>
 		</div>
+		{#if artistMedia.length}
+			<div class="news">
+				{#each artistMedia as item}
+					<a class="news-item" href={`/nyheter/${item.slug}`}>
+						<img src={item.thumb ?? item.image} alt="" />
+						<div>
+							<p class="label">{item.category}</p>
+							<strong class="serif">{item.title}</strong>
+							<p class="muted">{item.dateLabel}</p>
+						</div>
+					</a>
+				{/each}
+			</div>
+		{/if}
 		{#if artist.press.length}
-			<div class="press">
+			<div class="press" class:spaced={artistMedia.length > 0}>
 				{#each artist.press as p}
 					<blockquote>
 						<p class="serif">“{p.quote}”</p>
@@ -196,7 +215,8 @@
 					</blockquote>
 				{/each}
 			</div>
-		{:else}
+		{/if}
+		{#if !artistMedia.length && !artist.press.length}
 			<p class="empty">Ingen press ännu.</p>
 		{/if}
 	</div>
@@ -546,6 +566,10 @@
 		display: grid;
 		gap: 1rem;
 		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	}
+
+	.press.spaced {
+		margin-top: 1.5rem;
 	}
 
 	blockquote {

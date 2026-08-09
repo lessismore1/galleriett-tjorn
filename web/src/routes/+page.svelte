@@ -3,7 +3,7 @@
 		about,
 		getOngoingExhibitions,
 		getUpcomingExhibitions,
-		news,
+		getNewsIndex,
 		statusLabels,
 		getRotatedSponsors
 	} from '$lib/data/mockData.js';
@@ -12,6 +12,7 @@
 	const ongoingList = getOngoingExhibitions();
 	const ongoing = ongoingList[0];
 	const featuredExhibitions = [...ongoingList, ...getUpcomingExhibitions()].slice(0, 2);
+	const news = getNewsIndex();
 	const featuredNews = news[0];
 	const homeSponsors = getRotatedSponsors();
 

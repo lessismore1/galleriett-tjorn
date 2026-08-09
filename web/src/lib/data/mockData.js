@@ -837,8 +837,26 @@ export const exhibitions = [
 
 export const news = [
 	{
+		id: 101,
+		slug: '101-ljus-farg-form',
+		kind: 'news',
+		category: 'Från galleriet',
+		title: 'Ljus Färg Form — Kattis Palmnäs & Robert Oldergaarden',
+		date: '2026-07-25',
+		dateLabel: '25 JULI 2026',
+		image: '/images/ex-104-ljus-farg-form.jpg',
+		thumb: '/images/ex-104-ljus-farg-form.jpg',
+		excerpt:
+			'GALLERIett presenterar sommarutställningen Ljus Färg Form med Kattis Palmnäs och Robert Oldergaarden, 1–9 augusti.',
+		clickable: true,
+		artistSlugs: ['10-kattis-palmnas', '09-robert-oldergaarden'],
+		exhibitionSlug: '104-ljus-farg-form',
+		body: 'GALLERIett bjuder in till sommarutställningen Ljus Färg Form med Kattis Palmnäs och Robert Oldergaarden, 1–9 augusti 2026.\n\nTvå uttryck — en utställning: Palmnäs färgsprakande måleri möter Oldergaarden unika glaskonst, där glasets ljus möter dukens färgexplosion.\n\nVernissage 1 augusti kl. 13. Öppet alla dagar kl. 13–18. Fri entré i GALLERIett, Marinvägen 9, Hall 1, Rönnäng.'
+	},
+	{
 		id: 102,
 		slug: '102-robert-oldergaarden-louvren-edsbruk',
+		kind: 'press',
 		category: 'Media',
 		title: 'Robert nobbar Manhattan – men tackar ja till Louvren och Edsbruk',
 		date: '2025-07-09',
@@ -856,8 +874,9 @@ export const news = [
 		body: 'Glaskonstnären Robert Oldergaarden har ställt ut konst på Louvren och sålt glas till shejkar — men väljer att också visa sin konst i den gamla kvarnen i lilla Edsbruk.\n\n– Jag blåser med munnen och formar med handen, det är min melodi, säger Robert Oldergaarden.\n\nHans intresse för hantverk började tidigt. Efter glasskolan i Orrefors och många år vid bruket och Riksglasskolan driver han idag egen glashytta på släktgården på Öland. Den internationella banan har gått via Japan, Monaco och Louvren — samtidigt som han tackar nej till Manhattan för att hinna sköta butiker och möta människor på närmare håll.\n\n– När jag kom till Edsbruk blev jag helt förälskad i stället, och jag älskar människorna. Jag lever för att möta människor, jag är inte uppe i det blå bara för att jag är framgångsrik.'
 	},
 	{
-		id: 101,
-		slug: '101-kattis-palmnas-galleri-bagges-torg',
+		id: 103,
+		slug: '103-kattis-palmnas-galleri-bagges-torg',
+		kind: 'press',
 		category: 'Media',
 		title: 'Kattis Palmnäs öppnar nytt galleri på Bagges Torg',
 		date: '2024-09-21',
@@ -876,7 +895,8 @@ export const news = [
 	},
 	{
 		slug: 'recension-dn',
-		category: 'Nyhet',
+		kind: 'news',
+		category: 'Media',
 		title: 'Recension i Dagens Nyheter',
 		date: '2026-08-03',
 		dateLabel: '3 AUGUSTI 2026',
@@ -887,6 +907,7 @@ export const news = [
 	},
 	{
 		slug: 'paletten',
+		kind: 'news',
 		category: 'Media',
 		title: 'Galleriet i konstmagasinet Paletten',
 		date: '2026-07-28',
@@ -898,7 +919,8 @@ export const news = [
 	},
 	{
 		slug: 'sommarvernissage',
-		category: 'Event',
+		kind: 'news',
+		category: 'Från galleriet',
 		title: 'Sommarvernissage med konstnärssamtal',
 		date: '2026-07-15',
 		dateLabel: '15 JULI 2026',
@@ -909,7 +931,8 @@ export const news = [
 	},
 	{
 		slug: 'ny-konstnar-host',
-		category: 'Nyhet',
+		kind: 'news',
+		category: 'Från galleriet',
 		title: 'Ny konstnär till hösten 2026',
 		date: '2026-07-08',
 		dateLabel: '8 JULI 2026',
@@ -920,8 +943,26 @@ export const news = [
 	}
 ];
 
+/** Alla nyheter/media, nyast först */
+export function getNewsIndex() {
+	return [...news].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+}
+
 export function getNewsArticle(slug) {
 	return news.find((n) => n.slug === slug && n.clickable);
+}
+
+export function getArtistNews(artistSlug) {
+	return news.filter(
+		(n) =>
+			n.kind === 'news' &&
+			n.clickable &&
+			(n.artistSlug === artistSlug || n.artistSlugs?.includes(artistSlug))
+	);
+}
+
+export function getArtistPress(artistSlug) {
+	return news.filter((n) => n.kind === 'press' && n.clickable && n.artistSlug === artistSlug);
 }
 
 export const about = {
