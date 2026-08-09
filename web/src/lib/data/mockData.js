@@ -115,35 +115,35 @@ export const artists = [
 		bio: 'Halvorsen arbetar med skulptur där materialets tyngd möter arkitektonisk klarhet.',
 		website: null,
 		image: '/images/artist-erik.jpg',
-		heroImage: '/images/ex-tystnad.jpg',
+		heroImage: '/images/ex-104-hero.jpg',
 		works: [
 			{
 				title: 'Tomrum I',
 				year: 2026,
 				medium: 'Betong och stål',
 				dimensions: '90 × 60 × 45 cm',
-				image: '/images/work-a.jpg'
+				image: '/images/work-104-a.jpg'
 			},
 			{
 				title: 'Bärande',
 				year: 2025,
 				medium: 'Sten',
 				dimensions: '70 × 40 × 40 cm',
-				image: '/images/work-b.jpg'
+				image: '/images/work-104-b.jpg'
 			},
 			{
 				title: 'Axel',
 				year: 2025,
 				medium: 'Brons',
 				dimensions: '55 × 25 × 25 cm',
-				image: '/images/work-c.jpg'
+				image: '/images/work-104-c.jpg'
 			},
 			{
 				title: 'Tyst pelare',
 				year: 2024,
 				medium: 'Trä och betong',
 				dimensions: '180 × 30 × 30 cm',
-				image: '/images/work-d.jpg'
+				image: '/images/work-104-d.jpg'
 			}
 		],
 		exhibitions: [
@@ -394,20 +394,20 @@ export const exhibitions = [
 		intro: 'Erik Halvorsen visar skulpturer som formar tystnad och rum.',
 		pressRelease:
 			'Tystnadens rum är Erik Halvorsens första separatutställning på GALLERIett.\n\nSkulpturerna arbetar med material, tyngd och tomrum — betong, sten, brons och trä i former som både bär och lämnar öppningar. Halvorsen låter galleriets rum bli en del av verken: skuggor, avstånd och stillhet får lika stor vikt som massan.\n\nUtställningen samlar nya och tidigare verk i en koncentrerad installation. Vernissage 3 oktober 2026 kl. 18. Utställningen pågår till 2 november 2026.',
-		image: '/images/ex-tystnad.jpg',
-		cardImage: '/images/card-upcoming.jpg',
+		image: '/images/ex-104-hero.jpg',
+		cardImage: '/images/ex-104-hero.jpg',
 		works: [
-			{ title: 'Tomrum I', image: '/images/work-a.jpg' },
-			{ title: 'Bärande', image: '/images/work-b.jpg' },
-			{ title: 'Axel', image: '/images/work-c.jpg' },
-			{ title: 'Tyst pelare', image: '/images/work-d.jpg' },
-			{ title: 'Vila', image: '/images/work-e.jpg' },
-			{ title: 'Kant', image: '/images/work-f.jpg' }
+			{ title: 'Tomrum I', image: '/images/work-104-a.jpg' },
+			{ title: 'Bärande', image: '/images/work-104-b.jpg' },
+			{ title: 'Axel', image: '/images/work-104-c.jpg' },
+			{ title: 'Tyst pelare', image: '/images/work-104-d.jpg' },
+			{ title: 'Vila', image: '/images/work-104-e.jpg' },
+			{ title: 'Kant', image: '/images/work-104-f.jpg' }
 		],
 		installationViews: [
-			'/images/install-1.jpg',
-			'/images/install-2.jpg',
-			'/images/install-3.jpg'
+			'/images/install-104-a.jpg',
+			'/images/install-104-b.jpg',
+			'/images/install-104-c.jpg'
 		]
 	},
 	{

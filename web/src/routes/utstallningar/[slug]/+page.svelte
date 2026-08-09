@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { site } from '$lib/data/mockData.js';
 
 	let { data } = $props();
@@ -25,6 +26,34 @@
 			: []),
 		{ label: 'Kontakt', value: site.email }
 	]);
+
+	let sentinelEl = $state<HTMLElement | null>(null);
+	let subnavEl = $state<HTMLElement | null>(null);
+	let stuck = $state(false);
+	let subnavH = $state(52);
+
+	onMount(() => {
+		const header = document.querySelector('header.header') as HTMLElement | null;
+
+		const update = () => {
+			if (!sentinelEl) return;
+			const headerH = header?.offsetHeight ?? 64;
+			if (subnavEl) subnavH = subnavEl.offsetHeight;
+			// Handoff när sektionsmenyns topp når headerns botten
+			stuck = sentinelEl.getBoundingClientRect().top <= headerH + 0.5;
+			document.body.classList.toggle('subnav-stuck', stuck);
+		};
+
+		update();
+		window.addEventListener('scroll', update, { passive: true });
+		window.addEventListener('resize', update);
+
+		return () => {
+			window.removeEventListener('scroll', update);
+			window.removeEventListener('resize', update);
+			document.body.classList.remove('subnav-stuck');
+		};
+	});
 </script>
 
 <section class="band-soft">
@@ -43,8 +72,13 @@
 	</div>
 </section>
 
-<nav class="band subnav" aria-label="Sektioner">
+<div class="subnav-sentinel" bind:this={sentinelEl} aria-hidden="true"></div>
+{#if stuck}
+	<div class="subnav-spacer" style={`height: ${subnavH}px`} aria-hidden="true"></div>
+{/if}
+<nav class="band subnav" class:stuck bind:this={subnavEl} aria-label="Sektioner">
 	<div class="container subnav-inner">
+		<strong class="ex-name serif">{ex.artist} <span class="sep">|</span> {ex.title}</strong>
 		<div class="subnav-links">
 			<a href="#press-release">Pressmeddelande</a>
 			<a href="#works">Verk</a>
@@ -122,11 +156,11 @@
 		<div class="container">
 			<div class="section-head">
 				<h2 class="serif section-title">
-					{data.related.length === 1 ? 'Konstnär' : 'Utställande konstnärer'}
+					{data.related.length === 1 ? 'Utställande konstnär' : 'Utställande konstnärer'}
 				</h2>
 				<a class="link-arrow" href="/konstnarer">Visa alla konstnärer</a>
 			</div>
-			<div class="artists" class:single={data.related.length === 1}>
+			<div class="artists">
 				{#each data.related as a}
 					<a href={`/konstnarer/${a.slug}`}>
 						<img src={a.image} alt={a.name} />
@@ -220,11 +254,29 @@
 		background: #e8e8e2;
 	}
 
+	.subnav-sentinel {
+		height: 0;
+		width: 100%;
+		pointer-events: none;
+	}
+
+	.subnav-spacer {
+		pointer-events: none;
+	}
+
 	.subnav {
 		border-block: 1px solid var(--border);
-		position: sticky;
-		top: 57px;
-		z-index: 20;
+		background: rgba(255, 255, 255, 0.96);
+		backdrop-filter: blur(8px);
+	}
+
+	.subnav.stuck {
+		position: fixed;
+		top: 0;
+		left: var(--brand-edge);
+		right: 0;
+		z-index: 60;
+		box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
 	}
 
 	.subnav-inner {
@@ -232,12 +284,33 @@
 		justify-content: space-between;
 		align-items: center;
 		gap: 1rem;
+		min-height: 3.25rem;
+	}
+
+	.ex-name {
+		font-size: 0.95rem;
+		font-weight: 500;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		flex-shrink: 1;
+		min-width: 0;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		max-width: min(42vw, 22rem);
+	}
+
+	.ex-name .sep {
+		font-weight: 400;
+		opacity: 0.55;
+		margin-inline: 0.15em;
 	}
 
 	.subnav-links {
 		display: flex;
 		gap: 1.35rem;
 		overflow-x: auto;
+		margin-left: auto;
 	}
 
 	.subnav a,
@@ -248,13 +321,18 @@
 		letter-spacing: var(--track-label);
 		text-transform: uppercase;
 		color: var(--text-muted);
-		padding: 0.75rem 0;
+		padding: 1rem 0;
 		white-space: nowrap;
 	}
 
 	.subnav a:hover {
 		color: var(--text);
 		box-shadow: inset 0 -2px 0 var(--brand);
+	}
+
+	.dela {
+		flex-shrink: 0;
+		margin-left: 0.5rem;
 	}
 
 	.press {
@@ -364,10 +442,6 @@
 		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
 
-	.artists.single {
-		grid-template-columns: minmax(0, 180px);
-	}
-
 	.artists img {
 		aspect-ratio: 1;
 		object-fit: cover;
@@ -425,7 +499,7 @@
 			grid-template-columns: 1fr;
 		}
 
-		.artists:not(.single) {
+		.artists {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 	}
