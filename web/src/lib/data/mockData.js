@@ -115,11 +115,47 @@ export const artists = [
 		bio: 'Halvorsen arbetar med skulptur där materialets tyngd möter arkitektonisk klarhet.',
 		website: null,
 		image: '/images/artist-erik.jpg',
-		heroImage:
-			'https://images.unsplash.com/photo-1515405295570-fc052892ebd2?auto=format&fit=crop&w=1600&q=80',
-		works: [],
-		exhibitions: [{ year: 2026, title: 'Tystnadens rum', venue: 'Galleri Ett, Tjörn' }],
-		press: []
+		heroImage: '/images/ex-tystnad.jpg',
+		works: [
+			{
+				title: 'Tomrum I',
+				year: 2026,
+				medium: 'Betong och stål',
+				dimensions: '90 × 60 × 45 cm',
+				image: '/images/work-a.jpg'
+			},
+			{
+				title: 'Bärande',
+				year: 2025,
+				medium: 'Sten',
+				dimensions: '70 × 40 × 40 cm',
+				image: '/images/work-b.jpg'
+			},
+			{
+				title: 'Axel',
+				year: 2025,
+				medium: 'Brons',
+				dimensions: '55 × 25 × 25 cm',
+				image: '/images/work-c.jpg'
+			},
+			{
+				title: 'Tyst pelare',
+				year: 2024,
+				medium: 'Trä och betong',
+				dimensions: '180 × 30 × 30 cm',
+				image: '/images/work-d.jpg'
+			}
+		],
+		exhibitions: [
+			{ year: 2026, title: 'Tystnadens rum', venue: 'GALLERIett, Tjörn' },
+			{ year: 2025, title: 'Ljus & Horisont', venue: 'GALLERIett, Tjörn' }
+		],
+		press: [
+			{
+				quote: 'Skulptur som låter rummet andas.',
+				source: 'Göteborgs-Posten'
+			}
+		]
 	},
 	{
 		id: '03',
@@ -153,8 +189,23 @@ export const artists = [
 		website: null,
 		image: '/images/artist-johan.jpg',
 		heroImage: null,
-		works: [],
-		exhibitions: [],
+		works: [
+			{
+				title: 'Väg 160',
+				year: 2026,
+				medium: 'Pigmentprint',
+				dimensions: '80 × 100 cm',
+				image: '/images/work-1-clean.jpg'
+			},
+			{
+				title: 'Morgon vid kajen',
+				year: 2025,
+				medium: 'Pigmentprint',
+				dimensions: '70 × 90 cm',
+				image: '/images/work-2-clean.jpg'
+			}
+		],
+		exhibitions: [{ year: 2026, title: 'Längs vägen / Along the Road', venue: 'GALLERIett, Tjörn' }],
 		press: []
 	},
 	{
@@ -171,8 +222,23 @@ export const artists = [
 		website: null,
 		image: '/images/artist-annika.jpg',
 		heroImage: null,
-		works: [],
-		exhibitions: [],
+		works: [
+			{
+				title: 'Passage',
+				year: 2026,
+				medium: 'Installation, textil och ljus',
+				dimensions: 'Varierande mått',
+				image: '/images/work-3-clean.jpg'
+			},
+			{
+				title: 'Markör',
+				year: 2025,
+				medium: 'Trä och spegel',
+				dimensions: '120 × 40 × 40 cm',
+				image: '/images/work-4-clean.jpg'
+			}
+		],
+		exhibitions: [{ year: 2026, title: 'Längs vägen / Along the Road', venue: 'GALLERIett, Tjörn' }],
 		press: []
 	},
 	{
@@ -185,13 +251,47 @@ export const artists = [
 		lives: 'Tjörn, Sverige',
 		representedIn: ['Västsverige'],
 		intro: 'Per Olofsson arbetar med skulptur i trä och sten, ofta med havet som tema.',
-		bio: 'Olofsson är baserad på Tjörn och arbetar nära landskapets material.',
+		bio: 'Olofsson är baserad på Tjörn och arbetar nära landskapets material — drivved, granit och salt.',
 		website: null,
 		image: '/images/artist-per.jpg',
-		heroImage: null,
-		works: [],
-		exhibitions: [],
-		press: []
+		heroImage: '/images/ex-thumb-3.jpg',
+		works: [
+			{
+				title: 'Tidvatten I',
+				year: 2026,
+				medium: 'Ek och granit',
+				dimensions: '95 × 40 × 35 cm',
+				image: '/images/work-e.jpg'
+			},
+			{
+				title: 'Drivved',
+				year: 2025,
+				medium: 'Trä',
+				dimensions: '140 × 28 × 22 cm',
+				image: '/images/work-f.jpg'
+			},
+			{
+				title: 'Klint',
+				year: 2025,
+				medium: 'Sten',
+				dimensions: '55 × 45 × 40 cm',
+				image: '/images/work-5-clean.jpg'
+			},
+			{
+				title: 'Saltlinje',
+				year: 2024,
+				medium: 'Trä och stål',
+				dimensions: '110 × 30 × 20 cm',
+				image: '/images/work-6-clean.jpg'
+			}
+		],
+		exhibitions: [{ year: 2026, title: 'Tidvatten', venue: 'GALLERIett, Tjörn' }],
+		press: [
+			{
+				quote: 'Olofsson låter Bohusläns material tala utan att illustrera.',
+				source: 'Bohusläningen'
+			}
+		]
 	},
 	{
 		id: '07',
@@ -225,8 +325,23 @@ export const artists = [
 		website: null,
 		image: '/images/artist-tomas.jpg',
 		heroImage: null,
-		works: [],
-		exhibitions: [],
+		works: [
+			{
+				title: 'Vägmärke',
+				year: 2026,
+				medium: 'Stål',
+				dimensions: '160 × 40 × 40 cm',
+				image: '/images/work-5.jpg'
+			},
+			{
+				title: 'Skarv',
+				year: 2025,
+				medium: 'Betong och metall',
+				dimensions: '75 × 50 × 30 cm',
+				image: '/images/work-6.jpg'
+			}
+		],
+		exhibitions: [{ year: 2026, title: 'Längs vägen / Along the Road', venue: 'GALLERIett, Tjörn' }],
 		press: []
 	}
 ];
@@ -278,17 +393,29 @@ export const exhibitions = [
 		vernissage: '2026-10-03T18:00:00',
 		intro: 'Erik Halvorsen visar skulpturer som formar tystnad och rum.',
 		pressRelease:
-			'Tystnadens rum är Erik Halvorsens första separatutställning på GALLERIett. Skulpturerna arbetar med material, tyngd och tomrum.',
-		image: '/images/card-upcoming.jpg',
+			'Tystnadens rum är Erik Halvorsens första separatutställning på GALLERIett.\n\nSkulpturerna arbetar med material, tyngd och tomrum — betong, sten, brons och trä i former som både bär och lämnar öppningar. Halvorsen låter galleriets rum bli en del av verken: skuggor, avstånd och stillhet får lika stor vikt som massan.\n\nUtställningen samlar nya och tidigare verk i en koncentrerad installation. Vernissage 3 oktober 2026 kl. 18. Utställningen pågår till 2 november 2026.',
+		image: '/images/ex-tystnad.jpg',
 		cardImage: '/images/card-upcoming.jpg',
-		works: [],
-		installationViews: []
+		works: [
+			{ title: 'Tomrum I', image: '/images/work-a.jpg' },
+			{ title: 'Bärande', image: '/images/work-b.jpg' },
+			{ title: 'Axel', image: '/images/work-c.jpg' },
+			{ title: 'Tyst pelare', image: '/images/work-d.jpg' },
+			{ title: 'Vila', image: '/images/work-e.jpg' },
+			{ title: 'Kant', image: '/images/work-f.jpg' }
+		],
+		installationViews: [
+			'/images/install-1.jpg',
+			'/images/install-2.jpg',
+			'/images/install-3.jpg'
+		]
 	},
 	{
 		id: 103,
 		slug: '103-langsvagen',
-		artistSlug: null,
-		artist: 'Grupputställning',
+		artistSlug: '04-johan-berg',
+		artistSlugs: ['04-johan-berg', '05-annika-viden', '08-tomas-akesson'],
+		artist: 'Johan Berg m.fl.',
 		title: 'Längs vägen / Along the Road',
 		status: 'past',
 		start: '2026-04-12',
@@ -297,30 +424,54 @@ export const exhibitions = [
 		location: 'GALLERIett, Tjörn',
 		vernissage: '2026-04-12T15:00:00',
 		intro: 'En grupputställning om resa, plats och minne.',
-		pressRelease: 'Längs vägen samlar verk som speglar förflyttning och landskap.',
+		pressRelease:
+			'GALLERIett presenterar Längs vägen / Along the Road, en grupputställning med Johan Berg, Annika Vidén och Tomas Åkesson.\n\nUtställningen tar avstamp i förflyttning — vägen som fysisk sträcka och som inre rörelse. Verken rör sig mellan kustväg, tillfälliga rum och markörer i landskapet.\n\nJohan Berg bidrar med fotografi i nordiskt ljus. Annika Vidén bygger installationer där passage och ljus styr blicken. Tomas Åkesson visar skulptur i stål och betong med arkitektonisk skärpa.\n\nVernissage 12 april 2026 kl. 15. Utställningen pågår till 25 maj 2026.',
 		image: '/images/card-news.jpg',
 		cardImage: '/images/card-news.jpg',
-		works: [],
-		installationViews: []
+		works: [
+			{ title: 'Väg 160 — Johan Berg', image: '/images/work-1-clean.jpg' },
+			{ title: 'Morgon vid kajen — Johan Berg', image: '/images/work-2-clean.jpg' },
+			{ title: 'Passage — Annika Vidén', image: '/images/work-3-clean.jpg' },
+			{ title: 'Markör — Annika Vidén', image: '/images/work-4-clean.jpg' },
+			{ title: 'Vägmärke — Tomas Åkesson', image: '/images/work-5.jpg' },
+			{ title: 'Skarv — Tomas Åkesson', image: '/images/work-6.jpg' }
+		],
+		installationViews: [
+			'/images/install-a.jpg',
+			'/images/install-b.jpg',
+			'/images/gallery-interior-clean.jpg'
+		]
 	},
 	{
 		id: 102,
-		slug: '102-klara-kristalova-lust-for-life',
-		artistSlug: null,
-		artist: 'Klara Kristalova',
-		title: 'Lust for Life – Nordic',
+		slug: '102-per-olofsson-tidvatten',
+		artistSlug: '06-per-olofsson',
+		artist: 'Per Olofsson',
+		title: 'Tidvatten',
 		status: 'past',
 		start: '2026-02-01',
 		end: '2026-03-15',
 		datesLabel: '1 FEB – 15 MAR 2026',
 		location: 'GALLERIett, Tjörn',
-		vernissage: null,
-		intro: 'Skulptur och berättelse i nordiskt ljus.',
-		pressRelease: '',
-		image: '/images/ex-thumb-1.jpg',
+		vernissage: '2026-02-01T15:00:00',
+		intro: 'Skulptur i trä och sten — nära havet, nära materialet.',
+		pressRelease:
+			'GALLERIett presenterar Tidvatten, Per Olofssons separatutställning med skulptur i ek, granit, drivved och stål.\n\nOlofsson är baserad på Tjörn och arbetar nära landskapets egna material. Verken bär spår av tidvatten, erosion och hantverk — utan att illustrera kustens vyer. Tyngd och yta möts i former som känns både lokala och tidlösa.\n\nVernissage 1 februari 2026 kl. 15. Utställningen pågår till 15 mars 2026.',
+		image: '/images/ex-thumb-3.jpg',
 		cardImage: '/images/ex-thumb-1.jpg',
-		works: [],
-		installationViews: []
+		works: [
+			{ title: 'Tidvatten I', image: '/images/work-e.jpg' },
+			{ title: 'Drivved', image: '/images/work-f.jpg' },
+			{ title: 'Klint', image: '/images/work-5-clean.jpg' },
+			{ title: 'Saltlinje', image: '/images/work-6-clean.jpg' },
+			{ title: 'Skär', image: '/images/work-a.jpg' },
+			{ title: 'Ebb', image: '/images/work-b.jpg' }
+		],
+		installationViews: [
+			'/images/install-1.jpg',
+			'/images/install-c.jpg',
+			'/images/install-3.jpg'
+		]
 	},
 	{
 		id: 101,
