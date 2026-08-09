@@ -188,11 +188,40 @@ export const artists = [
 		lives: 'Stockholm, Sverige',
 		representedIn: ['Stockholm'],
 		intro: 'Maja Ström målar färgytor där känsla och struktur möts.',
-		bio: 'Ström arbetar med abstrakt måleri i stora format.',
+		bio: 'Maja Ström är verksam i Stockholm och arbetar med abstrakt måleri i stora format. Hennes färgytor bygger lager av struktur och känsla — ytor som både andas och håller kvar blicken.',
 		website: null,
 		image: '/images/artist-maja.jpg',
 		heroImage: null,
-		works: [],
+		works: [
+			{
+				title: 'Färgyta III',
+				year: 2025,
+				medium: 'Akryl på duk',
+				dimensions: '180 × 140 cm',
+				image: '/images/work-maja-a.jpg'
+			},
+			{
+				title: 'Skikt',
+				year: 2025,
+				medium: 'Akryl på duk',
+				dimensions: '160 × 120 cm',
+				image: '/images/work-maja-b.jpg'
+			},
+			{
+				title: 'Rosa fält',
+				year: 2024,
+				medium: 'Akryl på duk',
+				dimensions: '140 × 100 cm',
+				image: '/images/work-maja-c.jpg'
+			},
+			{
+				title: 'Yta / rum',
+				year: 2024,
+				medium: 'Akryl på duk',
+				dimensions: '200 × 150 cm',
+				image: '/images/work-maja-d.jpg'
+			}
+		],
 		exhibitions: [
 			{
 				year: 2025,
@@ -202,7 +231,12 @@ export const artists = [
 				slug: '101-ljus-och-horisont'
 			}
 		],
-		press: []
+		press: [
+			{
+				quote: 'Stora ytor som andas — färg som både vägg och landskap.',
+				source: 'Konstperspektiv'
+			}
+		]
 	},
 	{
 		id: '04',
@@ -605,7 +639,7 @@ export const exhibitions = [
 			{ title: 'Kustljus — Sara Lindqvist', image: '/images/work-2.jpg?v=2' },
 			{ title: 'Tyst form — Erik Halvorsen', image: '/images/work-3.jpg?v=2' },
 			{ title: 'Figur vid fönster — Lisa Werner', image: '/images/work-lisa-a.jpg' },
-			{ title: 'Färgyta III — Maja Ström', image: '/images/work-5.jpg?v=2' },
+			{ title: 'Färgyta III — Maja Ström', image: '/images/work-maja-a.jpg' },
 			{ title: 'Stillhet — Sara Lindqvist', image: '/images/work-6.jpg?v=3' }
 		],
 		installationViews: [
