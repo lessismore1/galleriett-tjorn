@@ -85,11 +85,20 @@ export const artists = [
 			}
 		],
 		exhibitions: [
-			{ year: 2026, title: 'Vintergata', venue: 'GALLERIett, Tjörn' },
-			{ year: 2025, title: 'Ljus & Horisont', venue: 'GALLERIett, Tjörn' },
-			{ year: 2025, title: 'Ljuslinjer', venue: 'Galleri X, Göteborg' },
-			{ year: 2023, title: 'Stillhet', venue: 'Konsthallen, Malmö' },
-			{ year: 2021, title: 'Debutalbum', venue: 'Valand, Göteborg' }
+			{
+				year: 2026,
+				id: 105,
+				title: 'Vintergata',
+				venue: 'GALLERIett, Tjörn',
+				slug: '105-sara-lindqvist-vintergata'
+			},
+			{
+				year: 2025,
+				id: 101,
+				title: 'Ljus & Horisont',
+				venue: 'GALLERIett, Tjörn',
+				slug: '101-ljus-och-horisont'
+			}
 		],
 		press: [
 			{
@@ -147,8 +156,20 @@ export const artists = [
 			}
 		],
 		exhibitions: [
-			{ year: 2026, title: 'Tystnadens rum', venue: 'GALLERIett, Tjörn' },
-			{ year: 2025, title: 'Ljus & Horisont', venue: 'GALLERIett, Tjörn' }
+			{
+				year: 2026,
+				id: 104,
+				title: 'Tystnadens rum',
+				venue: 'GALLERIett, Tjörn',
+				slug: '104-erik-halvorsen-tystnadens-rum'
+			},
+			{
+				year: 2025,
+				id: 101,
+				title: 'Ljus & Horisont',
+				venue: 'GALLERIett, Tjörn',
+				slug: '101-ljus-och-horisont'
+			}
 		],
 		press: [
 			{
@@ -172,7 +193,15 @@ export const artists = [
 		image: '/images/artist-maja.jpg',
 		heroImage: null,
 		works: [],
-		exhibitions: [],
+		exhibitions: [
+			{
+				year: 2025,
+				id: 101,
+				title: 'Ljus & Horisont',
+				venue: 'GALLERIett, Tjörn',
+				slug: '101-ljus-och-horisont'
+			}
+		],
 		press: []
 	},
 	{
@@ -205,7 +234,15 @@ export const artists = [
 				image: '/images/work-2-clean.jpg'
 			}
 		],
-		exhibitions: [{ year: 2026, title: 'Längs vägen / Along the Road', venue: 'GALLERIett, Tjörn' }],
+		exhibitions: [
+			{
+				year: 2026,
+				id: 103,
+				title: 'Längs vägen / Along the Road',
+				venue: 'GALLERIett, Tjörn',
+				slug: '103-langsvagen'
+			}
+		],
 		press: []
 	},
 	{
@@ -221,7 +258,7 @@ export const artists = [
 		bio: 'Vidén arbetar med platsbunden konst och installation.',
 		website: null,
 		image: '/images/artist-annika.jpg',
-		heroImage: null,
+		heroImage: '/images/hero-annika.jpg',
 		works: [
 			{
 				title: 'Passage',
@@ -238,7 +275,15 @@ export const artists = [
 				image: '/images/work-4-clean.jpg'
 			}
 		],
-		exhibitions: [{ year: 2026, title: 'Längs vägen / Along the Road', venue: 'GALLERIett, Tjörn' }],
+		exhibitions: [
+			{
+				year: 2026,
+				id: 103,
+				title: 'Längs vägen / Along the Road',
+				venue: 'GALLERIett, Tjörn',
+				slug: '103-langsvagen'
+			}
+		],
 		press: []
 	},
 	{
@@ -285,7 +330,15 @@ export const artists = [
 				image: '/images/work-102-d.jpg'
 			}
 		],
-		exhibitions: [{ year: 2026, title: 'Tidvatten', venue: 'GALLERIett, Tjörn' }],
+		exhibitions: [
+			{
+				year: 2026,
+				id: 102,
+				title: 'Tidvatten',
+				venue: 'GALLERIett, Tjörn',
+				slug: '102-per-olofsson-tidvatten'
+			}
+		],
 		press: [
 			{
 				quote: 'Olofsson låter Bohusläns material tala utan att illustrera.',
@@ -303,13 +356,55 @@ export const artists = [
 		lives: 'Göteborg, Sverige',
 		representedIn: ['Göteborg'],
 		intro: 'Lisa Werner målar figurer och rum i dämpad färgskala.',
-		bio: 'Werner arbetar med figurativt måleri.',
+		bio: 'Lisa Werner är verksam i Göteborg och arbetar med figurativt måleri. I hennes bilder möts människor, interiörer och ljus i en tyst, dämpad färgskala — ofta med fönster och rum som bärare av närvaro och avstånd.',
 		website: null,
 		image: '/images/artist-lisa.jpg',
 		heroImage: null,
-		works: [],
-		exhibitions: [],
-		press: []
+		works: [
+			{
+				title: 'Figur vid fönster',
+				year: 2025,
+				medium: 'Olja på duk',
+				dimensions: '100 × 80 cm',
+				image: '/images/work-lisa-a.jpg'
+			},
+			{
+				title: 'Rum i grått',
+				year: 2025,
+				medium: 'Olja på duk',
+				dimensions: '90 × 70 cm',
+				image: '/images/work-lisa-b.jpg'
+			},
+			{
+				title: 'Still sittande',
+				year: 2024,
+				medium: 'Olja på duk',
+				dimensions: '80 × 60 cm',
+				image: '/images/work-lisa-c.jpg'
+			},
+			{
+				title: 'Eftermiddagsljus',
+				year: 2024,
+				medium: 'Olja på duk',
+				dimensions: '120 × 90 cm',
+				image: '/images/work-lisa-d.jpg'
+			}
+		],
+		exhibitions: [
+			{
+				year: 2025,
+				id: 101,
+				title: 'Ljus & Horisont',
+				venue: 'GALLERIett, Tjörn',
+				slug: '101-ljus-och-horisont'
+			}
+		],
+		press: [
+			{
+				quote: 'Ett måleri som låter tystnaden mellan figurerna tala.',
+				source: 'Göteborgs-Posten'
+			}
+		]
 	},
 	{
 		id: '08',
@@ -341,7 +436,15 @@ export const artists = [
 				image: '/images/work-6.jpg'
 			}
 		],
-		exhibitions: [{ year: 2026, title: 'Längs vägen / Along the Road', venue: 'GALLERIett, Tjörn' }],
+		exhibitions: [
+			{
+				year: 2026,
+				id: 103,
+				title: 'Längs vägen / Along the Road',
+				venue: 'GALLERIett, Tjörn',
+				slug: '103-langsvagen'
+			}
+		],
 		press: []
 	}
 ];
@@ -501,7 +604,7 @@ export const exhibitions = [
 			{ title: 'Horisont I — Sara Lindqvist', image: '/images/work-1.jpg?v=2' },
 			{ title: 'Kustljus — Sara Lindqvist', image: '/images/work-2.jpg?v=2' },
 			{ title: 'Tyst form — Erik Halvorsen', image: '/images/work-3.jpg?v=2' },
-			{ title: 'Figur vid fönster — Lisa Werner', image: '/images/work-4.jpg?v=2' },
+			{ title: 'Figur vid fönster — Lisa Werner', image: '/images/work-lisa-a.jpg' },
 			{ title: 'Färgyta III — Maja Ström', image: '/images/work-5.jpg?v=2' },
 			{ title: 'Stillhet — Sara Lindqvist', image: '/images/work-6.jpg?v=3' }
 		],

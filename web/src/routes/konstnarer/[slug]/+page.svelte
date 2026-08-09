@@ -43,8 +43,8 @@
 </script>
 
 <section class="hero">
-	{#if artist.heroImage}
-		<img src={artist.heroImage} alt="" class="bg" />
+	{#if artist.heroImage || artist.image}
+		<img src={artist.heroImage || artist.image} alt="" class="bg" />
 	{/if}
 	<div class="container copy">
 		<a class="back" href="/konstnarer">← Tillbaka till konstnärer</a>
@@ -140,7 +140,13 @@
 			{#each artist.exhibitions as ex}
 				<li>
 					<span>{ex.year}</span>
-					<strong>{ex.title}</strong>
+					{#if ex.slug}
+						<a class="ex-link" href={`/utstallningar/${ex.slug}`}>
+							<strong>{ex.id ? `${ex.id} · ${ex.title}` : ex.title}</strong>
+						</a>
+					{:else}
+						<strong>{ex.title}</strong>
+					{/if}
 					<em>{ex.venue}</em>
 				</li>
 			{:else}
@@ -412,6 +418,15 @@
 		gap: 0.5rem 1rem;
 		padding: 1rem 0;
 		border-bottom: 1px solid var(--border);
+	}
+
+	.list .ex-link {
+		grid-column: 2;
+		justify-self: start;
+	}
+
+	.list .ex-link:hover strong {
+		box-shadow: inset 0 -1px 0 var(--brand);
 	}
 
 	.list em {
