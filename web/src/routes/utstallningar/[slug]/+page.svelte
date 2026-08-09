@@ -87,6 +87,11 @@
 {/if}
 <nav class="band subnav" class:stuck bind:this={subnavEl} aria-label="Sektioner">
 	<div class="container subnav-inner">
+		{#if stuck}
+			<a class="subnav-home" href="/" aria-label="GALLERIett — startsida">
+				<img src="/images/logo.webp" alt="" width="36" height="36" />
+			</a>
+		{/if}
 		<strong class="ex-name serif">{ex.artist} <span class="sep">|</span> {ex.title}</strong>
 		<div class="subnav-links">
 			<a href="#press-release">Pressmeddelande</a>
@@ -192,11 +197,17 @@
 		{:else}
 			<span></span>
 		{/if}
+		<a class="all" href="/utstallningar">
+			<span class="label">Alla årets</span>
+			<strong>Utställningar</strong>
+		</a>
 		{#if data.next}
 			<a class="right" href={`/utstallningar/${data.next.slug}`}>
 				<span class="label">Nästa utställning</span>
 				<strong>{data.next.id} · {data.next.artist} — {data.next.title}</strong>
 			</a>
+		{:else}
+			<span></span>
 		{/if}
 	</div>
 </nav>
@@ -294,6 +305,19 @@
 		align-items: center;
 		gap: 1rem;
 		min-height: 3.25rem;
+	}
+
+	.subnav-home {
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+	}
+
+	.subnav-home img {
+		width: 2.25rem;
+		height: 2.25rem;
+		display: block;
+		object-fit: contain;
 	}
 
 	.ex-name {
@@ -474,14 +498,21 @@
 	}
 
 	.pager {
-		display: flex;
-		justify-content: space-between;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
 		gap: 1rem;
+		align-items: start;
 		padding-block: 1.5rem 2.25rem;
 	}
 
 	.pager .right {
 		text-align: right;
+		justify-self: end;
+	}
+
+	.pager .all {
+		text-align: center;
+		justify-self: center;
 	}
 
 	.pager strong {

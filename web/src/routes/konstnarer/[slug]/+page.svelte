@@ -61,6 +61,11 @@
 {/if}
 <nav class="band subnav" class:stuck bind:this={subnavEl} aria-label="Sektioner">
 	<div class="container subnav-inner">
+		{#if stuck}
+			<a class="subnav-home" href="/" aria-label="GALLERIett — startsida">
+				<img src="/images/logo.webp" alt="" width="36" height="36" />
+			</a>
+		{/if}
 		<strong class="artist-name serif">{artist.name}</strong>
 		<div class="subnav-links">
 			<a href="#works">Verk</a>
@@ -301,6 +306,19 @@
 		align-items: center;
 		gap: 1rem;
 		min-height: 3.25rem;
+	}
+
+	.subnav-home {
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+	}
+
+	.subnav-home img {
+		width: 2.25rem;
+		height: 2.25rem;
+		display: block;
+		object-fit: contain;
 	}
 
 	.artist-name {
