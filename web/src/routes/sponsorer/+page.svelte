@@ -1,12 +1,15 @@
 <script lang="ts">
 	import { sponsors } from '$lib/data/mockData.js';
 	import Seo from '$lib/components/Seo.svelte';
+	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 </script>
 
 <Seo
 	title="Sponsorer · GALLERIett"
 	description="Ett varmt tack till GALLERIetts sponsorer och samarbetspartners på Tjörn."
 />
+
+<Breadcrumbs crumbs={[{ name: 'Sponsorer' }]} />
 
 <section class="band">
 	<div class="container head">

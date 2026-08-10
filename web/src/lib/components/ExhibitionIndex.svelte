@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { statusLabels } from '$lib/data/mockData.js';
 	import Seo from '$lib/components/Seo.svelte';
+	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 
 	type Filter = 'year' | 'ongoing' | 'upcoming' | 'archive';
 
@@ -40,9 +41,26 @@
 			label: 'Arkiv'
 		}
 	]);
+
+	const crumbs = $derived.by(() => {
+		const base = { name: 'Utställningar', href: '/utstallningar' };
+		if (filter === 'year') return [{ name: 'Utställningar' }];
+		if (filter === 'ongoing') return [base, { name: 'Pågående' }];
+		if (filter === 'upcoming') return [base, { name: 'Kommande' }];
+		if (filter === 'archive') {
+			return [
+				base,
+				{ name: 'Arkiv', href: archiveYears[0] ? `/utstallningar/arkiv/${archiveYears[0]}` : '/utstallningar/arkiv' },
+				...(archiveYear != null ? [{ name: String(archiveYear) }] : [])
+			];
+		}
+		return [{ name: 'Utställningar' }];
+	});
 </script>
 
 <Seo title={seo.title} description={seo.description} image={seo.image ?? null} />
+
+<Breadcrumbs crumbs={crumbs} />
 
 <section class="band">
 	<div class="container head">

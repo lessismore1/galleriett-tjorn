@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { about, site } from '$lib/data/mockData.js';
+	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 </script>
+
+<Breadcrumbs crumbs={[{ name: 'Om' }]} />
 
 <section class="band-soft band-pad">
 	<div class="container narrow">

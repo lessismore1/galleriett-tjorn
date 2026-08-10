@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getNewsIndex } from '$lib/data/mockData.js';
 	import Seo from '$lib/components/Seo.svelte';
+	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 
 	let filter = $state('Alla');
 	const filters = ['Alla', 'Från galleriet', 'Media'];
@@ -15,6 +16,8 @@
 	title="Nyheter · GALLERIett"
 	description="Nyheter och media om GALLERIett, konstnärer och utställningar på Tjörn."
 />
+
+<Breadcrumbs crumbs={[{ name: 'Nyheter' }]} />
 
 <section class="band">
 	<div class="container head">

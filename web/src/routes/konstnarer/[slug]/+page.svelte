@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { artists, getArtistNews, getArtistPress } from '$lib/data/mockData.js';
+	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 
 	let { data } = $props();
 	const artist = $derived(data.artist);
@@ -43,12 +44,18 @@
 	});
 </script>
 
+<Breadcrumbs
+	crumbs={[
+		{ name: 'Konstnärer', href: '/konstnarer' },
+		{ name: artist.name }
+	]}
+/>
+
 <section class="hero">
 	{#if artist.heroImage || artist.image}
 		<img src={artist.heroImage || artist.image} alt="" class="bg" />
 	{/if}
 	<div class="container copy">
-		<a class="back" href="/konstnarer">← Tillbaka till konstnärer</a>
 		<h1 class="serif">{artist.name}</h1>
 		<p class="born">Född {artist.born}</p>
 		<p class="intro">{artist.intro}</p>
@@ -266,15 +273,6 @@
 		position: relative;
 		padding-block: 3rem;
 		max-width: 40rem;
-	}
-
-	.back {
-		display: inline-block;
-		font-size: 0.7rem;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-		margin-bottom: 1.25rem;
-		opacity: 0.85;
 	}
 
 	h1 {

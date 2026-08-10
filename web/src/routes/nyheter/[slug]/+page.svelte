@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Seo from '$lib/components/Seo.svelte';
+	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 
 	let { data } = $props();
 	const article = $derived(data.article);
@@ -19,9 +20,15 @@
 	type="article"
 />
 
+<Breadcrumbs
+	crumbs={[
+		{ name: 'Nyheter', href: '/nyheter' },
+		{ name: article.title }
+	]}
+/>
+
 <section class="band band-pad">
 	<div class="container">
-		<a class="back label" href="/nyheter">← Till nyheter</a>
 		<div class="layout">
 			<div class="text">
 				<p class="label meta">{article.category} · {article.dateLabel}</p>
@@ -65,12 +72,6 @@
 {/if}
 
 <style>
-	.back {
-		display: inline-block;
-		margin-bottom: 1.5rem;
-		color: var(--text-secondary);
-	}
-
 	.layout {
 		display: grid;
 		gap: 2rem;

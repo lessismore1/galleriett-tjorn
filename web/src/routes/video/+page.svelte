@@ -1,3 +1,9 @@
+<script lang="ts">
+	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+</script>
+
+<Breadcrumbs crumbs={[{ name: 'Video' }]} />
+
 <section class="band-soft band-pad">
 	<div class="container">
 		<h1 class="serif">Video</h1>

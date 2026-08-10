@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { site } from '$lib/data/mockData.js';
 	import Seo from '$lib/components/Seo.svelte';
+	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 
 	let { data } = $props();
 	const ex = $derived(data.exhibition);
@@ -65,9 +66,15 @@
 
 <Seo title={pageTitle} description={pageDescription} image={ex.image} type="article" />
 
+<Breadcrumbs
+	crumbs={[
+		{ name: 'Utställningar', href: '/utstallningar' },
+		{ name: ex.title }
+	]}
+/>
+
 <section class="band-soft">
 	<div class="container top">
-		<a class="back" href="/utstallningar">← Till utställningar</a>
 		<div class="hero">
 			<div class="hero-copy">
 				<p class="label">Utställning {ex.id}</p>
@@ -215,14 +222,6 @@
 <style>
 	.top {
 		padding-block: 1.35rem 1.75rem;
-	}
-
-	.back {
-		font-family: var(--font-sans);
-		font-size: var(--text-label);
-		letter-spacing: var(--track-label);
-		text-transform: uppercase;
-		color: var(--text-secondary);
 	}
 
 	.hero {

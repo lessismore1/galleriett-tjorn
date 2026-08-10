@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { site } from '$lib/data/mockData.js';
+	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 
 	const addr = `${site.address.street}, ${site.address.postal}`;
 </script>
+
+<Breadcrumbs crumbs={[{ name: 'Kontakt' }]} />
 
 <section class="band">
 	<div class="container hero">

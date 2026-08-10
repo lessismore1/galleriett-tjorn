@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { artists } from '$lib/data/mockData.js';
+	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 
 	let filter = $state('Alla konstnärer');
 	let query = $state('');
@@ -13,6 +14,8 @@
 			.sort((a, b) => a.name.localeCompare(b.name, 'sv'))
 	);
 </script>
+
+<Breadcrumbs crumbs={[{ name: 'Konstnärer' }]} />
 
 <section class="band">
 	<div class="container intro">
