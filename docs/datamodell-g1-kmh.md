@@ -114,6 +114,8 @@ GALLERIett som **plats** i KmH (`location` “GALLERI ett”) är redan verkligh
 **G1-utställning ≠ KmH-event.**  
 Ett G1-show har start/slut och pressmeddelande. Ett KmH-event är en årsedition med många platser. Undvik att slå ihop dem till en typ; låt dem referera samma `artist` / `artwork` / `location`.
 
+Valfritt på `exhibition`: `facebookEventUrl` (Facebook-event för just den utställningen). Visas som diskret text-CTA i heron när fältet är satt.
+
 ---
 
 ## 4. `location` — hur plats kommer in (2026 → 2027)

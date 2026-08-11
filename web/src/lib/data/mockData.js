@@ -712,6 +712,7 @@ export const exhibitions = [
 		vernissage: '2026-08-01T13:00:00',
 		intro:
 			'Två uttryck — en utställning. Kattis Palmnäs färgsprakande måleri möter Robert Oldergaarden unika glaskonst, där glasets ljus möter dukens färgexplosion.',
+		facebookEventUrl: 'https://www.facebook.com/events/1668416974242177',
 		pressRelease:
 			'Välkommen till utställningen Ljus Färg Form med Kattis Palmnäs och Robert Oldergaarden, 1–9 augusti 2026.\n\nRobert Oldergaarden är mästarutbildad glaskonstnär med rötter från Orrefors/Kosta Boda och tidigare lärare vid Riksglasskolan. Idag verkar han i sin egen hytta på Öland och skapar magiska, stämningsfulla och lysande glasverk.\n\nKattis Palmnäs (K. Palmnäs ART) är känd för storskaliga, färgsprakande akrylmålningar och uttrycksfulla porträtt. Hennes konst sprider energi och har nått bland annat kungliga samlingar hos Prins Albert av Monaco.\n\nTillsammans skapar deras verk en unik helhet där glasets ljus möter dukens färg. Vernissage 1 augusti kl. 13. Öppet alla dagar kl. 13–18. Fri entré.',
 		image: '/images/ex-104-ljus-farg-form.jpg',
