@@ -1,15 +1,28 @@
 <script lang="ts">
-	import { artists } from '$lib/data/mockData.js';
+	import { artists, getArtistProgram } from '$lib/data/mockData.js';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+	import ArtistCard from '$lib/components/ArtistCard.svelte';
 
 	let filter = $state('Alla konstnärer');
 	let query = $state('');
 
-	const filters = ['Alla konstnärer', 'Måleri', 'Skulptur', 'Glas', 'Fotografi', 'Installation'];
+	const filters = [
+		'Alla konstnärer',
+		'Pågående',
+		'Måleri',
+		'Skulptur',
+		'Glas',
+		'Fotografi',
+		'Installation'
+	];
 
 	const filtered = $derived(
 		artists
-			.filter((a) => filter === 'Alla konstnärer' || a.specialty === filter)
+			.filter((a) => {
+				if (filter === 'Alla konstnärer') return true;
+				if (filter === 'Pågående') return getArtistProgram(a.slug)?.status === 'ongoing';
+				return a.specialty === filter;
+			})
 			.filter((a) => !query || a.name.toLowerCase().includes(query.toLowerCase()))
 			.sort((a, b) => a.name.localeCompare(b.name, 'sv'))
 	);
@@ -36,7 +49,7 @@
 		<div class="toolbar">
 			<div class="filters">
 				{#each filters as f}
-					<button class:active={filter === f} onclick={() => (filter = f)}>{f}</button>
+					<button type="button" class:active={filter === f} onclick={() => (filter = f)}>{f}</button>
 				{/each}
 			</div>
 			<label class="search">
@@ -45,20 +58,15 @@
 			</label>
 		</div>
 
-		<div class="grid">
-			{#each filtered as artist}
-				<a class="card" href={`/konstnarer/${artist.slug}`}>
-					<img src={artist.image} alt={artist.name} />
-					<div class="meta">
-						<div>
-							<h2 class="serif">{artist.name}</h2>
-							<p>{artist.specialty}</p>
-						</div>
-						<span aria-hidden="true">→</span>
-					</div>
-				</a>
-			{/each}
-		</div>
+		{#if filtered.length}
+			<div class="grid">
+				{#each filtered as artist (artist.slug)}
+					<ArtistCard {artist} />
+				{/each}
+			</div>
+		{:else}
+			<p class="empty">Inga konstnärer matchar filtret.</p>
+		{/if}
 	</div>
 </section>
 
@@ -158,42 +166,13 @@
 
 	.grid {
 		display: grid;
-		gap: 1.75rem 1.25rem;
-		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		gap: 2rem 1.5rem;
+		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 	}
 
-	.card img {
-		width: 100%;
-		aspect-ratio: 1;
-		object-fit: cover;
-		margin-bottom: 0.75rem;
-		background: #e8e8e2;
-	}
-
-	.meta {
-		display: flex;
-		justify-content: space-between;
-		align-items: start;
-		gap: 0.5rem;
-	}
-
-	.meta span {
-		color: var(--brand);
-		font-weight: 700;
-	}
-
-	h2 {
-		font-size: 1.2rem;
+	.empty {
 		margin: 0;
-		font-weight: 500;
-	}
-
-	.meta p {
-		margin: 0.2rem 0 0;
-		font-size: 0.65rem;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-		color: var(--text-muted);
+		color: var(--text-secondary);
 	}
 
 	.cta {

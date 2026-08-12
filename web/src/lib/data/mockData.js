@@ -1043,3 +1043,23 @@ export function getOngoingExhibition() {
 export function getExhibitionsByStatus(status) {
 	return exhibitions.filter((e) => e.status === status);
 }
+
+/**
+ * Pågående/kommande utställning där konstnären ingår (prioriterar pågående).
+ * @param {string} artistSlug
+ * @returns {{ status: 'ongoing' | 'upcoming', exhibition: (typeof exhibitions)[number] } | null}
+ */
+export function getArtistProgram(artistSlug) {
+	/** @param {(typeof exhibitions)[number]} e */
+	const inShow = (e) =>
+		e.artistSlug === artistSlug ||
+		(Array.isArray(e.artistSlugs) && e.artistSlugs.includes(artistSlug));
+
+	const ongoing = exhibitions.find((e) => e.status === 'ongoing' && inShow(e));
+	if (ongoing) return { status: 'ongoing', exhibition: ongoing };
+
+	const upcoming = exhibitions.find((e) => e.status === 'upcoming' && inShow(e));
+	if (upcoming) return { status: 'upcoming', exhibition: upcoming };
+
+	return null;
+}
