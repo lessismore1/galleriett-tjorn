@@ -16,14 +16,20 @@
 
 	const program = $derived(getArtistProgram(artist.slug));
 
+	const workSrc = $derived(artist.works?.[0]?.image ?? null);
+	const portraitSrc = $derived(artist.image || null);
+
 	const slides = $derived.by(() => {
 		const list: Slide[] = [];
-		const work = artist.works?.[0];
-		if (work?.image) {
-			list.push({ kind: 'work', src: work.image, label: work.title?.trim() || 'Verk' });
+		if (workSrc) {
+			list.push({
+				kind: 'work',
+				src: workSrc,
+				label: artist.works?.[0]?.title?.trim() || 'Verk'
+			});
 		}
-		if (artist.image) {
-			list.push({ kind: 'portrait', src: artist.image, label: 'Porträtt' });
+		if (portraitSrc) {
+			list.push({ kind: 'portrait', src: portraitSrc, label: 'Porträtt' });
 		}
 		if (program?.exhibition?.image) {
 			list.push({
@@ -32,8 +38,8 @@
 				label: program.exhibition.title || 'Utställning'
 			});
 		}
-		if (!list.length && artist.image) {
-			list.push({ kind: 'portrait', src: artist.image, label: artist.name });
+		if (!list.length && portraitSrc) {
+			list.push({ kind: 'portrait', src: portraitSrc, label: artist.name });
 		}
 		return list;
 	});
@@ -51,12 +57,29 @@
 	let touchStartX = 0;
 	let didSwipe = false;
 
+	/** 0 = verk (fyrkant), 1 = porträtt (cirkel) */
+	let iconSlide = $state(0);
+	let iconPaused = $state(false);
+
 	const current = $derived(slides[Math.min(index, Math.max(slides.length - 1, 0))] ?? null);
 	const canCarousel = $derived(slides.length > 1);
+	const canIconAlternate = $derived(!!(workSrc && portraitSrc));
 
 	$effect(() => {
 		slides;
 		index = 0;
+	});
+
+	$effect(() => {
+		if (!browser || !canIconAlternate || iconPaused) return;
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			iconSlide = 1;
+			return;
+		}
+		const id = window.setInterval(() => {
+			iconSlide = iconSlide === 0 ? 1 : 0;
+		}, 6500);
+		return () => clearInterval(id);
 	});
 
 	function go(delta: number) {
@@ -160,12 +183,41 @@
 		{/if}
 	</div>
 
-	<a class="meta" href={`/konstnarer/${artist.slug}`}>
-		<div>
+	<a
+		class="meta"
+		href={`/konstnarer/${artist.slug}`}
+		onmouseenter={() => (iconPaused = true)}
+		onmouseleave={() => (iconPaused = false)}
+		onfocus={() => (iconPaused = true)}
+		onblur={() => (iconPaused = false)}
+	>
+		{#if canIconAlternate || workSrc || portraitSrc}
+			<div class="icon" aria-hidden="true">
+				{#if canIconAlternate}
+					<img
+						src={workSrc!}
+						alt=""
+						class="icon-img square"
+						class:show={iconSlide === 0}
+					/>
+					<img
+						src={portraitSrc!}
+						alt=""
+						class="icon-img circle"
+						class:show={iconSlide === 1}
+					/>
+				{:else if portraitSrc}
+					<img src={portraitSrc} alt="" class="icon-img circle show" />
+				{:else if workSrc}
+					<img src={workSrc} alt="" class="icon-img square show" />
+				{/if}
+			</div>
+		{/if}
+		<div class="meta-text">
 			<h2 class="serif">{artist.name}</h2>
 			<p>{artist.specialty}</p>
 		</div>
-		<span aria-hidden="true">→</span>
+		<span class="arrow" aria-hidden="true">→</span>
 	</a>
 </article>
 
@@ -284,9 +336,8 @@
 
 	.meta {
 		display: flex;
-		justify-content: space-between;
-		align-items: start;
-		gap: 0.65rem;
+		align-items: center;
+		gap: 0.75rem;
 		margin-top: 0.15rem;
 		padding: 0.7rem 0.55rem 0.75rem;
 		margin-inline: -0.55rem;
@@ -307,18 +358,54 @@
 		text-decoration-thickness: 1px;
 	}
 
-	.meta span {
+	.icon {
+		position: relative;
+		width: 2.75rem;
+		height: 2.75rem;
+		flex-shrink: 0;
+		background: #e8e8e2;
+	}
+
+	.icon-img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		opacity: 0;
+		transition: opacity 0.9s ease;
+	}
+
+	.icon-img.show {
+		opacity: 1;
+	}
+
+	.icon-img.square {
+		border-radius: 0;
+	}
+
+	.icon-img.circle {
+		border-radius: 999px;
+	}
+
+	.meta-text {
+		min-width: 0;
+		flex: 1;
+	}
+
+	.arrow {
 		color: var(--text-secondary);
 		font-size: 1.15rem;
 		font-weight: 600;
 		line-height: 1.2;
+		flex-shrink: 0;
 		transition:
 			color 0.18s ease,
 			transform 0.18s ease;
 	}
 
-	.meta:hover span,
-	.meta:focus-visible span {
+	.meta:hover .arrow,
+	.meta:focus-visible .arrow {
 		color: var(--text);
 		transform: translateX(3px);
 	}
@@ -353,6 +440,12 @@
 		.media:hover .chrome,
 		.media:focus-within .chrome {
 			opacity: 1;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.icon-img {
+			transition: none;
 		}
 	}
 </style>

@@ -167,7 +167,25 @@
 	.grid {
 		display: grid;
 		gap: 2rem 1.5rem;
-		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+		grid-template-columns: 1fr;
+	}
+
+	@media (min-width: 600px) {
+		.grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 900px) {
+		.grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	@media (min-width: 1100px) {
+		.grid {
+			grid-template-columns: repeat(4, 1fr);
+		}
 	}
 
 	.empty {
