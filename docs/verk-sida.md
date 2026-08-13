@@ -65,7 +65,7 @@ Se `docs/seo-policy.md`.
 5. Kontext: “Utställning” om verket hänger i en show  
 6. CTA: `Maila om intresse`  
 7. Dela: Facebook + kopiera länk + mail  
-8. Bläddra: föregående / nästa verk hos samma konstnär  
+8. Bläddra: föregående / nästa verk hos samma konstnär — under breadcrumbs; sticky och ersätter header (logo + konstnär · Verk · ‹ prev / count / next ›), samma handoff som konstnärs-/utställnings-subnav  
 
 Story är **inte** obligatorisk — utan text visas bara meta. Bra för SEO/delning när den finns (används i meta description).
 

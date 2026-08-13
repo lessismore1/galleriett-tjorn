@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import {
 		site,
@@ -55,6 +56,10 @@
 	);
 
 	let copied = $state(false);
+	let sentinelEl = $state<HTMLElement | null>(null);
+	let subnavEl = $state<HTMLElement | null>(null);
+	let stuck = $state(false);
+	let subnavH = $state(52);
 
 	async function copyLink() {
 		if (!browser) return;
@@ -82,6 +87,28 @@
 	const showInterestCta = $derived(
 		work.availability !== 'sold' && work.availability !== 'not_for_sale'
 	);
+
+	onMount(() => {
+		const header = document.querySelector('header.header') as HTMLElement | null;
+
+		const update = () => {
+			if (!sentinelEl) return;
+			const headerH = header?.offsetHeight ?? 64;
+			if (subnavEl) subnavH = subnavEl.offsetHeight;
+			stuck = sentinelEl.getBoundingClientRect().top <= headerH + 0.5;
+			document.body.classList.toggle('subnav-stuck', stuck);
+		};
+
+		update();
+		window.addEventListener('scroll', update, { passive: true });
+		window.addEventListener('resize', update);
+
+		return () => {
+			window.removeEventListener('scroll', update);
+			window.removeEventListener('resize', update);
+			document.body.classList.remove('subnav-stuck');
+		};
+	});
 </script>
 
 <Seo title={pageTitle} description={pageDescription} image={work.image} type="article" />
@@ -93,6 +120,27 @@
 		{ name: work.title }
 	]}
 />
+
+<div class="subnav-sentinel" bind:this={sentinelEl} aria-hidden="true"></div>
+{#if stuck}
+	<div class="subnav-spacer" style={`height: ${subnavH}px`} aria-hidden="true"></div>
+{/if}
+<nav class="band subnav" class:stuck bind:this={subnavEl} aria-label="Bläddra bland verk">
+	<div class="container subnav-inner">
+		{#if stuck}
+			<a class="subnav-home" href="/" aria-label="GALLERIett — startsida">
+				<img src="/images/logo.webp" alt="" width="36" height="36" />
+			</a>
+			<a class="artist-name serif" href={`/konstnarer/${artist.slug}`}>{artist.name}</a>
+			<span class="scope" aria-hidden="true">Verk</span>
+		{/if}
+		<div class="browse">
+			<a href={workHref(artist.slug, prev)} aria-label={`Föregående: ${prev.title}`}>‹ {prev.title}</a>
+			<span class="count">{data.index + 1} / {data.total}</span>
+			<a href={workHref(artist.slug, next)} aria-label={`Nästa: ${next.title}`}>{next.title} ›</a>
+		</div>
+	</div>
+</nav>
 
 <section class="band-soft">
 	<div class="container layout">
@@ -171,17 +219,131 @@
 				<button type="button" onclick={copyLink}>{copied ? 'Kopierad' : 'Kopiera länk'}</button>
 				<a href={shareMail}>Mail</a>
 			</div>
-
-			<nav class="browse" aria-label="Bläddra bland verk">
-				<a href={workHref(artist.slug, prev)} aria-label={`Föregående: ${prev.title}`}>‹ {prev.title}</a>
-				<span class="count">{data.index + 1} / {data.total}</span>
-				<a href={workHref(artist.slug, next)} aria-label={`Nästa: ${next.title}`}>{next.title} ›</a>
-			</nav>
 		</div>
 	</div>
 </section>
 
 <style>
+	.subnav-sentinel {
+		height: 0;
+		width: 100%;
+		pointer-events: none;
+	}
+
+	.subnav-spacer {
+		pointer-events: none;
+	}
+
+	.subnav {
+		border-block: 1px solid var(--border);
+		background: rgba(255, 255, 255, 0.96);
+		backdrop-filter: blur(8px);
+	}
+
+	.subnav.stuck {
+		position: fixed;
+		top: 0;
+		left: var(--brand-edge);
+		right: 0;
+		z-index: 60;
+		box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+	}
+
+	.subnav-inner {
+		display: flex;
+		align-items: center;
+		gap: 0.65rem;
+		min-height: 3.25rem;
+		min-width: 0;
+	}
+
+	.subnav-home {
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+	}
+
+	.subnav-home img {
+		width: 2.25rem;
+		height: 2.25rem;
+		display: block;
+		object-fit: contain;
+	}
+
+	.artist-name {
+		font-size: 0.95rem;
+		font-weight: 500;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		flex-shrink: 1;
+		min-width: 0;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		max-width: 10rem;
+		color: var(--text);
+		text-decoration: none;
+	}
+
+	.artist-name:hover {
+		box-shadow: inset 0 -2px 0 var(--brand);
+	}
+
+	.scope {
+		flex-shrink: 0;
+		font-size: var(--text-label);
+		font-weight: 600;
+		letter-spacing: var(--track-label);
+		text-transform: uppercase;
+		color: var(--text-muted);
+	}
+
+	.browse {
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		gap: 0.65rem;
+		align-items: center;
+		flex: 1;
+		min-width: 0;
+		font-size: var(--text-label);
+		font-weight: 600;
+		letter-spacing: var(--track-label);
+		text-transform: uppercase;
+		line-height: 1.2;
+		color: var(--text-secondary);
+	}
+
+	.browse a:first-child {
+		justify-self: start;
+	}
+
+	.browse a:last-child {
+		justify-self: end;
+		text-align: right;
+	}
+
+	.browse a {
+		max-width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		color: inherit;
+		text-decoration: none;
+		padding-block: 0.85rem;
+	}
+
+	.browse a:hover {
+		color: var(--text);
+		box-shadow: inset 0 -2px 0 var(--brand);
+	}
+
+	.count {
+		justify-self: center;
+		color: var(--text);
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
+	}
+
 	.layout {
 		display: grid;
 		gap: 2rem;
@@ -328,7 +490,7 @@
 		flex-wrap: wrap;
 		align-items: center;
 		gap: 0.75rem 1rem;
-		margin-bottom: 2rem;
+		margin: 0;
 		padding-top: 1rem;
 		border-top: 1px solid var(--border);
 	}
@@ -357,42 +519,11 @@
 		color: var(--text);
 	}
 
-	.browse {
-		display: grid;
-		grid-template-columns: 1fr auto 1fr;
-		gap: 0.75rem;
-		align-items: center;
-		padding-top: 1rem;
-		border-top: 1px solid var(--border);
-		font-size: 0.75rem;
-	}
-
-	.browse a:first-child {
-		justify-self: start;
-	}
-
-	.browse a:last-child {
-		justify-self: end;
-		text-align: right;
-	}
-
-	.browse a {
-		max-width: 100%;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		color: var(--text-secondary);
-	}
-
-	.browse a:hover {
-		color: var(--text);
-	}
-
-	.count {
-		font-size: 0.65rem;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-		color: var(--text-muted);
+	@media (max-width: 699px) {
+		.artist-name,
+		.scope {
+			display: none;
+		}
 	}
 
 	@media (min-width: 900px) {
@@ -401,10 +532,6 @@
 			align-items: start;
 			gap: 2.5rem;
 			padding-block: 2.5rem 4rem;
-		}
-
-		.media img {
-			aspect-ratio: 4 / 5;
 		}
 	}
 </style>

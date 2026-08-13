@@ -35,6 +35,18 @@ Samma arkitektur på detaljsidor — **TEXT | BILD**, full-bleed soft-band (`.ba
 
 **Start** behåller overlay (landning). **Listor** behåller title-band. Skillnad mellan konstnär och utställning = innehåll/typografi, inte annan hero-modell.
 
+## Sticky subnav (detalj)
+
+Konstnär, utställning och **verk** delar samma handoff: sentinel under breadcrumbs → `body.subnav-stuck` döljer site-header → fixed bar med logga.
+
+| Sida | Innehåll när stuck |
+|---|---|
+| Konstnär | Logga + namn + sektionslänkar |
+| Utställning | Logga + titel + sektionslänkar |
+| Verk | Logga + konstnär · Verk · ‹ prev / n / next › |
+
+På verk: bläddra syns redan under BC (utan logga/namn); chrome läggs till först när baren stickyar.
+
 ## Komponenter (kort)
 
 **Regel:** Om samma UI används (eller ska kunna användas) på mer än en plats → egen komponent.
