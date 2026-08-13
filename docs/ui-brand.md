@@ -39,7 +39,7 @@ Samma arkitektur på detaljsidor — **TEXT | BILD**, full-bleed soft-band (`.ba
 
 Konstnär och utställning: sentinel under breadcrumbs → `body.subnav-stuck` döljer site-header → fixed bar med logga.
 
-**Verk** har egen chrome: ingen site-header, ingen breadcrumbs. Sticky subnav styr allt från start (logo · konstnär · Verk · ‹ prev / n / next ›). Header döljs via path-check i `Header.svelte`.
+**Verk** har egen chrome: ingen site-header, ingen breadcrumbs. Sticky subnav styr allt från start (logo · konstnär · Verk · ‹ prev / n / next ›). Header döljs via path-check i `Header.svelte`. På desktop: hela verket syns i viewport (`object-fit: contain`); meta/CTA scrollar i högerkolumnen.
 
 | Sida | Innehåll när stuck / på verk |
 |---|---|

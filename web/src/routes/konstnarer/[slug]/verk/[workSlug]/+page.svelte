@@ -288,20 +288,26 @@
 
 	.layout {
 		display: grid;
-		gap: 2rem;
-		padding-block: 2rem 3rem;
+		gap: 1.5rem;
+		padding-block: 1rem 2.5rem;
+		align-items: start;
 	}
 
 	.media {
 		margin: 0;
+		min-width: 0;
+		align-self: start;
 		background: #e8e8e2;
 	}
 
 	.media img {
-		width: 100%;
 		display: block;
-		aspect-ratio: 4 / 5;
-		object-fit: cover;
+		width: auto;
+		height: auto;
+		max-width: 100%;
+		max-height: calc(100svh - 3.5rem - 2rem);
+		object-fit: contain;
+		margin-inline: auto;
 	}
 
 	.label {
@@ -471,10 +477,36 @@
 
 	@media (min-width: 900px) {
 		.layout {
-			grid-template-columns: 1.15fr 0.85fr;
-			align-items: start;
-			gap: 2.5rem;
-			padding-block: 2.5rem 4rem;
+			grid-template-columns: minmax(0, 1.2fr) minmax(17rem, 0.8fr);
+			gap: 2rem;
+			padding-block: 1rem 1.25rem;
+			/* En “stage”: hela verket syns; info scrollar i kolumnen om den är längre */
+			min-height: calc(100svh - 3.25rem);
+			max-height: calc(100svh - 3.25rem);
+			box-sizing: border-box;
+		}
+
+		.media {
+			height: 100%;
+			max-height: calc(100svh - 3.25rem - 2rem);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: transparent;
+		}
+
+		.media img {
+			max-width: 100%;
+			max-height: 100%;
+			width: auto;
+			height: auto;
+		}
+
+		.info {
+			max-height: calc(100svh - 3.25rem - 2rem);
+			overflow-y: auto;
+			overscroll-behavior: contain;
+			scrollbar-gutter: stable;
 		}
 	}
 </style>
