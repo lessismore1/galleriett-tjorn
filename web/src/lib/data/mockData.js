@@ -902,18 +902,6 @@ export const news = [
 		body: 'Kattis Palmnäs har etablerat sig med ett färgstarkt, energifyllt måleri — och expanderade hösten 2024 lokalt genom att öppna ett eget galleri vid Bagges Torg i Lerum.\n\nI Lerums Tidning berättas om chansen att se hennes konst på plats i det nya galleriet: en mötespunkt där målningar, uttryck och publik kan mötas i vardagen.\n\nPalmnäs är verksam via Tim Tiger K Palmnäs Art AB och arbetar med storskaliga akrylmålningar, porträtt och mönster. Galleriet i Lerum kompletterar hennes närvaro på andra orter och i samarbeten utanför Sverige.'
 	},
 	{
-		slug: 'recension-dn',
-		kind: 'news',
-		category: 'Media',
-		title: 'Recension i Dagens Nyheter',
-		date: '2026-08-03',
-		dateLabel: '3 AUGUSTI 2026',
-		image: '/images/card-news.jpg',
-		thumb: '/images/news-1.jpg',
-		excerpt: 'DN skriver om den pågående utställningen på Galleri Ett.',
-		clickable: false
-	},
-	{
 		slug: 'paletten',
 		kind: 'news',
 		category: 'Media',

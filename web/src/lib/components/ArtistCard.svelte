@@ -256,6 +256,7 @@
 		display: flex;
 		flex-direction: column;
 		min-width: 0;
+		height: 100%;
 		color: inherit;
 		text-decoration: none;
 		transition: box-shadow 0.18s ease;
@@ -372,7 +373,7 @@
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
-		margin-top: 0.15rem;
+		flex: 1;
 		padding: 0.7rem 0.55rem 0.75rem;
 		color: inherit;
 		text-decoration: none;

@@ -4,26 +4,20 @@
 		getOngoingExhibitions,
 		getUpcomingExhibitions,
 		getNewsIndex,
-		statusLabels,
 		getRotatedSponsors
 	} from '$lib/data/mockData.js';
+	import ExhibitionCard from '$lib/components/ExhibitionCard.svelte';
 	import SponsorsCarousel from '$lib/components/SponsorsCarousel.svelte';
 
 	const ongoingList = getOngoingExhibitions();
 	const ongoing = ongoingList[0];
 	const featuredExhibitions = [...ongoingList, ...getUpcomingExhibitions()].slice(0, 2);
 	const news = getNewsIndex();
-	const featuredNews = news[0];
+	const featuredNews = news.find((n) => n.clickable) ?? news[0];
 	const homeSponsors = getRotatedSponsors();
 
 	function cardSrc(item: { cardImage?: string; image: string }) {
 		return item.cardImage ?? item.image;
-	}
-
-	function statusLabel(status: string) {
-		if (status === 'ongoing') return statusLabels.ongoing;
-		if (status === 'upcoming') return statusLabels.upcoming;
-		return statusLabels.past;
 	}
 </script>
 
@@ -54,24 +48,26 @@
 		</div>
 		<div class="cards">
 			{#each featuredExhibitions as item}
-				<a class="card" href={`/utstallningar/${item.slug}`}>
-					<div class="media">
-						<img src={cardSrc(item)} alt="{item.artist} — {item.title}" />
-						<span class="tag" class:muted={item.status !== 'ongoing'}>{statusLabel(item.status)}</span
-						>
-					</div>
-					<h3 class="serif">{item.artist} – {item.title}</h3>
-					<p>{item.datesLabel}</p>
-				</a>
+				<ExhibitionCard
+					href={`/utstallningar/${item.slug}`}
+					image={cardSrc(item)}
+					title="{item.artist} – {item.title}"
+					subtitle={item.datesLabel}
+					status={item.status}
+					alt="{item.artist} — {item.title}"
+				/>
 			{/each}
-			<a class="card" href="/nyheter">
-				<div class="media">
-					<img src={featuredNews.image} alt={featuredNews.title} />
-					<span class="tag muted">{featuredNews.category}</span>
-				</div>
-				<h3 class="serif">{featuredNews.title}</h3>
-				<p>{featuredNews.dateLabel}</p>
-			</a>
+			{#if featuredNews}
+				<ExhibitionCard
+					href={featuredNews.clickable ? `/nyheter/${featuredNews.slug}` : '/nyheter'}
+					image={featuredNews.image}
+					title={featuredNews.title}
+					subtitle={featuredNews.dateLabel}
+					badge={featuredNews.category}
+					badgeMuted
+					alt={featuredNews.title}
+				/>
+			{/if}
 		</div>
 	</div>
 </section>
@@ -207,44 +203,6 @@
 		display: grid;
 		gap: 1.5rem;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
-	}
-
-	.media {
-		position: relative;
-		margin-bottom: 0.85rem;
-		overflow: hidden;
-		background: #e8e8e2;
-	}
-
-	.media img {
-		aspect-ratio: 4 / 3;
-		object-fit: cover;
-		width: 100%;
-		transition: transform 0.5s ease;
-	}
-
-	.card:hover .media img {
-		transform: scale(1.03);
-	}
-
-	.media .tag {
-		position: absolute;
-		top: 0.65rem;
-		left: 0.65rem;
-		margin: 0;
-	}
-
-	.card h3 {
-		font-size: 1.2rem;
-		margin: 0 0 0.35rem;
-		font-weight: 500;
-	}
-
-	.card p {
-		margin: 0;
-		font-size: 0.8rem;
-		color: var(--text-muted);
-		letter-spacing: 0.02em;
 	}
 
 	.about {

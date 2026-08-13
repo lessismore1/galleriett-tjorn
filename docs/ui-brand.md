@@ -22,6 +22,7 @@ Utkast 2026-08-13.
 | Konstnärskort | `ArtistCard` | `/konstnarer` (karusell); utställning / nyhet / “Kanske också intressant” (`mediaMode="portrait"`) |
 | Verkskort | `ArtworkCard` | konstnärssida Verk, utställning Verk |
 | Utställningsrad | `ExhibitionRow` | `/utstallningar` (lista), konstnär → Utställningar |
+| Utställningskort | `ExhibitionCard` | startsida Aktuellt (grid); kan även bära nyhets-tile via `badge` |
 
 ### `ArtistCard`-lägen
 
@@ -35,7 +36,7 @@ Utkast 2026-08-13.
 
 ### `ExhibitionRow`
 
-Horisontell list-rad (inte grid-kort). Steg 1 i utställningskomponenter; `ExhibitionCard` (grid) kommer i steg 2.
+Horisontell list-rad (inte grid-kort).
 
 | Prop | Roll |
 |---|---|
@@ -46,9 +47,21 @@ Horisontell list-rad (inte grid-kort). Steg 1 i utställningskomponenter; `Exhib
 
 **Hover:** `--card-meta-hover` på raden (fungerar på vit och beige sektion).
 
+### `ExhibitionCard`
+
+Vertikalt grid-kort: bild → badge → titel → undertext.
+
+| Prop | Roll |
+|---|---|
+| `image` / `href` | media + länk |
+| `status` **eller** `badge` | Pågående/Kommande, eller fri etikett (t.ex. Media) |
+| `title` / `subtitle` | primär + sekundär |
+
+**Hover:** helkort (ram + `--card-meta-hover` + lätt bildzoom) — samma rytm som `ArtworkCard`.
+
 ## Designbegränsning — kort på vit och beige
 
-`ArtistCard` och `ArtworkCard` ska fungera på **både** `.band` (vit) och `.band-soft` (beige).
+`ArtistCard`, `ArtworkCard`, `ExhibitionCard` och `ExhibitionRow` ska fungera på **både** `.band` (vit) och `.band-soft` (beige).
 
 - Hover på meta får **inte** vara samma färg som sektionsbakgrunden.
 - Kort ska använda `var(--card-meta-hover)` (inte hårdkoda en hover-färg).
@@ -80,4 +93,4 @@ Inte standard på webben. Varumärket bärs av **logga + primär CTA + små acce
 ## Check
 
 Nya knappar → återanvänd `.btn` i stället för lokala svarta CTA-stilar.  
-Nya kort-ytor → `ArtistCard` / `ArtworkCard` / `ExhibitionRow` + `--card-meta-hover`.
+Nya kort-ytor → `ArtistCard` / `ArtworkCard` / `ExhibitionRow` / `ExhibitionCard` + `--card-meta-hover`.
