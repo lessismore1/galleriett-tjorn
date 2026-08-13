@@ -19,7 +19,7 @@ Utkast 2026-08-13.
 
 | Kort | Komponent | Exempel |
 |---|---|---|
-| Konstnärskort | `ArtistCard` | `/konstnarer` (karusell); utställning / nyhet (`mediaMode="portrait"`) |
+| Konstnärskort | `ArtistCard` | `/konstnarer` (karusell); utställning / nyhet / “Kanske också intressant” (`mediaMode="portrait"`) |
 | Verkskort | `ArtworkCard` | konstnärssida Verk, utställning Verk |
 
 ### `ArtistCard`-lägen

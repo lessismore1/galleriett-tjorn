@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { artists, getArtistNews, getArtistPress, workHref } from '$lib/data/mockData.js';
 	import ArtworkCard from '$lib/components/ArtworkCard.svelte';
+	import ArtistCard from '$lib/components/ArtistCard.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 
@@ -243,14 +244,12 @@
 <section class="band-soft band-pad">
 	<div class="container more">
 		<div>
-			<p class="label">Kanske också intressant</p>
+			<div class="section-head">
+				<h2 class="serif section-title">Kanske också intressant</h2>
+			</div>
 			<div class="related">
 				{#each related as a}
-					<a href={`/konstnarer/${a.slug}`}>
-						<img src={a.image} alt={a.name} />
-						<strong class="serif">{a.name}</strong>
-						<span class="label">{a.specialty}</span>
-					</a>
+					<ArtistCard artist={a} mediaMode="portrait" showIcon={false} showBadge={false} />
 				{/each}
 			</div>
 		</div>
@@ -600,26 +599,14 @@
 
 	.related {
 		display: grid;
-		gap: 1rem;
-		grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-		margin-top: 1rem;
+		gap: 1.25rem 0.85rem;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
-	.related img {
-		aspect-ratio: 1;
-		object-fit: cover;
-		margin-bottom: 0.4rem;
-		background: #e8e8e2;
-	}
-
-	.related strong {
-		display: block;
-		font-weight: 500;
-		font-size: 0.95rem;
-	}
-
-	.related .label {
-		margin: 0;
+	@media (min-width: 700px) {
+		.related {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
 	}
 
 	.next strong {
