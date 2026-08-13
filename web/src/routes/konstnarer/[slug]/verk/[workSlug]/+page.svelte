@@ -347,7 +347,7 @@
 
 	.meta {
 		display: grid;
-		gap: 0.85rem;
+		gap: 0;
 		margin: 0 0 1.5rem;
 		padding: 0;
 	}
@@ -356,8 +356,9 @@
 		display: grid;
 		grid-template-columns: 6.5rem 1fr;
 		gap: 0.75rem;
+		align-items: baseline;
 		border-top: 1px solid var(--border);
-		padding-top: 0.75rem;
+		padding-block: 0.4rem;
 	}
 
 	.meta dt {
