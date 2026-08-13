@@ -2,6 +2,7 @@
 	import { artists, getArtistProgram } from '$lib/data/mockData.js';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import ArtistCard from '$lib/components/ArtistCard.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 
 	let filter = $state('Alla konstnärer');
 	let query = $state('');
@@ -38,6 +39,12 @@
 			})
 	);
 </script>
+
+<Seo
+	title="Konstnärer · GALLERIett"
+	description="Konstnärer representerade av GALLERIett på Tjörn — måleri, skulptur, glas, fotografi och installation."
+	image="/images/artists-hero.jpg"
+/>
 
 <Breadcrumbs crumbs={[{ name: 'Konstnärer' }]} />
 
