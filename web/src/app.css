@@ -7,7 +7,10 @@
 	--text-muted: #8a8a7e;
 	--bg: #ffffff;
 	--bg-soft: #f3f2ec;
+	/* Hover på kort-meta: måste skilja sig från sektionsbakgrunden (se .band / .band-soft). */
 	--surface-hover: #ecebe3;
+	--surface-hover-on-soft: #ffffff;
+	--card-meta-hover: var(--surface-hover);
 	--border: #e5e5e0;
 	--font-sans: 'Inter', system-ui, sans-serif;
 	--font-serif: 'Playfair Display', Georgia, serif;
@@ -165,10 +168,12 @@ h3,
 /* Full-bleed section backgrounds (mockup: vit ↔ soft) */
 .band {
 	background: var(--bg);
+	--card-meta-hover: var(--surface-hover);
 }
 
 .band-soft {
 	background: var(--bg-soft);
+	--card-meta-hover: var(--surface-hover-on-soft);
 }
 
 .band-pad {

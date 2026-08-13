@@ -9,7 +9,26 @@ Utkast 2026-08-13.
 | `--brand` (lime) | Logga, **primära knappar**, badge Pågående, filter-underline, diskreta accenter |
 | `--brand-dark` | Rubrik-/brödtext, text **på** lime-knapp |
 | Vit / soft cream | Sidbakgrund, band |
-| `--surface-hover` (`#ecebe3`) | Hover-bakgrund på kort-meta (konstnär + verk) |
+| `--surface-hover` (`#ecebe3`) | Kort-meta-hover på **vit** sektion (`.band`) |
+| `--surface-hover-on-soft` (`#ffffff`) | Kort-meta-hover på **beige** sektion (`.band-soft`) |
+| `--card-meta-hover` | Kontexttoken — sätts av `.band` / `.band-soft`; kort använder denna |
+
+## Komponenter (kort)
+
+**Regel:** Om samma UI används (eller ska kunna användas) på mer än en plats → egen komponent.
+
+| Kort | Komponent | Exempel |
+|---|---|---|
+| Konstnärskort | `ArtistCard` | `/konstnarer` |
+| Verkskort | `ArtworkCard` | konstnärssida Verk, utställning Verk |
+
+## Designbegränsning — kort på vit och beige
+
+`ArtistCard` och `ArtworkCard` ska fungera på **både** `.band` (vit) och `.band-soft` (beige).
+
+- Hover på meta får **inte** vara samma färg som sektionsbakgrunden.
+- Kort ska använda `var(--card-meta-hover)` (inte hårdkoda en hover-färg).
+- Sektionen sätter rätt hover via `--card-meta-hover` i `app.css`.
 
 ## Knappar
 
@@ -26,7 +45,7 @@ Utkast 2026-08-13.
 
 ## Andra accenter
 
-- Hover-ram på konstnärskort: 1px `--brand`
+- Hover-ram på konstnärs-/verkskort: 1px `--brand`
 - Statusbadge Pågående: lime; Kommande: mörk
 - `link-arrow` pil: `--brand`
 
@@ -36,4 +55,5 @@ Inte standard på webben. Varumärket bärs av **logga + primär CTA + små acce
 
 ## Check
 
-Nya knappar → återanvänd `.btn` i stället för lokala svarta CTA-stilar.
+Nya knappar → återanvänd `.btn` i stället för lokala svarta CTA-stilar.  
+Nya kort-ytor → `ArtistCard` / `ArtworkCard` + `--card-meta-hover`.

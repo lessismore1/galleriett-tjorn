@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { site } from '$lib/data/mockData.js';
 	import { findWorkRefByImage, workHref } from '$lib/data/mockData.js';
+	import ArtworkCard from '$lib/components/ArtworkCard.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 
@@ -11,8 +12,13 @@
 	const worksWithLinks = $derived(
 		(ex.works ?? []).map((work) => {
 			const ref = findWorkRefByImage(work.image);
+			const resolved = ref?.work;
 			return {
-				...work,
+				title: resolved?.title ?? work.title,
+				image: work.image,
+				year: resolved?.year ?? null,
+				medium: resolved?.medium ?? null,
+				dimensions: resolved?.dimensions ?? null,
 				href: ref ? workHref(ref.artist.slug, ref.work) : null
 			};
 		})
@@ -173,23 +179,16 @@
 			{/if}
 		</div>
 		{#if worksWithLinks.length}
-			<div class="works" style={`--cols: ${Math.min(worksWithLinks.length, 6)}`}>
+			<div class="works">
 				{#each worksWithLinks as work}
-					<figure>
-						{#if work.href}
-							<a class="work-media" href={work.href}>
-								<img src={work.image} alt={work.title} />
-							</a>
-							<figcaption>
-								<a href={work.href}>{work.title}</a>
-							</figcaption>
-						{:else}
-							<div class="work-media">
-								<img src={work.image} alt={work.title} />
-							</div>
-							<figcaption>{work.title}</figcaption>
-						{/if}
-					</figure>
+					<ArtworkCard
+						href={work.href}
+						title={work.title}
+						image={work.image}
+						year={work.year}
+						medium={work.medium}
+						dimensions={work.dimensions}
+					/>
 				{/each}
 			</div>
 		{:else}
@@ -569,52 +568,26 @@
 
 	.works {
 		display: grid;
-		gap: 0.85rem;
-		grid-template-columns: repeat(var(--cols, 6), minmax(0, 1fr));
+		gap: 1.25rem 0.85rem;
+		grid-template-columns: 1fr;
 	}
 
-	.works figure {
-		margin: 0;
-		min-width: 0;
+	@media (min-width: 600px) {
+		.works {
+			grid-template-columns: repeat(2, 1fr);
+		}
 	}
 
-	.work-media {
-		aspect-ratio: 4 / 3;
-		overflow: hidden;
-		background: #ddd;
-		display: block;
-		color: inherit;
-		text-decoration: none;
+	@media (min-width: 900px) {
+		.works {
+			grid-template-columns: repeat(3, 1fr);
+		}
 	}
 
-	.work-media img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: center;
-		display: block;
-		transform: scale(1.06);
-	}
-
-	.works figcaption {
-		font-family: var(--font-sans);
-		font-size: var(--text-label);
-		margin-top: 0.4rem;
-		letter-spacing: var(--track-label);
-		text-transform: uppercase;
-		font-weight: 600;
-		color: var(--text-secondary);
-		line-height: 1.35;
-	}
-
-	.works figcaption a {
-		color: inherit;
-		text-decoration: none;
-	}
-
-	.works figcaption a:hover {
-		text-decoration: underline;
-		text-underline-offset: 0.15em;
+	@media (min-width: 1100px) {
+		.works {
+			grid-template-columns: repeat(4, 1fr);
+		}
 	}
 
 	.install-band {
@@ -696,10 +669,6 @@
 	}
 
 	@media (max-width: 900px) {
-		.works {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-
 		.install {
 			grid-template-columns: 1fr;
 		}

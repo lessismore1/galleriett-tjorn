@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { artists, getArtistNews, getArtistPress, workHref } from '$lib/data/mockData.js';
+	import ArtworkCard from '$lib/components/ArtworkCard.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 
@@ -103,18 +104,14 @@
 		{#if artist.works.length}
 			<div class="works">
 				{#each artist.works as work}
-					<a class="work-card" href={workHref(artist.slug, work)}>
-						<div class="work-media">
-							<img src={work.image} alt={work.title} />
-						</div>
-						<div class="work-meta">
-							<h3>{work.title}</h3>
-							<p>
-								{work.year} · {work.medium}{#if work.dimensions}
-									· {work.dimensions}{/if}
-							</p>
-						</div>
-					</a>
+					<ArtworkCard
+						href={workHref(artist.slug, work)}
+						title={work.title}
+						image={work.image}
+						year={work.year}
+						medium={work.medium}
+						dimensions={work.dimensions}
+					/>
 				{/each}
 			</div>
 		{:else}
@@ -462,67 +459,6 @@
 	@media (min-width: 1100px) {
 		.works {
 			grid-template-columns: repeat(4, 1fr);
-		}
-	}
-
-	.work-card {
-		display: flex;
-		flex-direction: column;
-		min-width: 0;
-		color: inherit;
-		text-decoration: none;
-		transition: box-shadow 0.18s ease;
-	}
-
-	.work-media {
-		background: #e8e8e2;
-		overflow: hidden;
-	}
-
-	.work-media img {
-		aspect-ratio: 4 / 5;
-		object-fit: cover;
-		width: 100%;
-		display: block;
-		margin: 0;
-	}
-
-	.work-meta {
-		padding: 0.7rem 0.55rem 0.75rem;
-		transition: background-color 0.18s ease;
-	}
-
-	.work-meta h3 {
-		margin: 0;
-		font-size: 0.7rem;
-		letter-spacing: 0.05em;
-		text-transform: uppercase;
-		font-family: var(--font-sans);
-		font-weight: 700;
-	}
-
-	.work-meta p {
-		margin: 0.25rem 0 0;
-		font-size: 0.75rem;
-		color: var(--text-muted);
-	}
-
-	@media (hover: hover) and (pointer: fine) {
-		.work-card:hover,
-		.work-card:focus-visible {
-			box-shadow: 0 0 0 1px var(--brand);
-		}
-
-		.work-card:hover .work-meta,
-		.work-card:focus-visible .work-meta {
-			background: var(--surface-hover);
-		}
-
-		.work-card:hover .work-meta h3,
-		.work-card:focus-visible .work-meta h3 {
-			text-decoration: underline;
-			text-underline-offset: 0.15em;
-			text-decoration-thickness: 1px;
 		}
 	}
 

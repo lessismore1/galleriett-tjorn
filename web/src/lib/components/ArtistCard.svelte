@@ -351,7 +351,7 @@
 
 	.meta:hover,
 	.meta:focus-visible {
-		background: var(--surface-hover);
+		background: var(--card-meta-hover);
 	}
 
 	.meta:hover h2,
