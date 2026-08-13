@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { artists, getArtistNews, getArtistPress } from '$lib/data/mockData.js';
+	import { artists, getArtistNews, getArtistPress, workHref } from '$lib/data/mockData.js';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 
 	let { data } = $props();
 	const artist = $derived(data.artist);
@@ -43,6 +44,12 @@
 		};
 	});
 </script>
+
+<Seo
+	title="{artist.name} · GALLERIett"
+	description={artist.intro || `${artist.name}, ${artist.specialty}. Representerad av GALLERIett, Tjörn.`}
+	image={artist.image}
+/>
 
 <Breadcrumbs
 	crumbs={[
@@ -96,11 +103,11 @@
 		{#if artist.works.length}
 			<div class="works">
 				{#each artist.works as work}
-					<article>
+					<a class="work-card" href={workHref(artist.slug, work)}>
 						<img src={work.image} alt={work.title} />
 						<h3>{work.title}</h3>
 						<p>{work.year} · {work.medium} · {work.dimensions}</p>
-					</article>
+					</a>
 				{/each}
 			</div>
 		{:else}
@@ -429,15 +436,44 @@
 
 	.works {
 		display: grid;
-		gap: 1.25rem;
-		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		gap: 1.5rem 1.25rem;
+		grid-template-columns: 1fr;
+	}
+
+	@media (min-width: 600px) {
+		.works {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 900px) {
+		.works {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	@media (min-width: 1100px) {
+		.works {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+
+	.work-card {
+		color: inherit;
+		text-decoration: none;
+		min-width: 0;
+	}
+
+	.work-card:hover h3 {
+		text-decoration: underline;
+		text-underline-offset: 0.15em;
 	}
 
 	.works img {
-		aspect-ratio: 1;
+		aspect-ratio: 4 / 5;
 		object-fit: cover;
 		width: 100%;
-		margin-bottom: 0.5rem;
+		margin-bottom: 0.55rem;
 		background: #e8e8e2;
 	}
 

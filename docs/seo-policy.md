@@ -44,11 +44,13 @@ Alla list- och detaljsidor som ska indexeras ska använda `Seo`.
 | URL | Canonical |
 |---|---|
 | `/konstnarer/{slug}` | samma path |
+| `/konstnarer/{artistSlug}/verk/{workSlug}` | samma path — **en** URL per verk; slug = `{id}-{titel}-{år}` (id från 1001) |
 | `/utstallningar/{slug}` | samma path |
 | `/nyheter/{slug}` | samma path |
 
 Detalj = egen sida, egen canonical. Inga “canonical upp till listan”.
 
+**Verk:** Canonical ligger alltid under konstnären. Utställningssidor länkar till samma verk-URL (inte en parallell path under `/utstallningar/…`). Se `docs/verk-sida.md`.
 ## Title & description
 
 - **Title:** `{Ämne} · GALLERIett` (listor) eller `{Namn/titel} · GALLERIett` (detalj)
@@ -72,5 +74,6 @@ G1 använder galleriets egna listor + `/utstallningar/arkiv/{year}` — samma id
 - [x] `/konstnarer` — `Seo` tillagd
 - [x] Utställningslistor via `ExhibitionIndex` + `seo` i load
 - [x] `/nyheter`, `/sponsorer`, utställnings-/nyhetsdetalj (delvis)
-- [ ] `/konstnarer/[slug]` — saknar fortfarande `Seo` (bör läggas till)
+- [x] `/konstnarer/[slug]` — `Seo` tillagd (feat/work-detail-page)
+- [x] `/konstnarer/[slug]/verk/[workSlug]` — se `docs/verk-sida.md`
 - [ ] Startsida `/` — bara layout-titel; överväg egen `Seo`

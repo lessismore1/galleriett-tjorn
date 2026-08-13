@@ -94,7 +94,9 @@ export const artists = [
 				year: 2026,
 				medium: 'Olja på duk',
 				dimensions: '120 × 90 cm',
-				image: '/images/work-1.jpg'
+				image: '/images/work-1.jpg',
+				story:
+					'Horisonten ligger lågt, som ett minne. Färglagren bygger ett landskap där hav och himmel nästan byter plats — en vintergata inåt snarare än utåt.'
 			},
 			{
 				title: 'Silentium',
@@ -540,7 +542,9 @@ export const artists = [
 				year: 2026,
 				medium: 'Glas, Graal',
 				dimensions: '',
-				image: '/images/work-robert-a.jpg'
+				image: '/images/work-robert-a.jpg',
+				story:
+					'Graaltekniken låter färgen vila under klarglas. Ljuset går genom lagren och ger verket en stilla, nästan andande närvaro i rummet.'
 			},
 			{
 				title: 'Glasverk II',
@@ -603,14 +607,17 @@ export const artists = [
 				year: 2026,
 				medium: 'Akryl på duk',
 				dimensions: '',
-				image: '/images/work-kattis-a.jpg'
+				image: '/images/work-kattis-a.jpg',
+				story:
+					'Ett lejon och en fjäril — kraft och skörhet i samma bildyta. Jordgubbarna är en lekfull detalj, men blicken är allvarlig: vem vågar vara både vild och öm?\n\nMålningen är tänkt som en påminnelse om att styrka och lätthet kan bo i samma porträtt.'
 			},
 			{
 				title: 'Verk II',
 				year: 2025,
 				medium: 'Akryl på duk',
 				dimensions: '',
-				image: '/images/work-kattis-b.jpg'
+				image: '/images/work-kattis-b.jpg',
+				story: 'Färg som energi. Ett porträtt där lager av akryl får ansiktet att vibrera mellan närvaro och dröm.'
 			},
 			{
 				title: 'Verk III',
@@ -1062,4 +1069,92 @@ export function getArtistProgram(artistSlug) {
 	if (upcoming) return { status: 'upcoming', exhibition: upcoming };
 
 	return null;
+}
+
+/** @param {string} text */
+export function slugifySegment(text) {
+	return String(text)
+		.normalize('NFD')
+		.replace(/[\u0300-\u036f]/g, '')
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-+|-+$/g, '');
+}
+
+/**
+ * Verk-slug: `{id}-{titel}-{år}` (id från 1001). Konstnär finns redan i pathen.
+ * @param {{ id: number, title: string, year: number }} work
+ */
+export function workSlugOf(work) {
+	return `${work.id}-${slugifySegment(work.title)}-${work.year}`;
+}
+
+/** @param {string} src */
+function normalizeImageSrc(src) {
+	return String(src || '').split('?')[0];
+}
+
+/** Tilldela id/slug/availability på konstnärernas verk (mock). */
+let nextWorkId = 1001;
+for (const artist of artists) {
+	for (const work of artist.works ?? []) {
+		if (work.id == null) work.id = nextWorkId++;
+		if (work.year == null) work.year = new Date().getFullYear();
+		if (!work.slug) work.slug = workSlugOf(work);
+		if (!work.availability) work.availability = 'enquire';
+	}
+}
+
+/**
+ * @param {string} artistSlug
+ * @param {string} workSlug
+ */
+export function getArtistWork(artistSlug, workSlug) {
+	const artist = artists.find((a) => a.slug === artistSlug);
+	if (!artist) return null;
+	const work = (artist.works ?? []).find((w) => w.slug === workSlug || String(w.id) === workSlug);
+	if (!work) return null;
+	return { artist, work };
+}
+
+/**
+ * @param {string} artistSlug
+ * @param {{ slug: string }} work
+ */
+export function workHref(artistSlug, work) {
+	return `/konstnarer/${artistSlug}/verk/${work.slug}`;
+}
+
+/** Hitta verk via bild (för utställningslistor). */
+export function findWorkRefByImage(image) {
+	const img = normalizeImageSrc(image);
+	if (!img) return null;
+	for (const artist of artists) {
+		for (const work of artist.works ?? []) {
+			if (normalizeImageSrc(work.image) === img) {
+				return { artist, work };
+			}
+		}
+	}
+	return null;
+}
+
+/** Utställningar där bilden ingår i verklistan. */
+export function getExhibitionsFeaturingImage(image) {
+	const img = normalizeImageSrc(image);
+	return exhibitions.filter((e) =>
+		(e.works ?? []).some((w) => normalizeImageSrc(w.image) === img)
+	);
+}
+
+/** Alla verk-rutter för prerender. */
+export function getAllWorkEntries() {
+	/** @type {{ slug: string, workSlug: string }[]} */
+	const list = [];
+	for (const artist of artists) {
+		for (const work of artist.works ?? []) {
+			list.push({ slug: artist.slug, workSlug: work.slug });
+		}
+	}
+	return list;
 }

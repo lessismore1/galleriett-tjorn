@@ -1,11 +1,22 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { site } from '$lib/data/mockData.js';
+	import { findWorkRefByImage, workHref } from '$lib/data/mockData.js';
 	import Seo from '$lib/components/Seo.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 
 	let { data } = $props();
 	const ex = $derived(data.exhibition);
+
+	const worksWithLinks = $derived(
+		(ex.works ?? []).map((work) => {
+			const ref = findWorkRefByImage(work.image);
+			return {
+				...work,
+				href: ref ? workHref(ref.artist.slug, ref.work) : null
+			};
+		})
+	);
 
 	const pageTitle = $derived(`${ex.artist} | ${ex.title} · GALLERIett`);
 	const pageDescription = $derived(
@@ -157,18 +168,27 @@
 	<div class="container">
 		<div class="section-head">
 			<h2 class="serif section-title">Verk</h2>
-			{#if ex.works.length}
+			{#if worksWithLinks.length}
 				<a class="link-arrow" href={`/konstnarer/${ex.artistSlug ?? ''}`}>Visa alla verk</a>
 			{/if}
 		</div>
-		{#if ex.works.length}
-			<div class="works" style={`--cols: ${Math.min(ex.works.length, 6)}`}>
-				{#each ex.works as work}
+		{#if worksWithLinks.length}
+			<div class="works" style={`--cols: ${Math.min(worksWithLinks.length, 6)}`}>
+				{#each worksWithLinks as work}
 					<figure>
-						<div class="work-media">
-							<img src={work.image} alt={work.title} />
-						</div>
-						<figcaption>{work.title}</figcaption>
+						{#if work.href}
+							<a class="work-media" href={work.href}>
+								<img src={work.image} alt={work.title} />
+							</a>
+							<figcaption>
+								<a href={work.href}>{work.title}</a>
+							</figcaption>
+						{:else}
+							<div class="work-media">
+								<img src={work.image} alt={work.title} />
+							</div>
+							<figcaption>{work.title}</figcaption>
+						{/if}
 					</figure>
 				{/each}
 			</div>
@@ -562,6 +582,9 @@
 		aspect-ratio: 4 / 3;
 		overflow: hidden;
 		background: #ddd;
+		display: block;
+		color: inherit;
+		text-decoration: none;
 	}
 
 	.work-media img {
@@ -582,6 +605,16 @@
 		font-weight: 600;
 		color: var(--text-secondary);
 		line-height: 1.35;
+	}
+
+	.works figcaption a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.works figcaption a:hover {
+		text-decoration: underline;
+		text-underline-offset: 0.15em;
 	}
 
 	.install-band {
