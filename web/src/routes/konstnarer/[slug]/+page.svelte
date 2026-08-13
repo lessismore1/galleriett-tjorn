@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { artists, exhibitions, getArtistNews, getArtistPress, workHref } from '$lib/data/mockData.js';
+	import { page } from '$app/state';
+	import { artists, exhibitions, getArtistNews, getArtistPress, workHref, site } from '$lib/data/mockData.js';
 	import ArtworkCard from '$lib/components/ArtworkCard.svelte';
 	import ArtistCard from '$lib/components/ArtistCard.svelte';
 	import ExhibitionRow from '$lib/components/ExhibitionRow.svelte';
@@ -18,6 +19,17 @@
 	const related = $derived(artists.filter((a) => a.slug !== artist.slug).slice(0, 3));
 	const artistNews = $derived(getArtistNews(artist.slug));
 	const artistMedia = $derived(getArtistPress(artist.slug));
+
+	const promoWork = $derived(artist.works?.[0] ?? null);
+	const portraitSrc = $derived(artist.image || artist.heroImage || null);
+
+	const contactMailto = $derived.by(() => {
+		const subject = encodeURIComponent(`Angående ${artist.name}`);
+		const body = encodeURIComponent(
+			`Hej GALLERIett,\n\nJag vill komma i kontakt angående konstnären ${artist.name}.\n\nLänk: ${page.url.origin}${page.url.pathname}\n\nVänliga hälsningar\n`
+		);
+		return `mailto:${site.email}?subject=${subject}&body=${body}`;
+	});
 
 	const exhibitionRows = $derived(
 		(artist.exhibitions ?? []).map((ex) => {
@@ -75,15 +87,30 @@
 	]}
 />
 
-<section class="hero">
-	{#if artist.heroImage || artist.image}
-		<img src={artist.heroImage || artist.image} alt="" class="bg" />
-	{/if}
-	<div class="container copy">
-		<h1 class="serif">{artist.name}</h1>
-		<p class="born">Född {artist.born}</p>
-		<p class="intro">{artist.intro}</p>
-		<a class="link-arrow" href="/kontakt">Kontakta konstnären</a>
+<section class="band-soft">
+	<div class="container top">
+		<div class="hero">
+			<div class="hero-copy">
+				<p class="label">Konstnär</p>
+				<h1 class="serif">{artist.name}</h1>
+				<p class="born">Född {artist.born}</p>
+				<p class="intro">{artist.intro}</p>
+				<a class="btn" href={contactMailto}>Maila konstnären →</a>
+			</div>
+			{#if promoWork || portraitSrc}
+				<div class="hero-media" class:solo={!promoWork || !portraitSrc}>
+					{#if promoWork}
+						<img
+							src={promoWork.image}
+							alt={promoWork.title ? `${artist.name} — ${promoWork.title}` : artist.name}
+						/>
+					{/if}
+					{#if portraitSrc}
+						<img src={portraitSrc} alt={artist.name} />
+					{/if}
+				</div>
+			{/if}
+		</div>
 	</div>
 </section>
 
@@ -274,46 +301,69 @@
 </section>
 
 <style>
+	.top {
+		padding-block: 1.35rem 1.75rem;
+	}
+
 	.hero {
-		position: relative;
-		min-height: 420px;
 		display: grid;
-		align-items: end;
-		background: #222;
-		color: #fff;
+		gap: 1.5rem;
+		padding-top: 0.85rem;
+		align-items: start;
 	}
 
-	.bg {
-		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		opacity: 0.55;
-	}
-
-	.copy {
-		position: relative;
-		padding-block: 3rem;
-		max-width: 40rem;
+	.hero-copy {
+		padding-top: 0;
 	}
 
 	h1 {
-		font-size: clamp(2.4rem, 6vw, 4rem);
-		margin: 0 0 0.5rem;
+		font-size: clamp(2rem, 4.5vw, 3rem);
+		margin: 0.35rem 0 0.35rem;
 		font-weight: 500;
 	}
 
 	.born {
-		font-size: 0.7rem;
-		letter-spacing: 0.08em;
+		font-family: var(--font-sans);
+		font-size: var(--text-meta);
+		letter-spacing: var(--track-label);
 		text-transform: uppercase;
-		opacity: 0.8;
+		color: var(--text-muted);
+		margin: 0 0 0.75rem;
 	}
 
 	.intro {
-		max-width: 32rem;
-		margin: 1rem 0 1.25rem;
+		font-family: var(--font-sans);
+		color: var(--text-secondary);
+		max-width: 34rem;
+		line-height: 1.6;
+		margin: 0 0 1.25rem;
+		font-size: var(--text-body);
+	}
+
+	.hero-media {
+		display: grid;
+		grid-template-columns: 1.15fr 0.85fr;
+		gap: 0.45rem;
+		aspect-ratio: 16 / 11;
+		min-height: 0;
+		background: #e8e8e2;
+	}
+
+	.hero-media.solo {
+		grid-template-columns: 1fr;
+	}
+
+	.hero-media img {
+		width: 100%;
+		height: 100%;
+		min-height: 0;
+		object-fit: cover;
+		object-position: center;
+		display: block;
+	}
+
+	.hero-media img:last-child {
+		object-position: center top;
 	}
 
 	.subnav-sentinel {
@@ -611,6 +661,11 @@
 	}
 
 	@media (min-width: 900px) {
+		.hero {
+			grid-template-columns: 0.95fr 1.15fr;
+			align-items: center;
+		}
+
 		.bio {
 			grid-template-columns: 1.4fr 0.8fr;
 		}

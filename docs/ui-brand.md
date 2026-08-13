@@ -21,6 +21,20 @@ Under logotypen i header: subtil rad **`Tjörn`** (sans, uppercase, muted, tät 
 - Scriptfont under loggan konkurrerar med wordmarken och känns “dekor” snarare än institution.
 - Inte kommunvapen eller Visit Tjörn-logo i lockupen (se diskussion kring platsidentitet).
 
+## Detalj-hero (konstnär / utställning)
+
+Samma arkitektur på detaljsidor — **TEXT | BILD**, full-bleed soft-band (`.band-soft`), inte overlay.
+
+| | Utställning | Konstnär |
+|---|---|---|
+| Layout | TEXT \| affisch | TEXT \| promo-verk + porträtt (samma 16:11-yta) |
+| Label | Utställning {id} | Konstnär |
+| Primär rubrik | Konstnärsnamn | Namn |
+| Sekundär | Titel (italic) + datum | Född … |
+| CTA | Ev. Facebook / läs mer | Kontakta konstnären |
+
+**Start** behåller overlay (landning). **Listor** behåller title-band. Skillnad mellan konstnär och utställning = innehåll/typografi, inte annan hero-modell.
+
 ## Komponenter (kort)
 
 **Regel:** Om samma UI används (eller ska kunna användas) på mer än en plats → egen komponent.
