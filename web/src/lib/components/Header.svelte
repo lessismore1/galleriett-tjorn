@@ -8,6 +8,9 @@
 		return page.url.pathname === href || page.url.pathname.startsWith(href + '/');
 	}
 
+	/** Verkssidor har egen sticky subnav — ingen site-header. */
+	const workChrome = $derived(/\/konstnarer\/[^/]+\/verk\//.test(page.url.pathname));
+
 	function close() {
 		open = false;
 	}
@@ -35,6 +38,7 @@
 	}}
 />
 
+{#if !workChrome}
 <header class="header">
 	<div class="container bar">
 		<a href="/" class="logo" aria-label="{site.name}, Tjörn" onclick={close}>
@@ -64,6 +68,7 @@
 
 {#if open}
 	<button class="backdrop" type="button" aria-label="Stäng meny" onclick={close}></button>
+{/if}
 {/if}
 
 <style>

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import {
 		site,
@@ -8,7 +7,6 @@
 		statusLabels
 	} from '$lib/data/mockData.js';
 	import Seo from '$lib/components/Seo.svelte';
-	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 
 	let { data } = $props();
 
@@ -56,10 +54,6 @@
 	);
 
 	let copied = $state(false);
-	let sentinelEl = $state<HTMLElement | null>(null);
-	let subnavEl = $state<HTMLElement | null>(null);
-	let stuck = $state(false);
-	let subnavH = $state(52);
 
 	async function copyLink() {
 		if (!browser) return;
@@ -87,53 +81,17 @@
 	const showInterestCta = $derived(
 		work.availability !== 'sold' && work.availability !== 'not_for_sale'
 	);
-
-	onMount(() => {
-		const header = document.querySelector('header.header') as HTMLElement | null;
-
-		const update = () => {
-			if (!sentinelEl) return;
-			const headerH = header?.offsetHeight ?? 64;
-			if (subnavEl) subnavH = subnavEl.offsetHeight;
-			stuck = sentinelEl.getBoundingClientRect().top <= headerH + 0.5;
-			document.body.classList.toggle('subnav-stuck', stuck);
-		};
-
-		update();
-		window.addEventListener('scroll', update, { passive: true });
-		window.addEventListener('resize', update);
-
-		return () => {
-			window.removeEventListener('scroll', update);
-			window.removeEventListener('resize', update);
-			document.body.classList.remove('subnav-stuck');
-		};
-	});
 </script>
 
 <Seo title={pageTitle} description={pageDescription} image={work.image} type="article" />
 
-<Breadcrumbs
-	crumbs={[
-		{ name: 'Konstnärer', href: '/konstnarer' },
-		{ name: artist.name, href: `/konstnarer/${artist.slug}` },
-		{ name: work.title }
-	]}
-/>
-
-<div class="subnav-sentinel" bind:this={sentinelEl} aria-hidden="true"></div>
-{#if stuck}
-	<div class="subnav-spacer" style={`height: ${subnavH}px`} aria-hidden="true"></div>
-{/if}
-<nav class="band subnav" class:stuck bind:this={subnavEl} aria-label="Bläddra bland verk">
+<nav class="band subnav" aria-label="Verknavigation">
 	<div class="container subnav-inner">
-		{#if stuck}
-			<a class="subnav-home" href="/" aria-label="GALLERIett — startsida">
-				<img src="/images/logo.webp" alt="" width="36" height="36" />
-			</a>
-			<a class="artist-name serif" href={`/konstnarer/${artist.slug}`}>{artist.name}</a>
-			<span class="scope" aria-hidden="true">Verk</span>
-		{/if}
+		<a class="subnav-home" href="/" aria-label="GALLERIett — startsida">
+			<img src="/images/logo.webp" alt="" width="36" height="36" />
+		</a>
+		<a class="artist-name serif" href={`/konstnarer/${artist.slug}`}>{artist.name}</a>
+		<span class="scope" aria-hidden="true">Verk</span>
 		<div class="browse">
 			<a href={workHref(artist.slug, prev)} aria-label={`Föregående: ${prev.title}`}>‹ {prev.title}</a>
 			<span class="count">{data.index + 1} / {data.total}</span>
@@ -224,29 +182,13 @@
 </section>
 
 <style>
-	.subnav-sentinel {
-		height: 0;
-		width: 100%;
-		pointer-events: none;
-	}
-
-	.subnav-spacer {
-		pointer-events: none;
-	}
-
 	.subnav {
-		border-block: 1px solid var(--border);
+		position: sticky;
+		top: 0;
+		z-index: 60;
+		border-bottom: 1px solid var(--border);
 		background: rgba(255, 255, 255, 0.96);
 		backdrop-filter: blur(8px);
-	}
-
-	.subnav.stuck {
-		position: fixed;
-		top: 0;
-		left: var(--brand-edge);
-		right: 0;
-		z-index: 60;
-		box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
 	}
 
 	.subnav-inner {

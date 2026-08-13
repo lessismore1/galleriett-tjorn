@@ -37,15 +37,15 @@ Samma arkitektur på detaljsidor — **TEXT | BILD**, full-bleed soft-band (`.ba
 
 ## Sticky subnav (detalj)
 
-Konstnär, utställning och **verk** delar samma handoff: sentinel under breadcrumbs → `body.subnav-stuck` döljer site-header → fixed bar med logga.
+Konstnär och utställning: sentinel under breadcrumbs → `body.subnav-stuck` döljer site-header → fixed bar med logga.
 
-| Sida | Innehåll när stuck |
+**Verk** har egen chrome: ingen site-header, ingen breadcrumbs. Sticky subnav styr allt från start (logo · konstnär · Verk · ‹ prev / n / next ›). Header döljs via path-check i `Header.svelte`.
+
+| Sida | Innehåll när stuck / på verk |
 |---|---|
 | Konstnär | Logga + namn + sektionslänkar |
 | Utställning | Logga + titel + sektionslänkar |
-| Verk | Logga + konstnär · Verk · ‹ prev / n / next › |
-
-På verk: bläddra syns redan under BC (utan logga/namn); chrome läggs till först när baren stickyar.
+| Verk | Logga + konstnär · Verk · bläddra (enda topnav) |
 
 ## Komponenter (kort)
 
