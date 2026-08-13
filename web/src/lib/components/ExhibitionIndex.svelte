@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { statusLabels } from '$lib/data/mockData.js';
 	import Seo from '$lib/components/Seo.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+	import ExhibitionRow from '$lib/components/ExhibitionRow.svelte';
 
 	type Filter = 'year' | 'ongoing' | 'upcoming' | 'archive';
 
@@ -50,7 +50,12 @@
 		if (filter === 'archive') {
 			return [
 				base,
-				{ name: 'Arkiv', href: archiveYears[0] ? `/utstallningar/arkiv/${archiveYears[0]}` : '/utstallningar/arkiv' },
+				{
+					name: 'Arkiv',
+					href: archiveYears[0]
+						? `/utstallningar/arkiv/${archiveYears[0]}`
+						: '/utstallningar/arkiv'
+				},
 				...(archiveYear != null ? [{ name: String(archiveYear) }] : [])
 			];
 		}
@@ -89,24 +94,14 @@
 	<div class="container">
 		<ul class="list">
 			{#each list as ex}
-				<li>
-					<a href={`/utstallningar/${ex.slug}`}>
-						<span class="id">{ex.id}</span>
-						<div class="thumb">
-							<img src={ex.image} alt="" />
-							{#if ex.status === 'ongoing'}
-								<span class="tag">{statusLabels.ongoing}</span>
-							{:else if ex.status === 'upcoming'}
-								<span class="tag muted">{statusLabels.upcoming}</span>
-							{/if}
-						</div>
-						<div>
-							<strong class="serif">{ex.artist} | {ex.title}</strong>
-							<p>{ex.datesLabel}</p>
-						</div>
-						<span class="plus" aria-hidden="true">+</span>
-					</a>
-				</li>
+				<ExhibitionRow
+					href={`/utstallningar/${ex.slug}`}
+					leading={ex.id}
+					title="{ex.artist} | {ex.title}"
+					subtitle={ex.datesLabel}
+					image={ex.image}
+					status={ex.status}
+				/>
 			{:else}
 				<li class="empty">{emptyLabel}</li>
 			{/each}
@@ -182,88 +177,8 @@
 		padding-block: 0.5rem 3rem;
 	}
 
-	.list a {
-		display: grid;
-		grid-template-columns: 3rem 110px 1fr auto;
-		gap: 1rem;
-		align-items: center;
-		padding: 1.15rem 0;
-		border-bottom: 1px solid var(--border);
-	}
-
-	.id {
-		font-size: 0.75rem;
-		color: var(--brand-dark);
-		font-weight: 600;
-	}
-
-	.thumb {
-		position: relative;
-		width: 110px;
-		height: 80px;
-		background: #e8e8e2;
-	}
-
-	.thumb img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-
-	.tag {
-		position: absolute;
-		top: 0.35rem;
-		left: 0.35rem;
-		font-size: 0.55rem;
-		font-weight: 700;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-		padding: 0.2rem 0.35rem;
-		background: var(--brand);
-		color: var(--brand-dark);
-	}
-
-	.tag.muted {
-		background: #fff;
-		border: 1px solid var(--border);
-		color: var(--text);
-	}
-
-	strong {
-		display: block;
-		font-size: 1.15rem;
-		font-weight: 500;
-	}
-
-	p {
-		margin: 0.25rem 0 0;
-		font-size: 0.8rem;
-		color: var(--text-muted);
-	}
-
-	.plus {
-		color: var(--brand);
-		font-size: 1.4rem;
-		font-weight: 400;
-	}
-
 	.empty {
 		padding: 2rem 0;
 		color: var(--text-muted);
-	}
-
-	@media (max-width: 640px) {
-		.list a {
-			grid-template-columns: 72px 1fr auto;
-		}
-
-		.id {
-			display: none;
-		}
-
-		.thumb {
-			width: 72px;
-			height: 56px;
-		}
 	}
 </style>

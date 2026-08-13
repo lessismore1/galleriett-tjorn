@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { artists, getArtistNews, getArtistPress, workHref } from '$lib/data/mockData.js';
+	import { artists, exhibitions, getArtistNews, getArtistPress, workHref } from '$lib/data/mockData.js';
 	import ArtworkCard from '$lib/components/ArtworkCard.svelte';
 	import ArtistCard from '$lib/components/ArtistCard.svelte';
+	import ExhibitionRow from '$lib/components/ExhibitionRow.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 
@@ -17,6 +18,20 @@
 	const related = $derived(artists.filter((a) => a.slug !== artist.slug).slice(0, 3));
 	const artistNews = $derived(getArtistNews(artist.slug));
 	const artistMedia = $derived(getArtistPress(artist.slug));
+
+	const exhibitionRows = $derived(
+		(artist.exhibitions ?? []).map((ex) => {
+			const full = ex.slug ? exhibitions.find((e) => e.slug === ex.slug) : null;
+			return {
+				year: ex.year,
+				title: ex.id ? `${ex.id} · ${ex.title}` : ex.title,
+				venue: ex.venue,
+				href: ex.slug ? `/utstallningar/${ex.slug}` : null,
+				image: full?.image ?? null,
+				status: full?.status ?? null
+			};
+		})
+	);
 
 	let sentinelEl = $state<HTMLElement | null>(null);
 	let subnavEl = $state<HTMLElement | null>(null);
@@ -162,18 +177,16 @@
 			<a class="link-arrow" href="/utstallningar">Visa alla</a>
 		</div>
 		<ul class="list">
-			{#each artist.exhibitions as ex}
-				<li>
-					<span>{ex.year}</span>
-					{#if ex.slug}
-						<a class="ex-link" href={`/utstallningar/${ex.slug}`}>
-							<strong>{ex.id ? `${ex.id} · ${ex.title}` : ex.title}</strong>
-						</a>
-					{:else}
-						<strong>{ex.title}</strong>
-					{/if}
-					<em>{ex.venue}</em>
-				</li>
+			{#each exhibitionRows as ex}
+				<ExhibitionRow
+					href={ex.href}
+					leading={ex.year}
+					title={ex.title}
+					subtitle={ex.venue}
+					image={ex.image}
+					status={ex.status}
+					showPlus={Boolean(ex.href)}
+				/>
 			{:else}
 				<li class="empty">Inga utställningar listade.</li>
 			{/each}
@@ -508,30 +521,6 @@
 		list-style: none;
 		padding: 0;
 		margin: 0;
-	}
-
-	.list li {
-		display: grid;
-		grid-template-columns: 4rem 1fr;
-		gap: 0.5rem 1rem;
-		padding: 1rem 0;
-		border-bottom: 1px solid var(--border);
-	}
-
-	.list .ex-link {
-		grid-column: 2;
-		justify-self: start;
-	}
-
-	.list .ex-link:hover strong {
-		box-shadow: inset 0 -1px 0 var(--brand);
-	}
-
-	.list em {
-		grid-column: 2;
-		font-style: normal;
-		color: var(--text-muted);
-		font-size: 0.85rem;
 	}
 
 	.news {

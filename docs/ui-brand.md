@@ -21,6 +21,7 @@ Utkast 2026-08-13.
 |---|---|---|
 | Konstnärskort | `ArtistCard` | `/konstnarer` (karusell); utställning / nyhet / “Kanske också intressant” (`mediaMode="portrait"`) |
 | Verkskort | `ArtworkCard` | konstnärssida Verk, utställning Verk |
+| Utställningsrad | `ExhibitionRow` | `/utstallningar` (lista), konstnär → Utställningar |
 
 ### `ArtistCard`-lägen
 
@@ -31,6 +32,19 @@ Utkast 2026-08-13.
 | `showBadge` | `true` | `false` |
 
 **Hover:** helkort (1px `--brand`-ram + `--card-meta-hover` på meta) — samma rytm som `ArtworkCard`.
+
+### `ExhibitionRow`
+
+Horisontell list-rad (inte grid-kort). Steg 1 i utställningskomponenter; `ExhibitionCard` (grid) kommer i steg 2.
+
+| Prop | Roll |
+|---|---|
+| `leading` | id eller år |
+| `image` / `status` | thumb + badge (valfritt) |
+| `title` / `subtitle` | primär + sekundär rad |
+| `href` / `showPlus` | länk + `+` |
+
+**Hover:** `--card-meta-hover` på raden (fungerar på vit och beige sektion).
 
 ## Designbegränsning — kort på vit och beige
 
@@ -66,4 +80,4 @@ Inte standard på webben. Varumärket bärs av **logga + primär CTA + små acce
 ## Check
 
 Nya knappar → återanvänd `.btn` i stället för lokala svarta CTA-stilar.  
-Nya kort-ytor → `ArtistCard` / `ArtworkCard` + `--card-meta-hover`.
+Nya kort-ytor → `ArtistCard` / `ArtworkCard` / `ExhibitionRow` + `--card-meta-hover`.
