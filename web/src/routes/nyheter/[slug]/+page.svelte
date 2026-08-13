@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Seo from '$lib/components/Seo.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+	import ArtistCard from '$lib/components/ArtistCard.svelte';
 
 	let { data } = $props();
 	const article = $derived(data.article);
@@ -55,16 +56,14 @@
 {#if relatedArtists.length}
 	<section class="band-soft related-band">
 		<div class="container">
-			<p class="label">{relatedArtists.length === 1 ? 'Relaterad konstnär' : 'Relaterade konstnärer'}</p>
+			<div class="section-head">
+				<h2 class="serif section-title">
+					{relatedArtists.length === 1 ? 'Relaterad konstnär' : 'Relaterade konstnärer'}
+				</h2>
+			</div>
 			<div class="related-list">
 				{#each relatedArtists as artist}
-					<a class="related" href={`/konstnarer/${artist.slug}`}>
-						<img src={artist.image} alt="" />
-						<div>
-							<strong class="serif">{artist.name}</strong>
-							<span class="label">{artist.specialty}</span>
-						</div>
-					</a>
+					<ArtistCard artist={artist} mediaMode="portrait" showIcon={false} showBadge={false} />
 				{/each}
 			</div>
 		</div>
@@ -123,44 +122,22 @@
 		padding-block: 2.25rem 2.75rem;
 	}
 
-	.related-band .label {
-		margin: 0 0 1rem;
-	}
-
 	.related-list {
 		display: grid;
-		gap: 1.25rem;
-		grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+		gap: 1.25rem 0.85rem;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
-	.related {
-		display: grid;
-		grid-template-columns: 96px 1fr;
-		gap: 1rem;
-		align-items: center;
+	@media (min-width: 900px) {
+		.related-list {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
 	}
 
-	.related img {
-		width: 96px;
-		height: 96px;
-		object-fit: cover;
-		background: #e8e8e2;
-	}
-
-	.related strong {
-		display: block;
-		font-size: 1.35rem;
-		font-weight: 500;
-		margin-bottom: 0.25rem;
-	}
-
-	.related .label {
-		margin: 0;
-		color: var(--text-muted);
-	}
-
-	.related:hover strong {
-		box-shadow: inset 0 -2px 0 var(--brand);
+	@media (min-width: 1100px) {
+		.related-list {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
 	}
 
 	@media (min-width: 901px) {
