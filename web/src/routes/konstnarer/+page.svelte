@@ -8,7 +8,7 @@
 
 	const filters = [
 		'Alla konstnärer',
-		'Pågående',
+		'Aktuellt',
 		'Måleri',
 		'Skulptur',
 		'Glas',
@@ -20,11 +20,22 @@
 		artists
 			.filter((a) => {
 				if (filter === 'Alla konstnärer') return true;
-				if (filter === 'Pågående') return getArtistProgram(a.slug)?.status === 'ongoing';
+				if (filter === 'Aktuellt') {
+					const status = getArtistProgram(a.slug)?.status;
+					return status === 'ongoing' || status === 'upcoming';
+				}
 				return a.specialty === filter;
 			})
 			.filter((a) => !query || a.name.toLowerCase().includes(query.toLowerCase()))
-			.sort((a, b) => a.name.localeCompare(b.name, 'sv'))
+			.sort((a, b) => {
+				if (filter === 'Aktuellt') {
+					const rank = (slug: string) =>
+						getArtistProgram(slug)?.status === 'ongoing' ? 0 : 1;
+					const d = rank(a.slug) - rank(b.slug);
+					if (d !== 0) return d;
+				}
+				return a.name.localeCompare(b.name, 'sv');
+			})
 	);
 </script>
 
