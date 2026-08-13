@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { artists, getArtistProgram } from '$lib/data/mockData.js';
@@ -30,7 +31,6 @@
 	};
 
 	const paramToFilter = $derived.by(() => {
-		/** @type {Record<string, Filter>} */
 		const map: Record<string, Filter> = {};
 		for (const f of filters) {
 			const p = filterToParam[f];
@@ -45,21 +45,22 @@
 		return paramToFilter[raw] ?? 'Alla konstnärer';
 	}
 
-	let filter = $state<Filter>(filterFromSearch(page.url.search));
+	/** Prerender får inte läsa url.search — default vid build, synka från URL i webbläsaren. */
+	let filter = $state<Filter>('Alla konstnärer');
 	let query = $state('');
 
 	$effect(() => {
+		if (!browser) return;
 		const fromUrl = filterFromSearch(page.url.search);
 		if (fromUrl !== filter) filter = fromUrl;
 	});
 
 	function setFilter(next: Filter) {
 		filter = next;
-		const url = new URL(page.url.href);
 		const param = filterToParam[next];
-		if (param) url.searchParams.set('filter', param);
-		else url.searchParams.delete('filter');
-		const href = `${url.pathname}${url.search}${url.hash}`;
+		const href = param
+			? `${page.url.pathname}?filter=${encodeURIComponent(param)}`
+			: page.url.pathname;
 		goto(href, { keepFocus: true, noScroll: true, replaceState: false });
 	}
 
