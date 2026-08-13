@@ -37,8 +37,9 @@
 
 <header class="header">
 	<div class="container bar">
-		<a href="/" class="logo" aria-label={site.name} onclick={close}>
-			<img src="/images/logo.webp" alt={site.name} width="48" height="48" />
+		<a href="/" class="logo" aria-label="{site.name}, Tjörn" onclick={close}>
+			<img src="/images/logo.webp" alt="" width="48" height="48" />
+			<span class="place">Tjörn</span>
 		</a>
 
 		<button
@@ -92,8 +93,12 @@
 
 	.logo {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
+		gap: 0.2rem;
 		flex-shrink: 0;
+		text-decoration: none;
+		color: inherit;
 	}
 
 	.logo img {
@@ -101,6 +106,16 @@
 		height: 3rem;
 		display: block;
 		object-fit: contain;
+	}
+
+	.place {
+		font-family: var(--font-sans);
+		font-size: 0.58rem;
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+		line-height: 1;
 	}
 
 	.toggle {

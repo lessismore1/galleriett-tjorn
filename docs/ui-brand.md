@@ -13,6 +13,14 @@ Utkast 2026-08-13.
 | `--surface-hover-on-soft` (`#ffffff`) | Kort-meta-hover på **beige** sektion (`.band-soft`) |
 | `--card-meta-hover` | Kontexttoken — sätts av `.band` / `.band-soft`; kort använder denna |
 
+## Logga + plats
+
+Under logotypen i header: subtil rad **`Tjörn`** (sans, uppercase, muted, tät letter-spacing) — plats som varumärkesdel, inte slogan.
+
+- Använd **befintliga fonter** (`--font-sans`), inte snirklig display/script.
+- Scriptfont under loggan konkurrerar med wordmarken och känns “dekor” snarare än institution.
+- Inte kommunvapen eller Visit Tjörn-logo i lockupen (se diskussion kring platsidentitet).
+
 ## Komponenter (kort)
 
 **Regel:** Om samma UI används (eller ska kunna användas) på mer än en plats → egen komponent.
