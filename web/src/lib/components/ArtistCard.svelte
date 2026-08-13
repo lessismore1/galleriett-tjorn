@@ -235,6 +235,7 @@
 		overflow: hidden;
 		touch-action: pan-y;
 		cursor: default;
+		transition: box-shadow 0.18s ease;
 	}
 
 	.media img {
@@ -335,15 +336,17 @@
 	}
 
 	.meta {
+		position: relative;
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
 		margin-top: 0.15rem;
 		padding: 0.7rem 0.55rem 0.75rem;
-		margin-inline: -0.55rem;
 		color: inherit;
 		text-decoration: none;
-		transition: background-color 0.18s ease;
+		transition:
+			background-color 0.18s ease,
+			box-shadow 0.18s ease;
 	}
 
 	.meta:hover,
@@ -440,6 +443,14 @@
 		.media:hover .chrome,
 		.media:focus-within .chrome {
 			opacity: 1;
+		}
+
+		/* Samma yttre ram på mediakarusell och länkrad */
+		.media:hover,
+		.media:focus-within,
+		.meta:hover,
+		.meta:focus-visible {
+			box-shadow: 0 0 0 1px var(--brand);
 		}
 	}
 
