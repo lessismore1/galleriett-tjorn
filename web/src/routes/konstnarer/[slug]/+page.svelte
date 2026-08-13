@@ -104,9 +104,16 @@
 			<div class="works">
 				{#each artist.works as work}
 					<a class="work-card" href={workHref(artist.slug, work)}>
-						<img src={work.image} alt={work.title} />
-						<h3>{work.title}</h3>
-						<p>{work.year} · {work.medium} · {work.dimensions}</p>
+						<div class="work-media">
+							<img src={work.image} alt={work.title} />
+						</div>
+						<div class="work-meta">
+							<h3>{work.title}</h3>
+							<p>
+								{work.year} · {work.medium}{#if work.dimensions}
+									· {work.dimensions}{/if}
+							</p>
+						</div>
 					</a>
 				{/each}
 			</div>
@@ -459,25 +466,33 @@
 	}
 
 	.work-card {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
 		color: inherit;
 		text-decoration: none;
-		min-width: 0;
+		transition: box-shadow 0.18s ease;
 	}
 
-	.work-card:hover h3 {
-		text-decoration: underline;
-		text-underline-offset: 0.15em;
+	.work-media {
+		background: #e8e8e2;
+		overflow: hidden;
 	}
 
-	.works img {
+	.work-media img {
 		aspect-ratio: 4 / 5;
 		object-fit: cover;
 		width: 100%;
-		margin-bottom: 0.55rem;
-		background: #e8e8e2;
+		display: block;
+		margin: 0;
 	}
 
-	.works h3 {
+	.work-meta {
+		padding: 0.7rem 0.55rem 0.75rem;
+		transition: background-color 0.18s ease;
+	}
+
+	.work-meta h3 {
 		margin: 0;
 		font-size: 0.7rem;
 		letter-spacing: 0.05em;
@@ -486,10 +501,29 @@
 		font-weight: 700;
 	}
 
-	.works p {
+	.work-meta p {
 		margin: 0.25rem 0 0;
 		font-size: 0.75rem;
 		color: var(--text-muted);
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		.work-card:hover,
+		.work-card:focus-visible {
+			box-shadow: 0 0 0 1px var(--brand);
+		}
+
+		.work-card:hover .work-meta,
+		.work-card:focus-visible .work-meta {
+			background: #ecebe3;
+		}
+
+		.work-card:hover .work-meta h3,
+		.work-card:focus-visible .work-meta h3 {
+			text-decoration: underline;
+			text-underline-offset: 0.15em;
+			text-decoration-thickness: 1px;
+		}
 	}
 
 	.bio {
