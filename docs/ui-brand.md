@@ -9,6 +9,7 @@ Utkast 2026-08-13.
 | `--brand` (lime) | Logga, **primära knappar**, badge Pågående, filter-underline, diskreta accenter |
 | `--brand-dark` | Rubrik-/brödtext, text **på** lime-knapp |
 | Vit / soft cream | Sidbakgrund, band |
+| `--surface-hover` (`#ecebe3`) | Hover-bakgrund på kort-meta (konstnär + verk) |
 
 ## Knappar
 

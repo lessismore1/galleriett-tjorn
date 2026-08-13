@@ -1,11 +1,10 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
 	import { artists, getArtistProgram } from '$lib/data/mockData.js';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import ArtistCard from '$lib/components/ArtistCard.svelte';
 	import Seo from '$lib/components/Seo.svelte';
-
-	let filter = $state('Alla konstnärer');
-	let query = $state('');
 
 	const filters = [
 		'Alla konstnärer',
@@ -15,7 +14,54 @@
 		'Glas',
 		'Fotografi',
 		'Installation'
-	];
+	] as const;
+
+	type Filter = (typeof filters)[number];
+
+	/** Query-värde för filter (UX / tillbaka-knapp). Canonical förblir /konstnarer. */
+	const filterToParam: Record<Filter, string | null> = {
+		'Alla konstnärer': null,
+		Aktuellt: 'aktuellt',
+		Måleri: 'maleri',
+		Skulptur: 'skulptur',
+		Glas: 'glas',
+		Fotografi: 'fotografi',
+		Installation: 'installation'
+	};
+
+	const paramToFilter = $derived.by(() => {
+		/** @type {Record<string, Filter>} */
+		const map: Record<string, Filter> = {};
+		for (const f of filters) {
+			const p = filterToParam[f];
+			if (p) map[p] = f;
+		}
+		return map;
+	});
+
+	function filterFromSearch(search: string): Filter {
+		const raw = new URLSearchParams(search).get('filter');
+		if (!raw) return 'Alla konstnärer';
+		return paramToFilter[raw] ?? 'Alla konstnärer';
+	}
+
+	let filter = $state<Filter>(filterFromSearch(page.url.search));
+	let query = $state('');
+
+	$effect(() => {
+		const fromUrl = filterFromSearch(page.url.search);
+		if (fromUrl !== filter) filter = fromUrl;
+	});
+
+	function setFilter(next: Filter) {
+		filter = next;
+		const url = new URL(page.url.href);
+		const param = filterToParam[next];
+		if (param) url.searchParams.set('filter', param);
+		else url.searchParams.delete('filter');
+		const href = `${url.pathname}${url.search}${url.hash}`;
+		goto(href, { keepFocus: true, noScroll: true, replaceState: false });
+	}
 
 	const filtered = $derived(
 		artists
@@ -67,7 +113,7 @@
 		<div class="toolbar">
 			<div class="filters">
 				{#each filters as f}
-					<button type="button" class:active={filter === f} onclick={() => (filter = f)}>{f}</button>
+					<button type="button" class:active={filter === f} onclick={() => setFilter(f)}>{f}</button>
 				{/each}
 			</div>
 			<label class="search">

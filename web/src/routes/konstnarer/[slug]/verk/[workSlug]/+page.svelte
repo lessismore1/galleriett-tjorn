@@ -314,7 +314,7 @@
 	}
 
 	.cta.ghost:hover {
-		background: #ecebe3;
+		background: var(--surface-hover);
 	}
 
 	.sold-note {

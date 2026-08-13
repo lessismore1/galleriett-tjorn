@@ -515,7 +515,7 @@
 
 		.work-card:hover .work-meta,
 		.work-card:focus-visible .work-meta {
-			background: #ecebe3;
+			background: var(--surface-hover);
 		}
 
 		.work-card:hover .work-meta h3,

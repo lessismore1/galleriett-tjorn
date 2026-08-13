@@ -351,7 +351,7 @@
 
 	.meta:hover,
 	.meta:focus-visible {
-		background: #ecebe3;
+		background: var(--surface-hover);
 	}
 
 	.meta:hover h2,

@@ -35,7 +35,9 @@ Alla list- och detaljsidor som ska indexeras ska använda `Seo`.
 
 **Regel:** Client-side filter (Aktuellt, teknik, sök) **utan** URL-ändring → fortfarande canonical till listans rena path.
 
-**Regel:** Om filter senare läggs i query (`?filter=aktuellt`, `?q=…`) → canonical ska **fortfarande** vara ren pathname (som `Seo` redan gör). Indexera inte varje filtervariant.
+**Regel:** Om filter ligger i query (`?filter=aktuellt`) → canonical är **fortfarande** ren pathname (som `Seo` redan gör). Query är för UX (tillbaka-knapp / bokmärke), inte separat indexerad sida.
+
+Exempel G1: `/konstnarer?filter=aktuellt` → canonical `/konstnarer`.
 
 **Undvik:** Query som ersätter riktiga arkiv-URL:er (t.ex. `/utstallningar?år=2025` när `/utstallningar/arkiv/2025` finns).
 
