@@ -10,16 +10,35 @@
 		works?: { title?: string; image: string }[];
 	};
 
+	type MediaMode = 'carousel' | 'portrait';
 	type Slide = { kind: 'work' | 'portrait' | 'exhibition'; src: string; label: string };
 
-	let { artist }: { artist: ArtistLike } = $props();
+	let {
+		artist,
+		mediaMode = 'carousel',
+		showIcon = true,
+		showBadge = true
+	}: {
+		artist: ArtistLike;
+		mediaMode?: MediaMode;
+		showIcon?: boolean;
+		showBadge?: boolean;
+	} = $props();
 
 	const program = $derived(getArtistProgram(artist.slug));
+	const href = $derived(`/konstnarer/${artist.slug}`);
 
 	const workSrc = $derived(artist.works?.[0]?.image ?? null);
 	const portraitSrc = $derived(artist.image || null);
 
 	const slides = $derived.by(() => {
+		if (mediaMode === 'portrait') {
+			const src = portraitSrc || workSrc;
+			return src
+				? ([{ kind: 'portrait' as const, src, label: 'Porträtt' }] satisfies Slide[])
+				: [];
+		}
+
 		const list: Slide[] = [];
 		if (workSrc) {
 			list.push({
@@ -45,11 +64,13 @@
 	});
 
 	const badge = $derived(
-		program?.status === 'ongoing'
-			? { text: 'Pågående', title: program.exhibition.title }
-			: program?.status === 'upcoming'
-				? { text: 'Kommande', title: program.exhibition.title }
-				: null
+		!showBadge
+			? null
+			: program?.status === 'ongoing'
+				? { text: 'Pågående', title: program.exhibition.title }
+				: program?.status === 'upcoming'
+					? { text: 'Kommande', title: program.exhibition.title }
+					: null
 	);
 
 	let index = $state(0);
@@ -62,8 +83,11 @@
 	let iconPaused = $state(false);
 
 	const current = $derived(slides[Math.min(index, Math.max(slides.length - 1, 0))] ?? null);
-	const canCarousel = $derived(slides.length > 1);
-	const canIconAlternate = $derived(!!(workSrc && portraitSrc));
+	const canCarousel = $derived(mediaMode === 'carousel' && slides.length > 1);
+	const canIconAlternate = $derived(showIcon && !!(workSrc && portraitSrc));
+	const showIconBlock = $derived(showIcon && !!(canIconAlternate || workSrc || portraitSrc));
+	/** Porträttläge: hela kortet är en länk (som ArtworkCard). */
+	const wholeCardLink = $derived(mediaMode === 'portrait');
 
 	$effect(() => {
 		slides;
@@ -128,7 +152,7 @@
 	}
 </script>
 
-<article class="card">
+{#snippet mediaBlock()}
 	<div
 		class="media"
 		role={canCarousel ? 'group' : undefined}
@@ -182,50 +206,59 @@
 			<p class="tip" role="status">Svep för att se fler</p>
 		{/if}
 	</div>
+{/snippet}
 
-	<a
-		class="meta"
-		href={`/konstnarer/${artist.slug}`}
-		onmouseenter={() => (iconPaused = true)}
-		onmouseleave={() => (iconPaused = false)}
-		onfocus={() => (iconPaused = true)}
-		onblur={() => (iconPaused = false)}
-	>
-		{#if canIconAlternate || workSrc || portraitSrc}
-			<div class="icon" aria-hidden="true">
-				{#if canIconAlternate}
-					<img
-						src={workSrc!}
-						alt=""
-						class="icon-img square"
-						class:show={iconSlide === 0}
-					/>
-					<img
-						src={portraitSrc!}
-						alt=""
-						class="icon-img circle"
-						class:show={iconSlide === 1}
-					/>
-				{:else if portraitSrc}
-					<img src={portraitSrc} alt="" class="icon-img circle show" />
-				{:else if workSrc}
-					<img src={workSrc} alt="" class="icon-img square show" />
-				{/if}
-			</div>
-		{/if}
-		<div class="meta-text">
-			<h2 class="serif">{artist.name}</h2>
-			<p>{artist.specialty}</p>
+{#snippet metaInner()}
+	{#if showIconBlock}
+		<div class="icon" aria-hidden="true">
+			{#if canIconAlternate}
+				<img src={workSrc!} alt="" class="icon-img square" class:show={iconSlide === 0} />
+				<img src={portraitSrc!} alt="" class="icon-img circle" class:show={iconSlide === 1} />
+			{:else if portraitSrc}
+				<img src={portraitSrc} alt="" class="icon-img circle show" />
+			{:else if workSrc}
+				<img src={workSrc} alt="" class="icon-img square show" />
+			{/if}
 		</div>
-		<span class="arrow" aria-hidden="true">→</span>
+	{/if}
+	<div class="meta-text">
+		<h2 class="serif">{artist.name}</h2>
+		<p>{artist.specialty}</p>
+	</div>
+	<span class="arrow" aria-hidden="true">→</span>
+{/snippet}
+
+{#if wholeCardLink}
+	<a class="card" {href}>
+		{@render mediaBlock()}
+		<div class="meta">
+			{@render metaInner()}
+		</div>
 	</a>
-</article>
+{:else}
+	<article class="card">
+		{@render mediaBlock()}
+		<a
+			class="meta"
+			{href}
+			onmouseenter={() => (iconPaused = true)}
+			onmouseleave={() => (iconPaused = false)}
+			onfocus={() => (iconPaused = true)}
+			onblur={() => (iconPaused = false)}
+		>
+			{@render metaInner()}
+		</a>
+	</article>
+{/if}
 
 <style>
 	.card {
 		display: flex;
 		flex-direction: column;
 		min-width: 0;
+		color: inherit;
+		text-decoration: none;
+		transition: box-shadow 0.18s ease;
 	}
 
 	.media {
@@ -235,7 +268,6 @@
 		overflow: hidden;
 		touch-action: pan-y;
 		cursor: default;
-		transition: box-shadow 0.18s ease;
 	}
 
 	.media img {
@@ -344,21 +376,7 @@
 		padding: 0.7rem 0.55rem 0.75rem;
 		color: inherit;
 		text-decoration: none;
-		transition:
-			background-color 0.18s ease,
-			box-shadow 0.18s ease;
-	}
-
-	.meta:hover,
-	.meta:focus-visible {
-		background: var(--card-meta-hover);
-	}
-
-	.meta:hover h2,
-	.meta:focus-visible h2 {
-		text-decoration: underline;
-		text-underline-offset: 0.18em;
-		text-decoration-thickness: 1px;
+		transition: background-color 0.18s ease;
 	}
 
 	.icon {
@@ -407,12 +425,6 @@
 			transform 0.18s ease;
 	}
 
-	.meta:hover .arrow,
-	.meta:focus-visible .arrow {
-		color: var(--text);
-		transform: translateX(3px);
-	}
-
 	h2 {
 		font-size: 1.25rem;
 		margin: 0;
@@ -445,12 +457,32 @@
 			opacity: 1;
 		}
 
-		/* Samma yttre ram på mediakarusell och länkrad */
-		.media:hover,
-		.media:focus-within,
-		.meta:hover,
-		.meta:focus-visible {
+		/* Helkort-hover — samma rytm som ArtworkCard */
+		.card:hover,
+		.card:focus-visible,
+		.card:focus-within {
 			box-shadow: 0 0 0 1px var(--brand);
+		}
+
+		.card:hover .meta,
+		.card:focus-visible .meta,
+		.card:focus-within .meta {
+			background: var(--card-meta-hover);
+		}
+
+		.card:hover .meta h2,
+		.card:focus-visible .meta h2,
+		.card:focus-within .meta h2 {
+			text-decoration: underline;
+			text-underline-offset: 0.18em;
+			text-decoration-thickness: 1px;
+		}
+
+		.card:hover .arrow,
+		.card:focus-visible .arrow,
+		.card:focus-within .arrow {
+			color: var(--text);
+			transform: translateX(3px);
 		}
 	}
 

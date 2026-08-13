@@ -3,6 +3,7 @@
 	import { site } from '$lib/data/mockData.js';
 	import { findWorkRefByImage, workHref } from '$lib/data/mockData.js';
 	import ArtworkCard from '$lib/components/ArtworkCard.svelte';
+	import ArtistCard from '$lib/components/ArtistCard.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 
@@ -225,11 +226,7 @@
 			</div>
 			<div class="artists">
 				{#each data.related as a}
-					<a href={`/konstnarer/${a.slug}`}>
-						<img src={a.image} alt={a.name} />
-						<strong class="serif">{a.name}</strong>
-						<span class="label">{a.specialty}</span>
-					</a>
+					<ArtistCard artist={a} mediaMode="portrait" showIcon={false} showBadge={false} />
 				{/each}
 			</div>
 		</div>
@@ -609,26 +606,20 @@
 
 	.artists {
 		display: grid;
-		gap: 1.25rem;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 1.25rem 0.85rem;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
-	.artists img {
-		aspect-ratio: 1;
-		object-fit: cover;
-		margin-bottom: 0.55rem;
-		background: #e8e8e2;
+	@media (min-width: 900px) {
+		.artists {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
 	}
 
-	.artists strong {
-		display: block;
-		font-weight: 500;
-		font-size: 1.05rem;
-		margin-bottom: 0.2rem;
-	}
-
-	.artists .label {
-		margin: 0;
+	@media (min-width: 1100px) {
+		.artists {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
 	}
 
 	.pager-band {
@@ -671,10 +662,6 @@
 	@media (max-width: 900px) {
 		.install {
 			grid-template-columns: 1fr;
-		}
-
-		.artists {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 	}
 

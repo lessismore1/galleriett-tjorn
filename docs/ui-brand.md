@@ -19,8 +19,18 @@ Utkast 2026-08-13.
 
 | Kort | Komponent | Exempel |
 |---|---|---|
-| Konstnärskort | `ArtistCard` | `/konstnarer` |
+| Konstnärskort | `ArtistCard` | `/konstnarer` (karusell), utställning “Utställande konstnärer” (`mediaMode="portrait"`) |
 | Verkskort | `ArtworkCard` | konstnärssida Verk, utställning Verk |
+
+### `ArtistCard`-lägen
+
+| Prop | Default | Utställning |
+|---|---|---|
+| `mediaMode` | `"carousel"` | `"portrait"` (fix porträtt, ingen karusell) |
+| `showIcon` | `true` | `false` |
+| `showBadge` | `true` | `false` |
+
+**Hover:** helkort (1px `--brand`-ram + `--card-meta-hover` på meta) — samma rytm som `ArtworkCard`.
 
 ## Designbegränsning — kort på vit och beige
 
