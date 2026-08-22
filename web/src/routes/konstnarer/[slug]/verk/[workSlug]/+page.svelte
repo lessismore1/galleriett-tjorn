@@ -14,8 +14,8 @@
 	const artist = $derived(data.artist);
 	const work = $derived(data.work);
 
-	/** Utställningskontext från ?show= (läses i klienten — undviker prerender-crash på url.search). */
-	const showSlug = $derived(page.url.searchParams.get('show'));
+	/** Utställningskontext från ?show= — endast i webbläsaren (prerender får inte läsa searchParams). */
+	const showSlug = $derived(browser ? page.url.searchParams.get('show') : null);
 	const showBrowse = $derived(showSlug ? getShowBrowse(showSlug, work.slug) : null);
 
 	const browse = $derived.by(() => {
@@ -46,6 +46,9 @@
 		};
 	});
 
+	/** Canonical utan query — säker under prerender och rätt för dela/mailto. */
+	const shareUrl = $derived(`${page.url.origin}${page.url.pathname}`);
+
 	const pageTitle = $derived(`${work.title} — ${artist.name} · GALLERIett`);
 	const pageDescription = $derived.by(() => {
 		const story = typeof work.story === 'string' ? work.story.replace(/\s+/g, ' ').trim() : '';
@@ -69,19 +72,19 @@
 	const interestMailto = $derived.by(() => {
 		const subject = encodeURIComponent(`Intresse: ${work.title} — ${artist.name}`);
 		const body = encodeURIComponent(
-			`Hej GALLERIett,\n\nJag är intresserad av verket \"${work.title}\" (${work.year}) av ${artist.name}.\n\nLänk: ${page.url.href}\n\nVänliga hälsningar\n`
+			`Hej GALLERIett,\n\nJag är intresserad av verket \"${work.title}\" (${work.year}) av ${artist.name}.\n\nLänk: ${shareUrl}\n\nVänliga hälsningar\n`
 		);
 		return `mailto:${site.email}?subject=${subject}&body=${body}`;
 	});
 
 	const shareMail = $derived.by(() => {
 		const subject = encodeURIComponent(`${work.title} — ${artist.name}`);
-		const body = encodeURIComponent(`${work.title} av ${artist.name}\n${page.url.href}`);
+		const body = encodeURIComponent(`${work.title} av ${artist.name}\n${shareUrl}`);
 		return `mailto:?subject=${subject}&body=${body}`;
 	});
 
 	const facebookShare = $derived(
-		`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(page.url.href)}`
+		`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`
 	);
 
 	let copied = $state(false);
@@ -89,7 +92,7 @@
 	async function copyLink() {
 		if (!browser) return;
 		try {
-			await navigator.clipboard.writeText(page.url.href);
+			await navigator.clipboard.writeText(shareUrl);
 			copied = true;
 			window.setTimeout(() => {
 				copied = false;
