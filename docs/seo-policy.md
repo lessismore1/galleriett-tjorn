@@ -24,11 +24,13 @@ Alla list- och detaljsidor som ska indexeras ska använda `Seo`.
 | URL | Canonical | Kommentar |
 |---|---|---|
 | `/konstnarer` | `/konstnarer` | En lista; filter/sök är UI-state |
-| `/utstallningar` | `/utstallningar` | Årets program |
-| `/utstallningar/pagaende` | samma path | Egen listsida |
-| `/utstallningar/kommande` | samma path | Egen listsida |
-| `/utstallningar/arkiv` | samma path | Arkivöversikt |
-| `/utstallningar/arkiv/2025` | `/utstallningar/arkiv/2025` | Årsarkiv är indexvärt |
+| `/utstallningar` | `/utstallningar` | Aktuella (pågående + kommande) |
+| `/utstallningar/tidigare` | → senaste år | Redirect till årsvy |
+| `/utstallningar/tidigare/2025` | samma path | Tidigare per år (kortgrid) |
+| `/utstallningar/pagaende` | → redirect `/utstallningar` | Legacy |
+| `/utstallningar/kommande` | → redirect `/utstallningar` | Legacy |
+| `/utstallningar/arkiv` | → redirect `/utstallningar/tidigare` | Legacy |
+| `/utstallningar/arkiv/2025` | → redirect `/utstallningar/tidigare/2025` | Legacy |
 | `/nyheter` | `/nyheter` | Filter i UI, inte i URL |
 
 **Regel:** Har sidan en **egen route** med eget innehåll → canonical = den routen.
@@ -39,7 +41,7 @@ Alla list- och detaljsidor som ska indexeras ska använda `Seo`.
 
 Exempel G1: `/konstnarer?filter=aktuellt` → canonical `/konstnarer`.
 
-**Undvik:** Query som ersätter riktiga arkiv-URL:er (t.ex. `/utstallningar?år=2025` när `/utstallningar/arkiv/2025` finns).
+**Undvik:** Query som ersätter riktiga list-URL:er (t.ex. `/utstallningar?år=2025` när `/utstallningar/tidigare` finns).
 
 ## Canonical — detaljsidor
 
@@ -62,7 +64,7 @@ Detalj = egen sida, egen canonical. Inga “canonical upp till listan”.
 ## Jämförelse kort — KmH
 
 KmH använder årsbundna pathar (`/ar/2026/konstnarer/…`) som canonical arkiv.  
-G1 använder galleriets egna listor + `/utstallningar/arkiv/{year}` — samma idé (stabil path per innehållsmängd), annan produktform.
+G1 använder galleriets egna listor + `/utstallningar/tidigare` — samma idé (stabil path per innehållsmängd), annan produktform.
 
 ## Checklista vid ny listsida
 

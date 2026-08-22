@@ -5,6 +5,7 @@
 	import ArtworkCard from '$lib/components/ArtworkCard.svelte';
 	import ArtistCard from '$lib/components/ArtistCard.svelte';
 	import ExhibitionRow from '$lib/components/ExhibitionRow.svelte';
+	import ExhibitionCard from '$lib/components/ExhibitionCard.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 
@@ -34,17 +35,25 @@
 	const exhibitionRows = $derived(
 		(artist.exhibitions ?? []).map((ex) => {
 			const full = ex.slug ? exhibitions.find((e) => e.slug === ex.slug) : null;
+			const status = full?.status ?? null;
+			const current = status === 'ongoing' || status === 'upcoming';
 			return {
 				year: ex.year,
 				title: ex.id ? `${ex.id} · ${ex.title}` : ex.title,
+				cardTitle: ex.title,
 				venue: ex.venue,
+				datesLabel: full?.datesLabel ?? String(ex.year),
 				href: ex.slug ? `/utstallningar/${ex.slug}` : null,
-				image: full?.image ?? null,
-				status: full?.status ?? null,
-				intro: full?.intro ?? null
+				image: full?.image ?? artist.image ?? null,
+				status,
+				intro: full?.intro ?? null,
+				current
 			};
 		})
 	);
+
+	const currentExhibitions = $derived(exhibitionRows.filter((ex) => ex.current));
+	const pastExhibitions = $derived(exhibitionRows.filter((ex) => !ex.current));
 
 	let sentinelEl = $state<HTMLElement | null>(null);
 	let subnavEl = $state<HTMLElement | null>(null);
@@ -196,30 +205,65 @@
 	</div>
 </section>
 
-<section id="exhibitions" class="band band-pad">
-	<div class="container">
-		<div class="section-head">
-			<h2 class="serif section-title">Utställningar</h2>
-			<a class="link-arrow" href="/utstallningar">Visa alla</a>
+{#if currentExhibitions.length || pastExhibitions.length}
+	<section id="exhibitions" class="band band-pad">
+		<div class="container exhibitions-stack">
+			{#if currentExhibitions.length}
+				<div>
+					<div class="section-head">
+						<h2 class="serif section-title">Aktuella utställningar</h2>
+						<a class="link-arrow" href="/utstallningar">Visa alla</a>
+					</div>
+					<ul class="list">
+						{#each currentExhibitions as ex}
+							<ExhibitionRow
+								href={ex.href}
+								leading={ex.year}
+								title={ex.title}
+								subtitle={ex.venue}
+								intro={ex.intro}
+								image={ex.image}
+								status={ex.status}
+								showPlus={Boolean(ex.href)}
+							/>
+						{/each}
+					</ul>
+				</div>
+			{/if}
+
+			{#if pastExhibitions.length}
+				<div>
+					<div class="section-head">
+						<h2 class="serif section-title">Tidigare utställningar</h2>
+						<a class="link-arrow" href="/utstallningar/tidigare">Visa alla</a>
+					</div>
+					<div class="ex-grid">
+						{#each pastExhibitions as ex}
+							{#if ex.image && ex.href}
+								<ExhibitionCard
+									href={ex.href}
+									image={ex.image}
+									title={ex.cardTitle}
+									subtitle="{ex.year} · {ex.venue}"
+									alt={ex.cardTitle}
+								/>
+							{/if}
+						{/each}
+					</div>
+				</div>
+			{/if}
 		</div>
-		<ul class="list">
-			{#each exhibitionRows as ex}
-				<ExhibitionRow
-					href={ex.href}
-					leading={ex.year}
-					title={ex.title}
-					subtitle={ex.venue}
-					intro={ex.intro}
-					image={ex.image}
-					status={ex.status}
-					showPlus={Boolean(ex.href)}
-				/>
-			{:else}
-				<li class="empty">Inga utställningar listade.</li>
-			{/each}
-		</ul>
-	</div>
-</section>
+	</section>
+{:else}
+	<section id="exhibitions" class="band band-pad">
+		<div class="container">
+			<div class="section-head">
+				<h2 class="serif section-title">Utställningar</h2>
+			</div>
+			<p class="empty">Inga utställningar listade.</p>
+		</div>
+	</section>
+{/if}
 
 <section id="news" class="band-soft band-pad">
 	<div class="container">
@@ -585,6 +629,36 @@
 		list-style: none;
 		padding: 0;
 		margin: 0;
+	}
+
+	.exhibitions-stack {
+		display: flex;
+		flex-direction: column;
+		gap: 2.75rem;
+	}
+
+	.ex-grid {
+		display: grid;
+		gap: 2rem 1.5rem;
+		grid-template-columns: 1fr;
+	}
+
+	@media (min-width: 600px) {
+		.ex-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 900px) {
+		.ex-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	@media (min-width: 1100px) {
+		.ex-grid {
+			grid-template-columns: repeat(4, 1fr);
+		}
 	}
 
 	.news {

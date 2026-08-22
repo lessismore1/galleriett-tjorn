@@ -55,8 +55,8 @@ Konstnär och utställning: sentinel under breadcrumbs → `body.subnav-stuck` d
 |---|---|---|
 | Konstnärskort | `ArtistCard` | `/konstnarer` (karusell); utställning / nyhet / “Kanske också intressant” (`mediaMode="portrait"`) |
 | Verkskort | `ArtworkCard` | konstnärssida Verk, utställning Verk |
-| Utställningsrad | `ExhibitionRow` | `/utstallningar` (år/pågående/kommande) |
-| Utställningskort | `ExhibitionCard` | startsida Aktuellt; **arkiv** (`/utstallningar/arkiv/{year}`) |
+| Utställningsrad | `ExhibitionRow` | `/utstallningar` (Aktuella); konstnär → Aktuella |
+| Utställningskort | `ExhibitionCard` | startsida Aktuellt; **Tidigare** (`/utstallningar/tidigare`); konstnär → Tidigare |
 
 ### `ArtistCard`-lägen
 
@@ -71,7 +71,7 @@ Konstnär och utställning: sentinel under breadcrumbs → `body.subnav-stuck` d
 
 ### `ExhibitionRow`
 
-Split-rad för **år / pågående / kommande** (inte arkiv): **bild | text** — samma tvåkolumnskänsla som t.ex. Magnus Karlsson / Akvarellmuseet.
+Split-rad för **Aktuella** (pågående + kommande; inte Tidigare): **bild | text** — samma tvåkolumnskänsla som t.ex. Magnus Karlsson / Akvarellmuseet.
 
 | Prop | Roll |
 |---|---|
@@ -91,13 +91,13 @@ Vertikalt grid-kort: bild → titel → undertext.
 | Prop | Roll |
 |---|---|
 | `image` / `href` | media + länk |
-| `status` **eller** `badge` | Pågående/Kommande, eller fri etikett (t.ex. Media) — **inte** på arkivgrid |
+| `status` **eller** `badge` | Pågående/Kommande, eller fri etikett (t.ex. Media) — **inte** på Tidigare-grid |
 | `title` / `subtitle` | primär + sekundär |
 
-**Användning:** startsida Aktuellt; arkiv (`/utstallningar/arkiv/{year}`) som **volym-grid** (lättare än `ExhibitionRow`).  
+**Användning:** startsida Aktuellt; `/utstallningar/tidigare/{year}` som **volym-grid** (lättare än `ExhibitionRow`).  
 **Hover:** helkort (ram + `--card-meta-hover` + lätt bildzoom) — samma rytm som `ArtworkCard`.
 
-**Utställningslistor:** år / pågående / kommande = `ExhibitionRow` (split + pitch). Arkiv = `ExhibitionCard`-grid.
+**Utställningslistor:** Aktuella = `ExhibitionRow` (split + pitch). Tidigare = `ExhibitionCard`-grid + **årssubnav**. Konstnärssida samma uppdelning under Utställningar.
 
 ## Designbegränsning — kort på vit och beige
 

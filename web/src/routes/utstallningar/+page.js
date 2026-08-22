@@ -1,22 +1,18 @@
-import {
-	getYearExhibitions,
-	getArchiveYears,
-	getCurrentExhibitionYear
-} from '$lib/data/mockData.js';
+import { getCurrentExhibitions, getPastYears } from '$lib/data/mockData.js';
 
 /** @type {import('./$types').PageLoad} */
 export function load() {
-	const year = getCurrentExhibitionYear();
-	const list = getYearExhibitions(year);
+	const list = getCurrentExhibitions();
 	return {
-		filter: /** @type {const} */ ('year'),
+		filter: /** @type {const} */ ('current'),
 		list,
-		archiveYears: getArchiveYears(),
-		archiveYear: null,
-		emptyLabel: 'Inga utställningar i år.',
+		pastYears: getPastYears(),
+		pastYear: null,
+		emptyLabel: 'Inga aktuella utställningar just nu.',
 		seo: {
-			title: `Utställningar ${year} · GALLERIett`,
-			description: `Årets utställningar på GALLERIett, Tjörn — ${year}. Pågående, kommande och genomförda utställningar under året.`,
+			title: 'Utställningar · GALLERIett',
+			description:
+				'Aktuella utställningar på GALLERIett, Tjörn — pågående och kommande i galleriet.',
 			image: list[0]?.image ?? null
 		}
 	};

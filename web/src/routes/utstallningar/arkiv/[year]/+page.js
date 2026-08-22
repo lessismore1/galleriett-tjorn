@@ -1,8 +1,5 @@
-import { error } from '@sveltejs/kit';
-import {
-	getArchiveYears,
-	getArchiveExhibitions
-} from '$lib/data/mockData.js';
+import { redirect } from '@sveltejs/kit';
+import { getArchiveYears } from '$lib/data/mockData.js';
 
 /** @type {import('./$types').EntryGenerator} */
 export function entries() {
@@ -12,26 +9,10 @@ export function entries() {
 /** @type {import('./$types').PageLoad} */
 export function load({ params }) {
 	const year = Number(params.year);
-	const archiveYears = getArchiveYears();
-
-	if (!Number.isFinite(year) || !archiveYears.includes(year)) {
-		throw error(404, 'Arkivåret hittades inte');
-	}
-
-	const list = getArchiveExhibitions(year);
-
-	return {
-		filter: /** @type {const} */ ('archive'),
-		list,
-		archiveYears,
-		archiveYear: year,
-		emptyLabel: `Inga utställningar ${year}.`,
-		seo: {
-			title: `Utställningar ${year} · Arkiv · GALLERIett`,
-			description: `Arkiv: utställningar på GALLERIett, Tjörn under ${year}.`,
-			image: list[0]?.image ?? null
-		}
-	};
+	const target = Number.isFinite(year)
+		? `/utstallningar/tidigare/${year}`
+		: '/utstallningar/tidigare';
+	throw redirect(301, target);
 }
 
 export const prerender = true;

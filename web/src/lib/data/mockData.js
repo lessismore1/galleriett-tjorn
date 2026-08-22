@@ -1004,20 +1004,36 @@ export function getUpcomingExhibitions() {
 	);
 }
 
-/** Arkivår = år före innevarande kalenderår */
+/** Pågående + kommande (pågående först) */
+export function getCurrentExhibitions() {
+	return [...getOngoingExhibitions(), ...getUpcomingExhibitions()];
+}
+
+/** Allt som inte är pågående eller kommande (valfritt filtrerat på år) */
+export function getPastExhibitions(year = null) {
+	let list = exhibitions.filter((e) => e.status !== 'ongoing' && e.status !== 'upcoming');
+	if (year != null) {
+		list = list.filter((e) => exhibitionYear(e) === year);
+	}
+	return sortByIdDesc(list);
+}
+
+/** År som har tidigare utställningar (nyast först) */
+export function getPastYears() {
+	return [...new Set(getPastExhibitions().map(exhibitionYear))].sort((a, b) => b - a);
+}
+
+/** Arkivår = år före innevarande kalenderår (legacy / redirects) */
 export function getArchiveYears() {
 	const current = getCurrentExhibitionYear();
-	const years = [
-		...new Set(exhibitions.map(exhibitionYear).filter((y) => y < current))
-	];
-	return years.sort((a, b) => b - a);
+	return getPastYears().filter((y) => y < current);
 }
 
 /** @param {number} year */
 export function getArchiveExhibitions(year) {
 	const current = getCurrentExhibitionYear();
 	if (year >= current) return [];
-	return getYearExhibitions(year);
+	return getPastExhibitions(year);
 }
 
 /** @param {string} slug */
