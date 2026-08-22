@@ -4,7 +4,8 @@
 	import {
 		site,
 		workHref,
-		statusLabels
+		statusLabels,
+		getShowBrowse
 	} from '$lib/data/mockData.js';
 	import Seo from '$lib/components/Seo.svelte';
 
@@ -12,8 +13,38 @@
 
 	const artist = $derived(data.artist);
 	const work = $derived(data.work);
-	const prev = $derived(data.prev);
-	const next = $derived(data.next);
+
+	/** Utställningskontext från ?show= (läses i klienten — undviker prerender-crash på url.search). */
+	const showSlug = $derived(page.url.searchParams.get('show'));
+	const showBrowse = $derived(showSlug ? getShowBrowse(showSlug, work.slug) : null);
+
+	const browse = $derived.by(() => {
+		if (showBrowse) {
+			return {
+				prevHref: workHref(showBrowse.prev.artist.slug, showBrowse.prev.work, {
+					show: showSlug
+				}),
+				nextHref: workHref(showBrowse.next.artist.slug, showBrowse.next.work, {
+					show: showSlug
+				}),
+				prevTitle: showBrowse.prev.work.title,
+				nextTitle: showBrowse.next.work.title,
+				index: showBrowse.index,
+				total: showBrowse.total,
+				allHref: showBrowse.allHref
+			};
+		}
+
+		return {
+			prevHref: workHref(artist.slug, data.prev),
+			nextHref: workHref(artist.slug, data.next),
+			prevTitle: data.prev.title,
+			nextTitle: data.next.title,
+			index: data.index,
+			total: data.total,
+			allHref: `/konstnarer/${artist.slug}#works`
+		};
+	});
 
 	const pageTitle = $derived(`${work.title} — ${artist.name} · GALLERIett`);
 	const pageDescription = $derived.by(() => {
@@ -93,11 +124,11 @@
 		</a>
 		<a class="artist-name serif" href={`/konstnarer/${artist.slug}`}>{artist.name}</a>
 		<span class="scope" aria-hidden="true">Verk</span>
-		<a class="all-works" href={`/konstnarer/${artist.slug}#works`}>Visa alla</a>
+		<a class="all-works" href={browse.allHref}>Visa alla</a>
 		<div class="browse" role="group" aria-label="Bläddra bland verk">
-			<a class="browse-prev" href={workHref(artist.slug, prev)} aria-label={`Föregående: ${prev.title}`}>‹</a>
-			<span class="count">{data.index + 1} / {data.total}</span>
-			<a class="browse-next" href={workHref(artist.slug, next)} aria-label={`Nästa: ${next.title}`}>›</a>
+			<a class="browse-prev" href={browse.prevHref} aria-label={`Föregående: ${browse.prevTitle}`}>‹</a>
+			<span class="count">{browse.index + 1} / {browse.total}</span>
+			<a class="browse-next" href={browse.nextHref} aria-label={`Nästa: ${browse.nextTitle}`}>›</a>
 		</div>
 	</div>
 </nav>
@@ -109,14 +140,14 @@
 			<div class="media-nav" aria-hidden="true">
 				<a
 					class="nav-btn"
-					href={workHref(artist.slug, prev)}
-					aria-label={`Föregående: ${prev.title}`}
+					href={browse.prevHref}
+					aria-label={`Föregående: ${browse.prevTitle}`}
 					tabindex="-1">‹</a
 				>
 				<a
 					class="nav-btn"
-					href={workHref(artist.slug, next)}
-					aria-label={`Nästa: ${next.title}`}
+					href={browse.nextHref}
+					aria-label={`Nästa: ${browse.nextTitle}`}
 					tabindex="-1">›</a
 				>
 			</div>

@@ -35,6 +35,13 @@ Exempel:
 /konstnarer/10-kattis-palmnas/verk/1032-portratt-med-jordgubbar-2026
 ```
 
+**Utställningskontext (bläddring):** samma canonical + query:
+
+```text
+…/verk/{slug}?show={exhibitionSlug}
+```
+
+Då är prev/next bland **utställningens** verk (alla konstnärer i showen) och **Visa alla** → `/utstallningar/{slug}#works`. Utan `?show=` = konstnärens verklista.
 | Del | Regel |
 |---|---|
 | **id** | Löpnummer från **1001** (galleriets verkserie) |
@@ -65,7 +72,7 @@ Se `docs/seo-policy.md`.
 5. Kontext: “Utställning” om verket hänger i en show  
 6. CTA: `Maila om intresse`  
 7. Dela: Facebook + kopiera länk + mail  
-8. Bläddra: sticky verk-subnav (logo · konstnär · Verk · **Visa alla** · count) + cirkelpilar ‹ › på bilden (samma språk som konstnärskorten). På desktop syns hela verket i viewport.  
+8. Bläddra: sticky verk-subnav (logo · konstnär · Verk · **Visa alla** · count) + cirkelpilar ‹ › på bilden. Från utställning: `?show=` → bläddra bland showens verk; Visa alla → utställningen. Från konstnär: konstnärens verk. På desktop syns hela verket i viewport.  
 
 Story är **inte** obligatorisk — utan text visas bara meta. Bra för SEO/delning när den finns (används i meta description).
 

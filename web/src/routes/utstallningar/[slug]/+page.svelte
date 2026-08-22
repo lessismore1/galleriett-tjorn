@@ -20,7 +20,7 @@
 				year: resolved?.year ?? null,
 				medium: resolved?.medium ?? null,
 				dimensions: resolved?.dimensions ?? null,
-				href: ref ? workHref(ref.artist.slug, ref.work) : null
+				href: ref ? workHref(ref.artist.slug, ref.work, { show: ex.slug }) : null
 			};
 		})
 	);
@@ -176,9 +176,6 @@
 	<div class="container">
 		<div class="section-head">
 			<h2 class="serif section-title">Verk</h2>
-			{#if worksWithLinks.length}
-				<a class="link-arrow" href={`/konstnarer/${ex.artistSlug ?? ''}`}>Visa alla verk</a>
-			{/if}
 		</div>
 		{#if worksWithLinks.length}
 			<div class="works">

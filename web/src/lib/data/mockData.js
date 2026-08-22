@@ -1108,9 +1108,12 @@ export function getArtistWork(artistSlug, workSlug) {
 /**
  * @param {string} artistSlug
  * @param {{ slug: string }} work
+ * @param {{ show?: string | null }} [opts]
  */
-export function workHref(artistSlug, work) {
-	return `/konstnarer/${artistSlug}/verk/${work.slug}`;
+export function workHref(artistSlug, work, opts = {}) {
+	const base = `/konstnarer/${artistSlug}/verk/${work.slug}`;
+	const show = opts.show?.trim();
+	return show ? `${base}?show=${encodeURIComponent(show)}` : base;
 }
 
 /** Hitta verk via bild (för utställningslistor). */
@@ -1125,6 +1128,50 @@ export function findWorkRefByImage(image) {
 		}
 	}
 	return null;
+}
+
+/**
+ * Utställningens verk i hängningsordning, resolvade till artist+work.
+ * @param {string} showSlug
+ */
+export function getExhibitionWorkSequence(showSlug) {
+	const exhibition = exhibitions.find((e) => e.slug === showSlug);
+	if (!exhibition) return null;
+
+	/** @type {{ artist: (typeof artists)[number], work: (typeof artists)[number]['works'][number] }[]} */
+	const items = [];
+	for (const entry of exhibition.works ?? []) {
+		const ref = findWorkRefByImage(entry.image);
+		if (ref) items.push(ref);
+	}
+	if (!items.length) return null;
+	return { exhibition, items };
+}
+
+/**
+ * Prev/next bland utställningens verk (alla konstnärer i showen).
+ * @param {string} showSlug
+ * @param {string} workSlug
+ */
+export function getShowBrowse(showSlug, workSlug) {
+	const seq = getExhibitionWorkSequence(showSlug);
+	if (!seq) return null;
+
+	const index = seq.items.findIndex((item) => item.work.slug === workSlug);
+	if (index < 0) return null;
+
+	const total = seq.items.length;
+	const prev = seq.items[(index - 1 + total) % total];
+	const next = seq.items[(index + 1) % total];
+
+	return {
+		exhibition: seq.exhibition,
+		index,
+		total,
+		prev,
+		next,
+		allHref: `/utstallningar/${seq.exhibition.slug}#works`
+	};
 }
 
 /** Utställningar där bilden ingår i verklistan. */

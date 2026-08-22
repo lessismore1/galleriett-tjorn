@@ -52,7 +52,7 @@ Exempel G1: `/konstnarer?filter=aktuellt` → canonical `/konstnarer`.
 
 Detalj = egen sida, egen canonical. Inga “canonical upp till listan”.
 
-**Verk:** Canonical ligger alltid under konstnären. Utställningssidor länkar till samma verk-URL (inte en parallell path under `/utstallningar/…`). Se `docs/verk-sida.md`.
+**Verk:** Canonical ligger alltid under konstnären (path utan query). Utställningssidor länkar till samma verk-URL med valfri `?show={exhibitionSlug}` för bläddringskontext — query ingår **inte** i canonical. Se `docs/verk-sida.md`.
 ## Title & description
 
 - **Title:** `{Ämne} · GALLERIett` (listor) eller `{Namn/titel} · GALLERIett` (detalj)
