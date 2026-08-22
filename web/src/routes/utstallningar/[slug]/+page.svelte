@@ -136,8 +136,9 @@
 <nav class="band subnav" class:stuck bind:this={subnavEl} aria-label="Sektioner">
 	<div class="container subnav-inner">
 		{#if stuck}
-			<a class="subnav-home" href="/" aria-label="GALLERIett — startsida">
+			<a class="subnav-home" href="/" aria-label="GALLERIett, Tjörn — startsida">
 				<img src="/images/logo.webp" alt="" width="36" height="36" />
+				<span class="place">Tjörn</span>
 			</a>
 		{/if}
 		<strong class="ex-name serif">{ex.artist} <span class="sep">|</span> {ex.title}</strong>
@@ -392,7 +393,11 @@
 	.subnav-home {
 		flex-shrink: 0;
 		display: flex;
+		flex-direction: column;
 		align-items: center;
+		gap: 0.15rem;
+		text-decoration: none;
+		color: inherit;
 	}
 
 	.subnav-home img {
@@ -400,6 +405,16 @@
 		height: 2.25rem;
 		display: block;
 		object-fit: contain;
+	}
+
+	.subnav-home .place {
+		font-family: var(--font-sans);
+		font-size: 0.5rem;
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+		line-height: 1;
 	}
 
 	.ex-name {
