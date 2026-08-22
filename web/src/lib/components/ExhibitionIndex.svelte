@@ -2,6 +2,7 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import ExhibitionRow from '$lib/components/ExhibitionRow.svelte';
+	import ExhibitionCard from '$lib/components/ExhibitionCard.svelte';
 
 	type Filter = 'year' | 'ongoing' | 'upcoming' | 'archive';
 
@@ -62,6 +63,8 @@
 		}
 		return [{ name: 'Utställningar' }];
 	});
+
+	const isArchive = $derived(filter === 'archive');
 </script>
 
 <Seo title={seo.title} description={seo.description} image={seo.image ?? null} />
@@ -79,7 +82,7 @@
 	</div>
 </section>
 
-{#if filter === 'archive' && archiveYears.length}
+{#if isArchive && archiveYears.length}
 	<section class="band">
 		<div class="container years-wrap">
 			<nav class="years" aria-label="Arkivår">
@@ -93,22 +96,40 @@
 
 <section class="band-soft">
 	<div class="container">
-		<ul class="list">
-			{#each list as ex}
-				<ExhibitionRow
-					href={`/utstallningar/${ex.slug}`}
-					leading={`Utställning ${ex.id}`}
-					title={ex.artist}
-					line2={ex.title}
-					subtitle={ex.datesLabel}
-					intro={ex.intro}
-					image={ex.image}
-					status={ex.status}
-				/>
+		{#if isArchive}
+			{#if list.length}
+				<div class="grid">
+					{#each list as ex}
+						<ExhibitionCard
+							href={`/utstallningar/${ex.slug}`}
+							image={ex.image}
+							title={ex.artist}
+							subtitle="{ex.title} · {ex.datesLabel}"
+							alt="{ex.artist} — {ex.title}"
+						/>
+					{/each}
+				</div>
 			{:else}
-				<li class="empty">{emptyLabel}</li>
-			{/each}
-		</ul>
+				<p class="empty">{emptyLabel}</p>
+			{/if}
+		{:else}
+			<ul class="list">
+				{#each list as ex}
+					<ExhibitionRow
+						href={`/utstallningar/${ex.slug}`}
+						leading={`Utställning ${ex.id}`}
+						title={ex.artist}
+						line2={ex.title}
+						subtitle={ex.datesLabel}
+						intro={ex.intro}
+						image={ex.image}
+						status={ex.status}
+					/>
+				{:else}
+					<li class="empty">{emptyLabel}</li>
+				{/each}
+			</ul>
+		{/if}
 	</div>
 </section>
 
@@ -180,8 +201,34 @@
 		padding-block: 1rem 3.5rem;
 	}
 
+	.grid {
+		display: grid;
+		gap: 2rem 1.5rem;
+		grid-template-columns: 1fr;
+		padding-block: 1.5rem 3.5rem;
+	}
+
+	@media (min-width: 600px) {
+		.grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 900px) {
+		.grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	@media (min-width: 1100px) {
+		.grid {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+
 	.empty {
 		padding: 2rem 0;
+		margin: 0;
 		color: var(--text-muted);
 	}
 </style>

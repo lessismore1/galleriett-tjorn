@@ -55,8 +55,8 @@ Konstnär och utställning: sentinel under breadcrumbs → `body.subnav-stuck` d
 |---|---|---|
 | Konstnärskort | `ArtistCard` | `/konstnarer` (karusell); utställning / nyhet / “Kanske också intressant” (`mediaMode="portrait"`) |
 | Verkskort | `ArtworkCard` | konstnärssida Verk, utställning Verk |
-| Utställningsrad | `ExhibitionRow` | `/utstallningar` (lista), konstnär → Utställningar |
-| Utställningskort | `ExhibitionCard` | startsida Aktuellt (grid); kan även bära nyhets-tile via `badge` |
+| Utställningsrad | `ExhibitionRow` | `/utstallningar` (år/pågående/kommande) |
+| Utställningskort | `ExhibitionCard` | startsida Aktuellt; **arkiv** (`/utstallningar/arkiv/{year}`) |
 
 ### `ArtistCard`-lägen
 
@@ -71,7 +71,7 @@ Konstnär och utställning: sentinel under breadcrumbs → `body.subnav-stuck` d
 
 ### `ExhibitionRow`
 
-Split-rad (lista, inte grid-kort): **bild | text** — samma tvåkolumnskänsla som t.ex. Magnus Karlsson / Akvarellmuseet.
+Split-rad för **år / pågående / kommande** (inte arkiv): **bild | text** — samma tvåkolumnskänsla som t.ex. Magnus Karlsson / Akvarellmuseet.
 
 | Prop | Roll |
 |---|---|
@@ -86,15 +86,18 @@ Split-rad (lista, inte grid-kort): **bild | text** — samma tvåkolumnskänsla 
 
 ### `ExhibitionCard`
 
-Vertikalt grid-kort: bild → badge → titel → undertext.
+Vertikalt grid-kort: bild → titel → undertext.
 
 | Prop | Roll |
 |---|---|
 | `image` / `href` | media + länk |
-| `status` **eller** `badge` | Pågående/Kommande, eller fri etikett (t.ex. Media) |
+| `status` **eller** `badge` | Pågående/Kommande, eller fri etikett (t.ex. Media) — **inte** på arkivgrid |
 | `title` / `subtitle` | primär + sekundär |
 
+**Användning:** startsida Aktuellt; arkiv (`/utstallningar/arkiv/{year}`) som **volym-grid** (lättare än `ExhibitionRow`).  
 **Hover:** helkort (ram + `--card-meta-hover` + lätt bildzoom) — samma rytm som `ArtworkCard`.
+
+**Utställningslistor:** år / pågående / kommande = `ExhibitionRow` (split + pitch). Arkiv = `ExhibitionCard`-grid.
 
 ## Designbegränsning — kort på vit och beige
 
