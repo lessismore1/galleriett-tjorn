@@ -22,6 +22,7 @@
 			datesLabel: string;
 			status: string;
 			image: string;
+			intro?: string | null;
 		}[];
 		archiveYears?: number[];
 		archiveYear?: number | null;
@@ -96,9 +97,11 @@
 			{#each list as ex}
 				<ExhibitionRow
 					href={`/utstallningar/${ex.slug}`}
-					leading={ex.id}
-					title="{ex.artist} | {ex.title}"
+					leading={`Utställning ${ex.id}`}
+					title={ex.artist}
+					line2={ex.title}
 					subtitle={ex.datesLabel}
+					intro={ex.intro}
 					image={ex.image}
 					status={ex.status}
 				/>
@@ -174,7 +177,7 @@
 		list-style: none;
 		padding: 0;
 		margin: 0;
-		padding-block: 0.5rem 3rem;
+		padding-block: 1rem 3.5rem;
 	}
 
 	.empty {

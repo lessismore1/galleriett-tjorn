@@ -71,16 +71,18 @@ Konstnär och utställning: sentinel under breadcrumbs → `body.subnav-stuck` d
 
 ### `ExhibitionRow`
 
-Horisontell list-rad (inte grid-kort).
+Split-rad (lista, inte grid-kort): **bild | text** — samma tvåkolumnskänsla som t.ex. Magnus Karlsson / Akvarellmuseet.
 
 | Prop | Roll |
 |---|---|
-| `leading` | id eller år |
-| `image` / `status` | thumb + badge (valfritt) |
-| `title` / `subtitle` | primär + sekundär rad |
-| `href` / `showPlus` | länk + `+` |
+| `leading` | t.ex. `Utställning 104` |
+| `title` / `line2` | primär rubrik (konstnär) + italic sekundär (utställningstitel) |
+| `subtitle` | datum |
+| `intro` | pitch (`exhibition.intro`) |
+| `image` / `status` | affisch 16:11 + badge |
+| `href` / `showPlus` | länk; “Läs mer →” |
 
-**Hover:** `--card-meta-hover` på raden (fungerar på vit och beige sektion).
+**Desktop:** TEXT | BILD (samma kolumnrytm som detalj-hero, text vertikalt centrerad mot bilden). **Mobil:** bild ovanför text.
 
 ### `ExhibitionCard`
 

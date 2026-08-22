@@ -40,7 +40,8 @@
 				venue: ex.venue,
 				href: ex.slug ? `/utstallningar/${ex.slug}` : null,
 				image: full?.image ?? null,
-				status: full?.status ?? null
+				status: full?.status ?? null,
+				intro: full?.intro ?? null
 			};
 		})
 	);
@@ -208,6 +209,7 @@
 					leading={ex.year}
 					title={ex.title}
 					subtitle={ex.venue}
+					intro={ex.intro}
 					image={ex.image}
 					status={ex.status}
 					showPlus={Boolean(ex.href)}
