@@ -6,6 +6,7 @@
 	import ArtistCard from '$lib/components/ArtistCard.svelte';
 	import ExhibitionRow from '$lib/components/ExhibitionRow.svelte';
 	import ExhibitionCard from '$lib/components/ExhibitionCard.svelte';
+	import NewsCard from '$lib/components/NewsCard.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 
@@ -18,8 +19,8 @@
 	});
 
 	const related = $derived(artists.filter((a) => a.slug !== artist.slug).slice(0, 3));
-	const artistNews = $derived(getArtistNews(artist.slug));
-	const artistMedia = $derived(getArtistPress(artist.slug));
+	const artistNews = $derived(getArtistNews(artist.slug).slice(0, 4));
+	const artistMedia = $derived(getArtistPress(artist.slug).slice(0, 4));
 
 	const promoWork = $derived(artist.works?.[0] ?? null);
 	const portraitSrc = $derived(artist.image || artist.heroImage || null);
@@ -272,16 +273,16 @@
 			<a class="link-arrow" href="/nyheter">Visa alla</a>
 		</div>
 		{#if artistNews.length}
-			<div class="news">
+			<div class="news-grid">
 				{#each artistNews as item}
-					<a class="news-item" href={`/nyheter/${item.slug}`}>
-						<img src={item.thumb ?? item.image} alt="" />
-						<div>
-							<p class="label">{item.category}</p>
-							<strong class="serif">{item.title}</strong>
-							<p class="muted">{item.dateLabel}</p>
-						</div>
-					</a>
+					<NewsCard
+						href={`/nyheter/${item.slug}`}
+						image={item.image}
+						category={item.category}
+						title={item.title}
+						dateLabel={item.dateLabel}
+						excerpt={item.excerpt}
+					/>
 				{/each}
 			</div>
 		{:else}
@@ -294,18 +295,21 @@
 	<div class="container">
 		<div class="section-head">
 			<h2 class="serif section-title">Media</h2>
+			{#if artistMedia.length}
+				<a class="link-arrow" href="/nyheter">Visa alla</a>
+			{/if}
 		</div>
 		{#if artistMedia.length}
-			<div class="news">
+			<div class="news-grid">
 				{#each artistMedia as item}
-					<a class="news-item" href={`/nyheter/${item.slug}`}>
-						<img src={item.thumb ?? item.image} alt="" />
-						<div>
-							<p class="label">{item.category}</p>
-							<strong class="serif">{item.title}</strong>
-							<p class="muted">{item.dateLabel}</p>
-						</div>
-					</a>
+					<NewsCard
+						href={`/nyheter/${item.slug}`}
+						image={item.image}
+						category={item.category}
+						title={item.title}
+						dateLabel={item.dateLabel}
+						excerpt={item.excerpt}
+					/>
 				{/each}
 			</div>
 		{/if}
@@ -661,35 +665,22 @@
 		}
 	}
 
-	.news {
+	.news-grid {
 		display: grid;
-		gap: 1.25rem;
-		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: 2rem;
+		grid-template-columns: 1fr;
 	}
 
-	.news-item {
-		display: grid;
-		grid-template-columns: 72px 1fr;
-		gap: 0.85rem;
+	@media (min-width: 600px) {
+		.news-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
 	}
 
-	.news-item img {
-		width: 72px;
-		height: 72px;
-		object-fit: cover;
-		background: #e8e8e2;
-	}
-
-	.news-item strong {
-		display: block;
-		font-weight: 500;
-		margin: 0.15rem 0;
-	}
-
-	.muted {
-		margin: 0;
-		font-size: 0.75rem;
-		color: var(--text-muted);
+	@media (min-width: 1100px) {
+		.news-grid {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
 	}
 
 	.press {

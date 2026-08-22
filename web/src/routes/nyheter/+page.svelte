@@ -2,6 +2,7 @@
 	import { getNewsIndex } from '$lib/data/mockData.js';
 	import Seo from '$lib/components/Seo.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+	import NewsCard from '$lib/components/NewsCard.svelte';
 
 	let filter = $state('Alla');
 	const filters = ['Alla', 'Från galleriet', 'Media'];
@@ -35,23 +36,15 @@
 
 		<div class="grid">
 			{#each filtered as item}
-				{#if item.clickable}
-					<a class="card" href={`/nyheter/${item.slug}`}>
-						<img src={item.image} alt="" />
-						<p class="label">{item.category}</p>
-						<h2 class="serif">{item.title}</h2>
-						<p class="date">{item.dateLabel}</p>
-						<p class="excerpt">{item.excerpt}</p>
-					</a>
-				{:else}
-					<article class="card static">
-						<img src={item.image} alt="" />
-						<p class="label">{item.category}</p>
-						<h2 class="serif">{item.title}</h2>
-						<p class="date">{item.dateLabel}</p>
-						<p class="excerpt">{item.excerpt}</p>
-					</article>
-				{/if}
+				<NewsCard
+					href={item.clickable ? `/nyheter/${item.slug}` : null}
+					image={item.image}
+					category={item.category}
+					title={item.title}
+					dateLabel={item.dateLabel}
+					excerpt={item.excerpt}
+					alt=""
+				/>
 			{/each}
 		</div>
 	</div>
@@ -99,48 +92,6 @@
 		display: grid;
 		gap: 2rem;
 		grid-template-columns: repeat(4, minmax(0, 1fr));
-	}
-
-	.card {
-		display: block;
-		min-width: 0;
-	}
-
-	.card:not(.static):hover h2 {
-		box-shadow: inset 0 -2px 0 var(--brand);
-	}
-
-	img {
-		width: 100%;
-		aspect-ratio: 4 / 3;
-		object-fit: cover;
-		margin-bottom: 0.75rem;
-		background: #e8e8e2;
-	}
-
-	h2 {
-		font-size: 1.35rem;
-		margin: 0.35rem 0;
-		font-weight: 500;
-		display: inline;
-		box-decoration-break: clone;
-	}
-
-	.date {
-		font-size: 0.75rem;
-		color: var(--text-muted);
-		margin: 0.45rem 0 0.5rem;
-	}
-
-	.excerpt {
-		color: var(--text-secondary);
-		margin: 0;
-		font-size: var(--text-body);
-		line-height: 1.55;
-	}
-
-	.label {
-		margin: 0;
 	}
 
 	@media (max-width: 1100px) {
