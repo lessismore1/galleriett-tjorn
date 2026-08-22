@@ -74,9 +74,9 @@
 	);
 
 	let index = $state(0);
-	let tipVisible = $state(false);
 	let touchStartX = 0;
 	let didSwipe = false;
+	let resetTimer = 0;
 
 	/** 0 = verk (fyrkant), 1 = porträtt (cirkel) */
 	let iconSlide = $state(0);
@@ -86,12 +86,32 @@
 	const canCarousel = $derived(mediaMode === 'carousel' && slides.length > 1);
 	const canIconAlternate = $derived(showIcon && !!(workSrc && portraitSrc));
 	const showIconBlock = $derived(showIcon && !!(canIconAlternate || workSrc || portraitSrc));
-	/** Porträttläge: hela kortet är en länk (som ArtworkCard). */
-	const wholeCardLink = $derived(mediaMode === 'portrait');
+
+	function clearResetTimer() {
+		if (!resetTimer) return;
+		window.clearTimeout(resetTimer);
+		resetTimer = 0;
+	}
+
+	/** Efter manuell bläddring: tillbaka till första bilden (tavlan) efter 5s. */
+	function scheduleResetToFirst() {
+		if (!browser || !canCarousel) return;
+		clearResetTimer();
+		if (index === 0) return;
+		resetTimer = window.setTimeout(() => {
+			index = 0;
+			resetTimer = 0;
+		}, 5000);
+	}
 
 	$effect(() => {
 		slides;
 		index = 0;
+		clearResetTimer();
+	});
+
+	$effect(() => {
+		return () => clearResetTimer();
 	});
 
 	$effect(() => {
@@ -109,6 +129,7 @@
 	function go(delta: number) {
 		if (!canCarousel) return;
 		index = (index + delta + slides.length) % slides.length;
+		scheduleResetToFirst();
 	}
 
 	function onPointerDown(e: PointerEvent) {
@@ -123,36 +144,32 @@
 		if (Math.abs(dx) > 40) {
 			didSwipe = true;
 			go(dx < 0 ? 1 : -1);
-			if (browser) sessionStorage.setItem('g1-artist-card-swiped', '1');
 		}
 	}
 
-	function onMediaClick(e: MouseEvent) {
-		if (!canCarousel) return;
-		// Desktop: klick på media byter slide (namn-länken navigerar)
-		if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-			e.preventDefault();
-			e.stopPropagation();
-			go(1);
-			return;
-		}
-		// Mobil: tap (utan svep) → tip, inte navigering via media
-		if (didSwipe) return;
+	/** Efter svep: blockera länk-navigering från efterföljande click. */
+	function onCardClick(e: MouseEvent) {
+		if (!didSwipe) return;
+		e.preventDefault();
+		didSwipe = false;
+	}
+
+	function onNav(e: MouseEvent, delta: number) {
 		e.preventDefault();
 		e.stopPropagation();
-		if (!browser) return;
-		if (sessionStorage.getItem('g1-artist-card-swiped') === '1') return;
-		const shown = Number(sessionStorage.getItem('g1-artist-card-tip') || '0');
-		if (shown >= 2) return;
-		sessionStorage.setItem('g1-artist-card-tip', String(shown + 1));
-		tipVisible = true;
-		window.setTimeout(() => {
-			tipVisible = false;
-		}, 2000);
+		go(delta);
 	}
 </script>
 
-{#snippet mediaBlock()}
+<a
+	class="card"
+	{href}
+	onmouseenter={() => (iconPaused = true)}
+	onmouseleave={() => (iconPaused = false)}
+	onfocus={() => (iconPaused = true)}
+	onblur={() => (iconPaused = false)}
+	onclick={onCardClick}
+>
 	<div
 		class="media"
 		role={canCarousel ? 'group' : undefined}
@@ -160,7 +177,6 @@
 		aria-label={canCarousel ? `Bilder för ${artist.name}` : undefined}
 		onpointerdown={onPointerDown}
 		onpointerup={onPointerUp}
-		onclick={onMediaClick}
 	>
 		{#if badge}
 			<span class="badge" class:upcoming={badge.text === 'Kommande'} title={badge.title}
@@ -173,83 +189,48 @@
 		{/if}
 
 		{#if canCarousel}
-			<div class="chrome desktop-hover">
-				<div class="nav">
-					<button
-						type="button"
-						class="nav-btn"
-						aria-label="Föregående bild"
-						onclick={(e) => {
-							e.stopPropagation();
-							go(-1);
-						}}>‹</button
-					>
-					<button
-						type="button"
-						class="nav-btn"
-						aria-label="Nästa bild"
-						onclick={(e) => {
-							e.stopPropagation();
-							go(1);
-						}}>›</button
-					>
-				</div>
-				<div class="dots" aria-hidden="true">
-					{#each slides as _, i}
-						<span class:active={i === index}></span>
-					{/each}
-				</div>
+			<div class="nav desktop-hover">
+				<button
+					type="button"
+					class="nav-btn"
+					aria-label="Föregående bild"
+					onclick={(e) => onNav(e, -1)}>‹</button
+				>
+				<button
+					type="button"
+					class="nav-btn"
+					aria-label="Nästa bild"
+					onclick={(e) => onNav(e, 1)}>›</button
+				>
+			</div>
+			<div class="dots" aria-hidden="true">
+				{#each slides as _, i}
+					<span class:active={i === index}></span>
+				{/each}
 			</div>
 		{/if}
+	</div>
 
-		{#if tipVisible}
-			<p class="tip" role="status">Svep för att se fler</p>
+	<div class="meta">
+		{#if showIconBlock}
+			<div class="icon" aria-hidden="true">
+				{#if canIconAlternate}
+					<img src={workSrc!} alt="" class="icon-img square" class:show={iconSlide === 0} />
+					<img src={portraitSrc!} alt="" class="icon-img circle" class:show={iconSlide === 1} />
+				{:else if portraitSrc}
+					<img src={portraitSrc} alt="" class="icon-img circle show" />
+				{:else if workSrc}
+					<img src={workSrc} alt="" class="icon-img square show" />
+				{/if}
+			</div>
 		{/if}
-	</div>
-{/snippet}
-
-{#snippet metaInner()}
-	{#if showIconBlock}
-		<div class="icon" aria-hidden="true">
-			{#if canIconAlternate}
-				<img src={workSrc!} alt="" class="icon-img square" class:show={iconSlide === 0} />
-				<img src={portraitSrc!} alt="" class="icon-img circle" class:show={iconSlide === 1} />
-			{:else if portraitSrc}
-				<img src={portraitSrc} alt="" class="icon-img circle show" />
-			{:else if workSrc}
-				<img src={workSrc} alt="" class="icon-img square show" />
-			{/if}
+		<div class="meta-text">
+			<h2 class="serif">{artist.name}</h2>
+			<p>{artist.specialty}</p>
 		</div>
-	{/if}
-	<div class="meta-text">
-		<h2 class="serif">{artist.name}</h2>
-		<p>{artist.specialty}</p>
+		<span class="arrow" aria-hidden="true">→</span>
 	</div>
-	<span class="arrow" aria-hidden="true">→</span>
-{/snippet}
-
-{#if wholeCardLink}
-	<a class="card" {href}>
-		{@render mediaBlock()}
-		<div class="meta">
-			{@render metaInner()}
-		</div>
-	</a>
-{:else}
-	<article class="card">
-		{@render mediaBlock()}
-		<a
-			class="meta"
-			{href}
-			onmouseenter={() => (iconPaused = true)}
-			onmouseleave={() => (iconPaused = false)}
-			onfocus={() => (iconPaused = true)}
-			onblur={() => (iconPaused = false)}
-		>
-			{@render metaInner()}
-		</a>
-	</article>
-{/if}
+</a>
 
 <style>
 	.card {
@@ -268,7 +249,6 @@
 		background: #e8e8e2;
 		overflow: hidden;
 		touch-action: pan-y;
-		cursor: default;
 	}
 
 	.media img {
@@ -297,23 +277,17 @@
 		color: #fff;
 	}
 
-	.chrome {
-		position: absolute;
-		inset: 0;
-		z-index: 2;
-		pointer-events: none;
-		opacity: 0;
-		transition: opacity 0.2s ease;
-	}
-
 	.nav {
 		position: absolute;
 		inset: 0;
+		z-index: 2;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		padding: 0 0.45rem;
 		pointer-events: none;
+		opacity: 0;
+		transition: opacity 0.2s ease;
 	}
 
 	.nav-btn {
@@ -327,15 +301,23 @@
 		font-size: 1rem;
 		line-height: 1;
 		cursor: pointer;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+	}
+
+	.nav-btn:hover {
+		background: #fff;
+		box-shadow: 0 0 0 1px var(--brand);
 	}
 
 	.dots {
 		position: absolute;
 		left: 50%;
 		bottom: 0.7rem;
+		z-index: 2;
 		transform: translateX(-50%);
 		display: flex;
 		gap: 0.35rem;
+		pointer-events: none;
 	}
 
 	.dots span {
@@ -351,23 +333,6 @@
 		box-shadow: none;
 	}
 
-	.tip {
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		z-index: 3;
-		transform: translate(-50%, -50%);
-		margin: 0;
-		padding: 0.55rem 0.75rem;
-		background: rgba(26, 26, 18, 0.88);
-		color: #fff;
-		font-size: 0.7rem;
-		font-weight: 600;
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
-		white-space: nowrap;
-	}
-
 	.meta {
 		position: relative;
 		display: flex;
@@ -376,7 +341,6 @@
 		flex: 1;
 		padding: 0.7rem 0.55rem 0.75rem;
 		color: inherit;
-		text-decoration: none;
 		transition: background-color 0.18s ease;
 	}
 
@@ -446,19 +410,14 @@
 
 	@media (hover: hover) and (pointer: fine) {
 		.desktop-hover {
-			display: block;
+			display: flex;
 		}
 
-		.media {
-			cursor: pointer;
-		}
-
-		.media:hover .chrome,
-		.media:focus-within .chrome {
+		.media:hover .nav,
+		.media:focus-within .nav {
 			opacity: 1;
 		}
 
-		/* Helkort-hover — samma rytm som ArtworkCard */
 		.card:hover,
 		.card:focus-visible,
 		.card:focus-within {

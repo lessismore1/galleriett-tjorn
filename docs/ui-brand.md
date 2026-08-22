@@ -66,7 +66,8 @@ Konstnär och utställning: sentinel under breadcrumbs → `body.subnav-stuck` d
 | `showIcon` | `true` | `false` |
 | `showBadge` | `true` | `false` |
 
-**Hover:** helkort (1px `--brand`-ram + `--card-meta-hover` på meta) — samma rytm som `ArtworkCard`.
+**Hover:** helkort (1px `--brand`-ram + `--card-meta-hover` på meta) — samma rytm som `ArtworkCard`.  
+**Karusell (listan):** hela kortet → konstnär; desktop: cirkelpilar vid hover; mobil: svep + prickar (inga ständigt synliga pilar). Efter manuell bläddring återgår karusellen till första bilden efter 5s.
 
 ### `ExhibitionRow`
 
