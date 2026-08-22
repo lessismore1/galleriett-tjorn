@@ -140,9 +140,6 @@
 	<div class="container">
 		<div class="section-head">
 			<h2 class="serif section-title">Verk</h2>
-			{#if artist.works.length}
-				<a class="link-arrow" href="#works">Visa alla verk</a>
-			{/if}
 		</div>
 		{#if artist.works.length}
 			<div class="works">

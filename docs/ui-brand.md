@@ -45,7 +45,7 @@ Konstnär och utställning: sentinel under breadcrumbs → `body.subnav-stuck` d
 |---|---|
 | Konstnär | Logga + namn + sektionslänkar |
 | Utställning | Logga + titel + sektionslänkar |
-| Verk | Logga + konstnär · Verk · bläddra (enda topnav) |
+| Verk | Logga + konstnär · Verk · Visa alla · count; cirkelpilar på bilden |
 
 ## Komponenter (kort)
 

@@ -92,10 +92,11 @@
 		</a>
 		<a class="artist-name serif" href={`/konstnarer/${artist.slug}`}>{artist.name}</a>
 		<span class="scope" aria-hidden="true">Verk</span>
-		<div class="browse">
-			<a href={workHref(artist.slug, prev)} aria-label={`Föregående: ${prev.title}`}>‹ {prev.title}</a>
+		<a class="all-works" href={`/konstnarer/${artist.slug}#works`}>Visa alla</a>
+		<div class="browse" role="group" aria-label="Bläddra bland verk">
+			<a class="browse-prev" href={workHref(artist.slug, prev)} aria-label={`Föregående: ${prev.title}`}>‹</a>
 			<span class="count">{data.index + 1} / {data.total}</span>
-			<a href={workHref(artist.slug, next)} aria-label={`Nästa: ${next.title}`}>{next.title} ›</a>
+			<a class="browse-next" href={workHref(artist.slug, next)} aria-label={`Nästa: ${next.title}`}>›</a>
 		</div>
 	</div>
 </nav>
@@ -104,6 +105,20 @@
 	<div class="container layout">
 		<figure class="media">
 			<img src={work.image} alt="{artist.name} — {work.title}" />
+			<div class="media-nav" aria-hidden="true">
+				<a
+					class="nav-btn"
+					href={workHref(artist.slug, prev)}
+					aria-label={`Föregående: ${prev.title}`}
+					tabindex="-1">‹</a
+				>
+				<a
+					class="nav-btn"
+					href={workHref(artist.slug, next)}
+					aria-label={`Nästa: ${next.title}`}
+					tabindex="-1">›</a
+				>
+			</div>
 		</figure>
 
 		<div class="info">
@@ -240,13 +255,30 @@
 		color: var(--text-muted);
 	}
 
+	.all-works {
+		flex-shrink: 0;
+		font-size: var(--text-label);
+		font-weight: 600;
+		letter-spacing: var(--track-label);
+		text-transform: uppercase;
+		color: var(--text-secondary);
+		text-decoration: none;
+		padding-block: 0.85rem;
+		white-space: nowrap;
+	}
+
+	.all-works:hover {
+		color: var(--text);
+		box-shadow: inset 0 -2px 0 var(--brand);
+	}
+
 	.browse {
-		display: grid;
-		grid-template-columns: 1fr auto 1fr;
-		gap: 0.65rem;
+		display: flex;
 		align-items: center;
-		flex: 1;
-		min-width: 0;
+		justify-content: flex-end;
+		gap: 0.35rem;
+		margin-left: auto;
+		flex-shrink: 0;
 		font-size: var(--text-label);
 		font-weight: 600;
 		letter-spacing: var(--track-label);
@@ -255,23 +287,16 @@
 		color: var(--text-secondary);
 	}
 
-	.browse a:first-child {
-		justify-self: start;
-	}
-
-	.browse a:last-child {
-		justify-self: end;
-		text-align: right;
-	}
-
 	.browse a {
-		max-width: 100%;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 2.25rem;
+		min-height: 2.25rem;
 		color: inherit;
 		text-decoration: none;
-		padding-block: 0.85rem;
+		font-size: 1.15rem;
+		line-height: 1;
 	}
 
 	.browse a:hover {
@@ -280,10 +305,11 @@
 	}
 
 	.count {
-		justify-self: center;
 		color: var(--text);
 		font-variant-numeric: tabular-nums;
 		white-space: nowrap;
+		min-width: 3.25rem;
+		text-align: center;
 	}
 
 	.layout {
@@ -297,6 +323,7 @@
 		margin: 0;
 		min-width: 0;
 		align-self: start;
+		position: relative;
 		background: #e8e8e2;
 	}
 
@@ -308,6 +335,37 @@
 		max-height: calc(100svh - 3.5rem - 2rem);
 		object-fit: contain;
 		margin-inline: auto;
+	}
+
+	.media-nav {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 0.55rem;
+		pointer-events: none;
+	}
+
+	.nav-btn {
+		pointer-events: auto;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.92);
+		color: var(--text);
+		font-size: 1.15rem;
+		line-height: 1;
+		text-decoration: none;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+	}
+
+	.nav-btn:hover {
+		background: #fff;
+		box-shadow: 0 0 0 1px var(--brand);
 	}
 
 	.label {
