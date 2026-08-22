@@ -211,7 +211,6 @@
 				<div>
 					<div class="section-head">
 						<h2 class="serif section-title">Aktuella utställningar</h2>
-						<a class="link-arrow" href="/utstallningar">Visa alla</a>
 					</div>
 					<ul class="list">
 						{#each currentExhibitions as ex}
@@ -234,7 +233,6 @@
 				<div>
 					<div class="section-head">
 						<h2 class="serif section-title">Tidigare utställningar</h2>
-						<a class="link-arrow" href="/utstallningar/tidigare">Visa alla</a>
 					</div>
 					<div class="ex-grid">
 						{#each pastExhibitions as ex}
