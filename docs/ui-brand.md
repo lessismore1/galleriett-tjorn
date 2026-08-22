@@ -57,7 +57,7 @@ Konstnär och utställning: sentinel under breadcrumbs → `body.subnav-stuck` d
 | Verkskort | `ArtworkCard` | konstnärssida Verk, utställning Verk |
 | Utställningsrad | `ExhibitionRow` | `/utstallningar` (Aktuella); konstnär → Aktuella |
 | Utställningskort | `ExhibitionCard` | startsida Aktuellt; **Tidigare** (`/utstallningar/tidigare`); konstnär → Tidigare |
-| Nyhetskort | `NewsCard` | `/nyheter`; konstnär → Nyheter / Media (artiklar) |
+| Nyhetskort | `NewsCard` | `/nyheter`; konstnär → Nyheter (egna + I pressen) |
 
 ### `ArtistCard`-lägen
 
@@ -92,7 +92,7 @@ Vertikalt grid-kort: bild → titel → undertext.
 | Prop | Roll |
 |---|---|
 | `image` / `href` | media + länk |
-| `status` **eller** `badge` | Pågående/Kommande, eller fri etikett (t.ex. Media) — **inte** på Tidigare-grid |
+| `status` **eller** `badge` | Pågående/Kommande, eller fri etikett (t.ex. I pressen) — **inte** på Tidigare-grid |
 | `title` / `subtitle` | primär + sekundär |
 
 **Användning:** startsida Aktuellt; `/utstallningar/tidigare/{year}` som **volym-grid** (lättare än `ExhibitionRow`).  
@@ -107,10 +107,12 @@ Vertikalt nyhetskort: bild → kategori → titel → datum → excerpt.
 | Prop | Roll |
 |---|---|
 | `href` | länk; utan href = statiskt kort |
+| `external` | `true` för I pressen → ny flik |
 | `image` / `category` / `title` / `dateLabel` | media + meta |
 | `excerpt` | teaser (valfri) |
 
-**Användning:** `/nyheter`; konstnär → Nyheter och Media (max ~4 + “Visa alla”). Citat (`pressQuote`) är **inte** `NewsCard`.
+**Kategorier:** **Från GALLERIett** (intern artikel) · **I pressen** (extern källa via `source.url`).  
+**Användning:** `/nyheter` (filter); konstnär → en sektion **Nyheter** (max ~4 + “Visa alla”). Citat (`pressQuote`) under samma sektion, inte som kort.
 
 ## Designbegränsning — kort på vit och beige
 

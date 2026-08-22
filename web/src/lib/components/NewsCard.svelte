@@ -1,6 +1,7 @@
 <script lang="ts">
 	let {
 		href = null,
+		external = false,
 		image,
 		category,
 		title,
@@ -9,6 +10,8 @@
 		alt = ''
 	}: {
 		href?: string | null;
+		/** Extern presslänk (ny flik) */
+		external?: boolean;
 		image: string;
 		category: string;
 		title: string;
@@ -19,7 +22,12 @@
 </script>
 
 {#if href}
-	<a class="card" {href}>
+	<a
+		class="card"
+		{href}
+		target={external ? '_blank' : undefined}
+		rel={external ? 'noopener noreferrer' : undefined}
+	>
 		<img src={image} {alt} />
 		<p class="label">{category}</p>
 		<strong class="serif title">{title}</strong>

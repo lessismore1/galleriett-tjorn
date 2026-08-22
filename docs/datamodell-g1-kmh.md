@@ -59,8 +59,8 @@ artist ──< artwork >── exhibition.works[]
 
 | value (EN) | GUI |
 |---|---|
-| `gallery` | Från galleriet |
-| `press` | Media |
+| `gallery` | Från GALLERIett |
+| `press` | I pressen |
 
 ---
 
@@ -249,7 +249,7 @@ Samma komponent-API (`Header`, `Footer`, `BrandEdge`) i en delad UI-kit eller co
 | `location` | Plats |
 | `area` | Område |
 | `article` | Artikel |
-| `kind: gallery \| press` | (visas som Från galleriet / Media i webben) |
+| `kind: gallery \| press` | (visas som Från GALLERIett / I pressen i webben) |
 | `kind: gallery \| publicVenue \| artistStudio` | Galleri / Publik lokal / Ateljé |
 
 Fält: `name`, `slug`, `profileImage`, `openingHours`, `exhibitedWorks`, … — **engelska**.  

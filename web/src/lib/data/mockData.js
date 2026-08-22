@@ -848,7 +848,7 @@ export const news = [
 		id: 101,
 		slug: '101-ljus-farg-form',
 		kind: 'news',
-		category: 'Från galleriet',
+		category: 'Från GALLERIett',
 		title: 'Ljus Färg Form — Kattis Palmnäs & Robert Oldergaarden',
 		date: '2026-07-25',
 		dateLabel: '25 JULI 2026',
@@ -865,7 +865,7 @@ export const news = [
 		id: 102,
 		slug: '102-robert-oldergaarden-louvren-edsbruk',
 		kind: 'press',
-		category: 'Media',
+		category: 'I pressen',
 		title: 'Robert nobbar Manhattan – men tackar ja till Louvren och Edsbruk',
 		date: '2025-07-09',
 		dateLabel: '9 JULI 2025',
@@ -885,7 +885,7 @@ export const news = [
 		id: 103,
 		slug: '103-kattis-palmnas-galleri-bagges-torg',
 		kind: 'press',
-		category: 'Media',
+		category: 'I pressen',
 		title: 'Kattis Palmnäs öppnar nytt galleri på Bagges Torg',
 		date: '2024-09-21',
 		dateLabel: '21 SEPTEMBER 2024',
@@ -903,8 +903,8 @@ export const news = [
 	},
 	{
 		slug: 'paletten',
-		kind: 'news',
-		category: 'Media',
+		kind: 'press',
+		category: 'I pressen',
 		title: 'Galleriet i konstmagasinet Paletten',
 		date: '2026-07-28',
 		dateLabel: '28 JULI 2026',
@@ -916,7 +916,7 @@ export const news = [
 	{
 		slug: 'sommarvernissage',
 		kind: 'news',
-		category: 'Från galleriet',
+		category: 'Från GALLERIett',
 		title: 'Sommarvernissage med konstnärssamtal',
 		date: '2026-07-15',
 		dateLabel: '15 JULI 2026',
@@ -928,7 +928,7 @@ export const news = [
 	{
 		slug: 'ny-konstnar-host',
 		kind: 'news',
-		category: 'Från galleriet',
+		category: 'Från GALLERIett',
 		title: 'Ny konstnär till hösten 2026',
 		date: '2026-07-08',
 		dateLabel: '8 JULI 2026',
@@ -939,7 +939,7 @@ export const news = [
 	}
 ];
 
-/** Alla nyheter/media, nyast först */
+/** Alla nyheter/press, nyast först */
 export function getNewsIndex() {
 	return [...news].sort((a, b) => String(b.date).localeCompare(String(a.date)));
 }
@@ -948,17 +948,39 @@ export function getNewsArticle(slug) {
 	return news.find((n) => n.slug === slug && n.clickable);
 }
 
-export function getArtistNews(artistSlug) {
-	return news.filter(
+/**
+ * Länk för nyhetskort: I pressen → extern källa; Från GALLERIett → intern artikel.
+ * @param {(typeof news)[number]} item
+ * @returns {string | null}
+ */
+export function newsCardHref(item) {
+	if (item.kind === 'press' && item.source?.url) return item.source.url;
+	if (item.clickable) return `/nyheter/${item.slug}`;
+	return null;
+}
+
+/** @param {(typeof news)[number]} item */
+export function newsCardExternal(item) {
+	return Boolean(item.kind === 'press' && item.source?.url);
+}
+
+/** Egna nyheter + press kopplade till konstnär (nyast först) */
+export function getArtistArticles(artistSlug) {
+	return getNewsIndex().filter(
 		(n) =>
-			n.kind === 'news' &&
 			n.clickable &&
 			(n.artistSlug === artistSlug || n.artistSlugs?.includes(artistSlug))
 	);
 }
 
+/** @deprecated prefer getArtistArticles */
+export function getArtistNews(artistSlug) {
+	return getArtistArticles(artistSlug).filter((n) => n.kind === 'news');
+}
+
+/** @deprecated prefer getArtistArticles */
 export function getArtistPress(artistSlug) {
-	return news.filter((n) => n.kind === 'press' && n.clickable && n.artistSlug === artistSlug);
+	return getArtistArticles(artistSlug).filter((n) => n.kind === 'press');
 }
 
 export const about = {

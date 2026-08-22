@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
-	import { artists, exhibitions, getArtistNews, getArtistPress, workHref, site } from '$lib/data/mockData.js';
+	import { artists, exhibitions, getArtistArticles, newsCardHref, newsCardExternal, workHref, site } from '$lib/data/mockData.js';
 	import ArtworkCard from '$lib/components/ArtworkCard.svelte';
 	import ArtistCard from '$lib/components/ArtistCard.svelte';
 	import ExhibitionRow from '$lib/components/ExhibitionRow.svelte';
@@ -19,8 +19,7 @@
 	});
 
 	const related = $derived(artists.filter((a) => a.slug !== artist.slug).slice(0, 3));
-	const artistNews = $derived(getArtistNews(artist.slug).slice(0, 4));
-	const artistMedia = $derived(getArtistPress(artist.slug).slice(0, 4));
+	const artistArticles = $derived(getArtistArticles(artist.slug).slice(0, 4));
 
 	const promoWork = $derived(artist.works?.[0] ?? null);
 	const portraitSrc = $derived(artist.image || artist.heroImage || null);
@@ -143,7 +142,6 @@
 			<a href="#biography">Biografi</a>
 			<a href="#exhibitions">Utställningar</a>
 			<a href="#news">Nyheter</a>
-			<a href="#press">Media</a>
 		</div>
 	</div>
 </nav>
@@ -272,38 +270,12 @@
 			<h2 class="serif section-title">Nyheter</h2>
 			<a class="link-arrow" href="/nyheter">Visa alla</a>
 		</div>
-		{#if artistNews.length}
+		{#if artistArticles.length}
 			<div class="news-grid">
-				{#each artistNews as item}
+				{#each artistArticles as item}
 					<NewsCard
-						href={`/nyheter/${item.slug}`}
-						image={item.image}
-						category={item.category}
-						title={item.title}
-						dateLabel={item.dateLabel}
-						excerpt={item.excerpt}
-					/>
-				{/each}
-			</div>
-		{:else}
-			<p class="empty">Inga nyheter publicerade ännu.</p>
-		{/if}
-	</div>
-</section>
-
-<section id="press" class="band band-pad">
-	<div class="container">
-		<div class="section-head">
-			<h2 class="serif section-title">Media</h2>
-			{#if artistMedia.length}
-				<a class="link-arrow" href="/nyheter">Visa alla</a>
-			{/if}
-		</div>
-		{#if artistMedia.length}
-			<div class="news-grid">
-				{#each artistMedia as item}
-					<NewsCard
-						href={`/nyheter/${item.slug}`}
+						href={newsCardHref(item)}
+						external={newsCardExternal(item)}
 						image={item.image}
 						category={item.category}
 						title={item.title}
@@ -314,7 +286,7 @@
 			</div>
 		{/if}
 		{#if artist.press.length}
-			<div class="press" class:spaced={artistMedia.length > 0}>
+			<div class="press" class:spaced={artistArticles.length > 0}>
 				{#each artist.press as p}
 					<blockquote>
 						<p class="serif">“{p.quote}”</p>
@@ -323,13 +295,13 @@
 				{/each}
 			</div>
 		{/if}
-		{#if !artistMedia.length && !artist.press.length}
-			<p class="empty">Ingen press ännu.</p>
+		{#if !artistArticles.length && !artist.press.length}
+			<p class="empty">Inga nyheter publicerade ännu.</p>
 		{/if}
 	</div>
 </section>
 
-<section class="band-soft band-pad">
+<section class="band band-pad">
 	<div class="container more">
 		<div>
 			<div class="section-head">
@@ -433,8 +405,7 @@
 	#works,
 	#biography,
 	#exhibitions,
-	#news,
-	#press {
+	#news {
 		scroll-margin-top: 4.25rem;
 	}
 

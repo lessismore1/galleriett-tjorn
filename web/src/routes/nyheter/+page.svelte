@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { getNewsIndex } from '$lib/data/mockData.js';
+	import { getNewsIndex, newsCardHref, newsCardExternal } from '$lib/data/mockData.js';
 	import Seo from '$lib/components/Seo.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import NewsCard from '$lib/components/NewsCard.svelte';
 
 	let filter = $state('Alla');
-	const filters = ['Alla', 'Från galleriet', 'Media'];
+	const filters = ['Alla', 'Från GALLERIett', 'I pressen'];
 	const list = getNewsIndex();
 
 	const filtered = $derived(
@@ -15,7 +15,7 @@
 
 <Seo
 	title="Nyheter · GALLERIett"
-	description="Nyheter och media om GALLERIett, konstnärer och utställningar på Tjörn."
+	description="Nyheter och press om GALLERIett, konstnärer och utställningar på Tjörn."
 />
 
 <Breadcrumbs crumbs={[{ name: 'Nyheter' }]} />
@@ -37,7 +37,8 @@
 		<div class="grid">
 			{#each filtered as item}
 				<NewsCard
-					href={item.clickable ? `/nyheter/${item.slug}` : null}
+					href={newsCardHref(item)}
+					external={newsCardExternal(item)}
 					image={item.image}
 					category={item.category}
 					title={item.title}
