@@ -3,6 +3,8 @@
 export const site = {
 	name: 'GALLERIett',
 	tagline: 'Ett galleri för samtidskonst på Tjörn',
+	/** Canonical origin (prerender/OG/mailto). Override med PUBLIC_SITE_URL vid build. */
+	url: 'https://galleriett-tjorn.pages.dev',
 	address: {
 		street: 'Marinvägen 9, Hall 1',
 		postal: '471 41 Rönnäng (Stansvik)',

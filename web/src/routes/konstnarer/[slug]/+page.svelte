@@ -26,8 +26,9 @@
 
 	const contactMailto = $derived.by(() => {
 		const subject = encodeURIComponent(`Angående ${artist.name}`);
+		const link = `${site.url}${page.url.pathname}`;
 		const body = encodeURIComponent(
-			`Hej GALLERIett,\n\nJag vill komma i kontakt angående konstnären ${artist.name}.\n\nLänk: ${page.url.origin}${page.url.pathname}\n\nVänliga hälsningar\n`
+			`Hej GALLERIett,\n\nJag vill komma i kontakt angående konstnären ${artist.name}.\n\nLänk: ${link}\n\nVänliga hälsningar\n`
 		);
 		return `mailto:${site.email}?subject=${subject}&body=${body}`;
 	});
@@ -186,12 +187,14 @@
 				<dt>Född</dt>
 				<dd>{artist.born}</dd>
 			</div>
-			<div>
-				<dt>Utbildning</dt>
-				{#each artist.education as e}
-					<dd>{e}</dd>
-				{/each}
-			</div>
+			{#if artist.education?.length}
+				<div>
+					<dt>Utbildning</dt>
+					{#each artist.education as e}
+						<dd>{e}</dd>
+					{/each}
+				</div>
+			{/if}
 			<div>
 				<dt>Bor och verkar</dt>
 				<dd>{artist.lives}</dd>

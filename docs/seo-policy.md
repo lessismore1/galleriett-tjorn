@@ -43,6 +43,10 @@ Exempel G1: `/konstnarer?filter=aktuellt` → canonical `/konstnarer`.
 
 **Undvik:** Query som ersätter riktiga list-URL:er (t.ex. `/utstallningar?år=2025` när `/utstallningar/tidigare` finns).
 
+## Origin / canonical vid prerender
+
+Sätt `kit.prerender.origin` (via `PUBLIC_SITE_URL` eller default `https://galleriett-tjorn.pages.dev` i `vite.config.ts`). Annars blir canonical/OG/mailto `http://sveltekit-prerender/...`.
+
 ## Canonical — detaljsidor
 
 | URL | Canonical |

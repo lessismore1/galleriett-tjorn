@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { site } from '$lib/data/mockData.js';
 
 	let {
 		title,
@@ -13,13 +14,13 @@
 		type?: string;
 	} = $props();
 
-	const canonical = $derived(`${page.url.origin}${page.url.pathname}`);
+	/** Prerender defaultar till sveltekit-prerender om kit.prerender.origin saknas — fallback till site.url. */
+	const origin = $derived(
+		page.url.origin.includes('sveltekit-prerender') ? site.url : page.url.origin
+	);
+	const canonical = $derived(`${origin}${page.url.pathname}`);
 	const ogImage = $derived(
-		image
-			? image.startsWith('http')
-				? image
-				: `${page.url.origin}${image}`
-			: null
+		image ? (image.startsWith('http') ? image : `${origin}${image}`) : null
 	);
 </script>
 

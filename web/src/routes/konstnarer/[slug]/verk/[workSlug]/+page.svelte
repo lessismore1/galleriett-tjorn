@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 	import {
 		site,
@@ -14,12 +15,29 @@
 	const artist = $derived(data.artist);
 	const work = $derived(data.work);
 
-	/** Utställningskontext från ?show= — endast i webbläsaren (prerender får inte läsa searchParams). */
-	const showSlug = $derived(browser ? page.url.searchParams.get('show') : null);
+	/**
+	 * ?show= får inte läsas via page.url.searchParams på prerenderade sidor
+	 * (även i klienten). Läs från window.location efter navigation/hydrate.
+	 */
+	let showSlug = $state(/** @type {string | null} */ (null));
+
+	function syncShowSlug() {
+		if (!browser) return;
+		showSlug = new URL(window.location.href).searchParams.get('show');
+	}
+
+	$effect(() => {
+		syncShowSlug();
+	});
+
+	afterNavigate(() => {
+		syncShowSlug();
+	});
+
 	const showBrowse = $derived(showSlug ? getShowBrowse(showSlug, work.slug) : null);
 
 	const browse = $derived.by(() => {
-		if (showBrowse) {
+		if (showBrowse && showSlug) {
 			return {
 				prevHref: workHref(showBrowse.prev.artist.slug, showBrowse.prev.work, {
 					show: showSlug
@@ -31,7 +49,9 @@
 				nextTitle: showBrowse.next.work.title,
 				index: showBrowse.index,
 				total: showBrowse.total,
-				allHref: showBrowse.allHref
+				allHref: showBrowse.allHref,
+				allLabel: 'Utställning',
+				showTitle: showBrowse.exhibition.title
 			};
 		}
 
@@ -42,12 +62,14 @@
 			nextTitle: data.next.title,
 			index: data.index,
 			total: data.total,
-			allHref: `/konstnarer/${artist.slug}#works`
+			allHref: `/konstnarer/${artist.slug}#works`,
+			allLabel: 'Visa alla',
+			showTitle: null
 		};
 	});
 
 	/** Canonical utan query — säker under prerender och rätt för dela/mailto. */
-	const shareUrl = $derived(`${page.url.origin}${page.url.pathname}`);
+	const shareUrl = $derived(`${site.url}${page.url.pathname}`);
 
 	const pageTitle = $derived(`${work.title} — ${artist.name} · GALLERIett`);
 	const pageDescription = $derived.by(() => {
@@ -127,7 +149,7 @@
 		</a>
 		<a class="artist-name serif" href={`/konstnarer/${artist.slug}`}>{artist.name}</a>
 		<span class="scope" aria-hidden="true">Verk</span>
-		<a class="all-works" href={browse.allHref}>Visa alla</a>
+		<a class="all-works" href={browse.allHref}>{browse.allLabel}</a>
 		<div class="browse" role="group" aria-label="Bläddra bland verk">
 			<a class="browse-prev" href={browse.prevHref} aria-label={`Föregående: ${browse.prevTitle}`}>‹</a>
 			<span class="count">{browse.index + 1} / {browse.total}</span>
@@ -162,6 +184,11 @@
 			<p class="artist">
 				<a href={`/konstnarer/${artist.slug}`}>{artist.name}</a>
 			</p>
+			{#if browse.showTitle}
+				<p class="show-context">
+					<a href={browse.allHref}>Utställning · {browse.showTitle}</a>
+				</p>
+			{/if}
 
 			{#if storyParagraphs.length}
 				<div class="story">
@@ -433,13 +460,25 @@
 	}
 
 	.artist {
-		margin: 0 0 1.25rem;
+		margin: 0 0 0.35rem;
 		font-size: 0.95rem;
 	}
 
 	.artist a {
 		text-decoration: underline;
 		text-underline-offset: 0.18em;
+	}
+
+	.show-context {
+		margin: 0 0 1.25rem;
+		font-size: 0.8rem;
+		color: var(--text-muted);
+	}
+
+	.show-context a {
+		color: inherit;
+		text-decoration: underline;
+		text-underline-offset: 0.15em;
 	}
 
 	.story {
