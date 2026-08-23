@@ -96,16 +96,31 @@ Se även `docs/ui-brand.md` → Platsidentitet.
 
 ### H — v2-polish (från extern review 2026-08, filtrerat)
 
-**Direkt / snart (se chat — implement-lista):** inquire-copy ✅; nästa konstnär rikare ✅; verk-meta kompakt ✅.
+**Fas (låst efter uppföljningsreview):** Sluta lägga till sidtyper/features. Finputsa premium-känsla.
 
-**Backlog (inte MVP):**
+**Gjort:** inquire-copy ✅; nästa konstnär (bild+namn+verk) ✅; verk-meta kompakt ✅.  
+**Inte gjort (ChatGPT överdriver):** featured nyhet på `/nyheter` — fortfarande backlog, flat `NewsCard`-grid idag.
 
-- [x] **Nästa konstnär** — större, mer redaktionell (bild + namn + ev. verkstitel); behåll sekvens, undvik “Kanske också intressant”-grid
-- [ ] **Konstnärsfilter** — behåll funktion; mjukare UI när roster växer (inte “databas-känsla”)
-- [ ] **Tidigare-arkiv** — årssubnav finns; vid många år: kompaktare årslist (dropdown/komprimerad rad)
-- [ ] **Status-skanning** — Pågående/Kommande/Tidigare redan via badge; ingen parallell “grafisk kod”-yta
-- [ ] **Micro-typografi** — mellanrum, labels, metadata (löpande polish)
-- [x] **Verk meta** — kompakt stack (mindre formulärkänsla)
+**Nästa polish (smått, löpande):**
+
+- [ ] **CTA-hierarki på verk** — inquire-block redan finns; ev. lite mer visuell tyngd (spacing/storlek), inte ny modell
+- [ ] **Nästa konstnär** — redan rikare; ev. större bild / mer “magasin-slut” senare (inte krav nu)
+- [ ] **Micro-typografi** — mellanrum, labels, metadata, sektionsslut
+- [ ] **Hover / övergångar** — konsekvens, sparsamt
+- [ ] **Mobil** — små justeringar verk/info-kolumn
+- [ ] **Konstnärsfilter** — mjukare UI när roster växer
+- [ ] **Tidigare-arkiv** — kompaktare årslist vid många år
+- [ ] **`/nyheter` featured** — 1 huvud + övriga när innehållet bär (inte magasin)
+- [ ] **Status-skanning** — badges räcker; ingen parallell grafisk kod
+
+### Review-filter (ChatGPT uppföljning 2026-08)
+
+| Håller med | Korrigering |
+|---|---|
+| Verk nära rätt balans — **inte** mer viewing-room | Featured nyhet: **finns inte ännu** (fortfarande backlog) |
+| Sidroller: konstnär / verk / nyheter | CTA-text live: *Intresserad…* + *Maila om verket* (inte bara “Maila om intresse”) |
+| Sluta lägga till — finputsa | Nästa konstnär: redan bild+namn; “magasin-slut” = senare polish |
+| IA + korskoppling stark | |
 
 ## Medvetet bortprioriterat
 
@@ -117,17 +132,6 @@ Se även `docs/ui-brand.md` → Platsidentitet.
 - Full-bleed kust-hero på utställnings-/konstnärssidor (Pater Noster-modell på fel yta)
 - Instagram-feed, tunga animationer, fler huvudmenyer “för att fylla”
 - Separat meny **Verk** (verk hittas via konstnär / utställning)
-
-### Review-filter (ChatGPT 2026-08) — håller / håller inte
-
-| Håller med | Håller inte / redan löst |
-|---|---|
-| Förfina, ingen stor redesign | “Inga fler menypunkter” — **Evenemang** är medveten undantag (mästeri) |
-| Art first, lokal utan turistton | Chasa OVR / 80–90 % viewport som *ny* modell — polish ok, Gagosian-paritet nej |
-| Hub konstnär ↔ verk ↔ utställning; `?show=` | Artistfilter = “för databas” nu — behåll; mjuk senare |
-| Inquire tydligare (inte shop) | Featured nyhetsmagasin — lätt variant ok; inte Hauser-journal |
-| Nästa konstnär rikare | Årsarkiv “tänk skalbart” — **årssubnav finns redan** |
-| Undvik IG-feed, shop, mer färg, mer meny | Ny separat grafisk kod AKTUELLT/… — badges räcker |
 
 ## Relaterat
 
