@@ -17,6 +17,8 @@ Utkast 2026-08-13.
 
 Under logotypen i header: subtil rad **`Tjörn`** (sans, uppercase, muted, tät letter-spacing) — plats som varumärkesdel, inte slogan.
 
+**Språk:** `EN` syns i nav som inaktiv (coming later). Full EN-lansering = senare sprint — se `docs/backlog-sprint.md`.
+
 - Använd **befintliga fonter** (`--font-sans`), inte snirklig display/script.
 - Scriptfont under loggan konkurrerar med wordmarken och känns “dekor” snarare än institution.
 - Inte kommunvapen eller Visit Tjörn-logo i lockupen (se diskussion kring platsidentitet).
@@ -53,7 +55,7 @@ Konstnär och utställning: sentinel under breadcrumbs → `body.subnav-stuck` d
 
 | Kort | Komponent | Exempel |
 |---|---|---|
-| Konstnärskort | `ArtistCard` | `/konstnarer` (karusell); utställning / nyhet / “Kanske också intressant” (`mediaMode="portrait"`) |
+| Konstnärskort | `ArtistCard` | `/konstnarer` (karusell); utställning / nyhet (`mediaMode="portrait"`) |
 | Verkskort | `ArtworkCard` | konstnärssida Verk, utställning Verk |
 | Utställningsrad | `ExhibitionRow` | `/utstallningar` (Aktuella); konstnär → Aktuella |
 | Utställningskort | `ExhibitionCard` | startsida Aktuellt; **Tidigare** (`/utstallningar/tidigare`); konstnär → Tidigare |

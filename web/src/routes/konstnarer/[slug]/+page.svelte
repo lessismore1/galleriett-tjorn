@@ -3,7 +3,6 @@
 	import { page } from '$app/state';
 	import { artists, exhibitions, getArtistArticles, newsCardHref, newsCardExternal, workHref, site } from '$lib/data/mockData.js';
 	import ArtworkCard from '$lib/components/ArtworkCard.svelte';
-	import ArtistCard from '$lib/components/ArtistCard.svelte';
 	import ExhibitionRow from '$lib/components/ExhibitionRow.svelte';
 	import ExhibitionCard from '$lib/components/ExhibitionCard.svelte';
 	import NewsCard from '$lib/components/NewsCard.svelte';
@@ -18,7 +17,6 @@
 		return artists[(i + 1) % artists.length];
 	});
 
-	const related = $derived(artists.filter((a) => a.slug !== artist.slug).slice(0, 3));
 	const artistArticles = $derived(getArtistArticles(artist.slug).slice(0, 4));
 
 	const promoWork = $derived(artist.works?.[0] ?? null);
@@ -304,16 +302,6 @@
 
 <section class="band band-pad">
 	<div class="container more">
-		<div>
-			<div class="section-head">
-				<h2 class="serif section-title">Kanske också intressant</h2>
-			</div>
-			<div class="related">
-				{#each related as a}
-					<ArtistCard artist={a} mediaMode="portrait" showIcon={false} showBadge={false} />
-				{/each}
-			</div>
-		</div>
 		<a class="next" href={`/konstnarer/${next.slug}`}>
 			<span class="label">Nästa konstnär</span>
 			<strong class="serif">{next.name}</strong>
@@ -687,18 +675,6 @@
 		gap: 2rem;
 	}
 
-	.related {
-		display: grid;
-		gap: 1.25rem 0.85rem;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-
-	@media (min-width: 700px) {
-		.related {
-			grid-template-columns: repeat(3, minmax(0, 1fr));
-		}
-	}
-
 	.next strong {
 		display: block;
 		font-size: clamp(1.5rem, 3vw, 2rem);
@@ -719,11 +695,6 @@
 
 		.bio {
 			grid-template-columns: 1.4fr 0.8fr;
-		}
-
-		.more {
-			grid-template-columns: 1.4fr 0.6fr;
-			align-items: end;
 		}
 	}
 </style>

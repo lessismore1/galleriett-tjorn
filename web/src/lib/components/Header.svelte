@@ -61,7 +61,7 @@
 			{#each nav as item}
 				<a href={item.href} class:active={isActive(item.href)} onclick={close}>{item.label}</a>
 			{/each}
-			<a href="?lang=en" class="lang" aria-label="English" onclick={close}>EN</a>
+			<span class="lang" title="English — coming later" aria-disabled="true">EN</span>
 		</nav>
 	</div>
 </header>
@@ -201,6 +201,10 @@
 
 	.lang {
 		margin-left: 0.5rem;
+		color: var(--text-muted);
+		opacity: 0.55;
+		cursor: default;
+		user-select: none;
 	}
 
 	.backdrop {
