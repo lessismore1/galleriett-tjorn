@@ -21,7 +21,21 @@ Under logotypen i header: subtil rad **`Tjörn`** (sans, uppercase, muted, tät 
 
 - Använd **befintliga fonter** (`--font-sans`), inte snirklig display/script.
 - Scriptfont under loggan konkurrerar med wordmarken och känns “dekor” snarare än institution.
-- Inte kommunvapen eller Visit Tjörn-logo i lockupen (se diskussion kring platsidentitet).
+- Inte kommunvapen eller Visit Tjörn-logo i lockupen (se platsidentitet nedan).
+
+## Platsidentitet (Tjörn / västkust)
+
+**Galleri först, plats som underton** — utom på **`/om`**, där platsen får mer yta (verk/utställningar är underordnade).
+
+| | Konstsidor | `/om` |
+|---|---|---|
+| Primärt | Verk, konstnär, utställning | Vem vi är + **var** vi är |
+| Plats | Logo-rad, en rad copy, ev. länk till Om | Foto (sal/kustljus), copy, väg, öppet, partners |
+| Akta | Kust-hero som stjäl från konsten | Destinationshotsajt / Pater Noster-paket |
+
+**KmH** ([konstmedhorisont.se](https://konstmedhorisont.se/ar/2026)): horisont / annan färgton. **G1**: lime + galleri. Samma värld, två uttryck.
+
+Detaljerad backlog och tumregler: `docs/backlog-sprint.md` → *Plats / kust*.
 
 ## Detalj-hero (konstnär / utställning)
 
