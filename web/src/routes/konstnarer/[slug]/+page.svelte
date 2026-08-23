@@ -17,6 +17,12 @@
 		return artists[(i + 1) % artists.length];
 	});
 
+	const nextImage = $derived(
+		next.image || next.heroImage || next.works?.[0]?.image || null
+	);
+
+	const nextWorkTitle = $derived(next.works?.[0]?.title ?? null);
+
 	const artistArticles = $derived(getArtistArticles(artist.slug).slice(0, 3));
 
 	const promoWork = $derived(artist.works?.[0] ?? null);
@@ -302,8 +308,18 @@
 <section class="band band-pad">
 	<div class="container more">
 		<a class="next" href={`/konstnarer/${next.slug}`}>
-			<span class="label">Nästa konstnär</span>
-			<strong class="serif">{next.name}</strong>
+			{#if nextImage}
+				<img class="next-img" src={nextImage} alt="" />
+			{/if}
+			<div class="next-copy">
+				<span class="label">Nästa konstnär</span>
+				<strong class="serif">{next.name}</strong>
+				{#if nextWorkTitle}
+					<em class="next-work">{nextWorkTitle}</em>
+				{:else if next.specialty}
+					<span class="next-specialty">{next.specialty}</span>
+				{/if}
+			</div>
 		</a>
 	</div>
 </section>
@@ -668,11 +684,72 @@
 		gap: 2rem;
 	}
 
-	.next strong {
+	.next {
+		display: grid;
+		grid-template-columns: minmax(0, 11rem) 1fr;
+		gap: 1.25rem;
+		align-items: center;
+		text-decoration: none;
+		color: inherit;
+		max-width: 36rem;
+	}
+
+	.next:hover .next-img,
+	.next:focus-visible .next-img {
+		box-shadow: 0 0 0 1px var(--brand);
+	}
+
+	.next:hover strong,
+	.next:focus-visible strong {
+		box-shadow: inset 0 -2px 0 var(--brand);
+	}
+
+	.next-img {
+		width: 100%;
+		aspect-ratio: 1;
+		object-fit: cover;
+		background: #e8e8e2;
 		display: block;
+	}
+
+	.next-copy {
+		min-width: 0;
+	}
+
+	.next strong {
+		display: inline-block;
 		font-size: clamp(1.5rem, 3vw, 2rem);
 		margin-top: 0.35rem;
 		font-weight: 500;
+	}
+
+	.next-work {
+		display: block;
+		margin-top: 0.35rem;
+		font-size: 1.05rem;
+		font-style: italic;
+		font-weight: 500;
+		color: var(--text-secondary);
+	}
+
+	.next-specialty {
+		display: block;
+		margin-top: 0.35rem;
+		font-size: 0.75rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+	}
+
+	@media (max-width: 600px) {
+		.next {
+			grid-template-columns: 5.5rem 1fr;
+			gap: 0.9rem;
+		}
+
+		.next strong {
+			font-size: 1.35rem;
+		}
 	}
 
 	.empty {

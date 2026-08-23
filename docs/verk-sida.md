@@ -68,9 +68,9 @@ Se `docs/seo-policy.md`.
 1. Stor bild  
 2. Titel + konstnär  
 3. **Story** (valfritt) — kort narrativ om verket, som hos [K. Palmnäs Art](https://kpalmnasart.se/pages/original) / Linda på utställning. Fält: `work.story`.  
-4. Meta: år, teknik, mått (om satt), status  
+4. Meta: år, teknik, mått (om satt), status — kompakt stack (inte formulär-dl)  
 5. Kontext: “Utställning” om verket hänger i en show  
-6. CTA: `Maila om intresse`  
+6. CTA-block: **Intresserad av verket?** + “pris och tillgänglighet på förfrågan” + `Maila om verket`  
 7. Dela: Facebook + kopiera länk + mail  
 8. Bläddra: sticky verk-subnav (logo · konstnär · Verk · **Visa alla** · count) + cirkelpilar ‹ › på bilden. Från utställning: `?show=` → bläddra bland showens verk; Visa alla → utställningen. Från konstnär: konstnärens verk. På desktop syns hela verket i viewport.  
 

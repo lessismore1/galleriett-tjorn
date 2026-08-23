@@ -198,26 +198,14 @@
 				</div>
 			{/if}
 
-			<dl class="meta">
-				<div>
-					<dt>År</dt>
-					<dd>{work.year}</dd>
-				</div>
-				<div>
-					<dt>Teknik</dt>
-					<dd>{work.medium}</dd>
-				</div>
+			<ul class="meta">
+				<li>{work.year}</li>
+				<li>{work.medium}</li>
 				{#if work.dimensions}
-					<div>
-						<dt>Mått</dt>
-						<dd>{work.dimensions}</dd>
-					</div>
+					<li>{work.dimensions}</li>
 				{/if}
-				<div>
-					<dt>Status</dt>
-					<dd>{availabilityLabel}</dd>
-				</div>
-			</dl>
+				<li class="status">{availabilityLabel}</li>
+			</ul>
 
 			{#if data.featuredIn?.length}
 				<div class="context">
@@ -238,14 +226,22 @@
 			{/if}
 
 			{#if showInterestCta}
-				<a class="btn cta" href={interestMailto}>Maila om intresse →</a>
+				<div class="inquire">
+					<p class="inquire-title">Intresserad av verket?</p>
+					<p class="inquire-lead">
+						Kontakta GALLERIett — pris och tillgänglighet skickas på förfrågan.
+					</p>
+					<a class="btn cta" href={interestMailto}>Maila om verket →</a>
+				</div>
 			{:else if work.availability === 'sold'}
-				<p class="sold-note">Verket är sålt. Hör gärna av dig om liknande verk.</p>
-				<a
-					class="btn cta ghost"
-					href={`mailto:${site.email}?subject=${encodeURIComponent(`Fråga om liknande: ${work.title} — ${artist.name}`)}`}
-					>Kontakta galleriet →</a
-				>
+				<div class="inquire">
+					<p class="sold-note">Verket är sålt. Hör gärna av dig om liknande verk.</p>
+					<a
+						class="btn cta ghost"
+						href={`mailto:${site.email}?subject=${encodeURIComponent(`Fråga om liknande: ${work.title} — ${artist.name}`)}`}
+						>Kontakta galleriet →</a
+					>
+				</div>
 			{/if}
 
 			<div class="share" role="group" aria-label="Dela verk">
@@ -498,37 +494,32 @@
 	}
 
 	.meta {
-		display: grid;
-		gap: 0;
-		margin: 0 0 1.5rem;
+		list-style: none;
+		margin: 0 0 1.35rem;
 		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
 	}
 
-	.meta div {
-		display: grid;
-		grid-template-columns: 6.5rem 1fr;
-		gap: 0.75rem;
-		align-items: baseline;
-		border-top: 1px solid var(--border);
-		padding-block: 0.4rem;
-	}
-
-	.meta dt {
+	.meta li {
 		margin: 0;
-		font-size: 0.65rem;
+		font-size: 0.9rem;
+		line-height: 1.45;
+		color: var(--text-secondary);
+	}
+
+	.meta .status {
+		margin-top: 0.35rem;
+		font-size: 0.75rem;
 		font-weight: 600;
 		letter-spacing: 0.06em;
 		text-transform: uppercase;
 		color: var(--text-muted);
 	}
 
-	.meta dd {
-		margin: 0;
-		font-size: 0.95rem;
-	}
-
 	.context {
-		margin-bottom: 1.5rem;
+		margin-bottom: 1.35rem;
 	}
 
 	.context ul {
@@ -558,8 +549,27 @@
 		text-transform: uppercase;
 	}
 
-	.cta {
+	.inquire {
 		margin-bottom: 1.5rem;
+		max-width: 22rem;
+	}
+
+	.inquire-title {
+		margin: 0 0 0.35rem;
+		font-size: 0.95rem;
+		font-weight: 600;
+	}
+
+	.inquire-lead {
+		margin: 0 0 0.9rem;
+		font-size: 0.85rem;
+		line-height: 1.5;
+		color: var(--text-secondary);
+	}
+
+	.cta {
+		display: inline-flex;
+		margin-bottom: 0;
 		text-decoration: none;
 	}
 

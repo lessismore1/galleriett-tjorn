@@ -73,7 +73,8 @@ Se även `docs/ui-brand.md` → Platsidentitet.
 
 ### D — Konvertering (lätt, galleriton)
 
-- [ ] Behåll **mailto**-inquire; ev. kort formulär senare om mailto inte räcker
+- [x] Behåll **mailto**-inquire; skärp copy på verk (“Intresserad… pris/tillgänglighet på förfrågan”) — inte e-handel
+- [ ] Ev. kort formulär senare om mailto inte räcker
 - [ ] Ingen prislista/e-handel förrän process och lager är klart
 
 ### E — Flerspråk (senare)
@@ -83,6 +84,7 @@ Se även `docs/ui-brand.md` → Platsidentitet.
 
 ### F — Bildpresentation (valfritt, lågt prioritet)
 
+- [x] Verk: finjustera bilddominans / meta-täthet *utan* ny “viewing room”-modell (desktop contain finns redan; meta = kompakt stack)
 - [ ] Enkel lightbox/zoom på verk *om* besökare efterfrågar det — inte för att matcha Gagosian
 - [ ] Undvik tunga animationer “för liv”
 
@@ -90,6 +92,20 @@ Se även `docs/ui-brand.md` → Platsidentitet.
 
 - [ ] Fler “Från GALLERIett”-artiklar kring aktuella shower
 - [ ] “I pressen” med stabila externa länkar (lokal/regional press)
+- [ ] `/nyheter`: ev. lätt featured (1 huvud + övriga) när innehållet bär — inte fullt magasin
+
+### H — v2-polish (från extern review 2026-08, filtrerat)
+
+**Direkt / snart (se chat — implement-lista):** inquire-copy ✅; nästa konstnär rikare ✅; verk-meta kompakt ✅.
+
+**Backlog (inte MVP):**
+
+- [x] **Nästa konstnär** — större, mer redaktionell (bild + namn + ev. verkstitel); behåll sekvens, undvik “Kanske också intressant”-grid
+- [ ] **Konstnärsfilter** — behåll funktion; mjukare UI när roster växer (inte “databas-känsla”)
+- [ ] **Tidigare-arkiv** — årssubnav finns; vid många år: kompaktare årslist (dropdown/komprimerad rad)
+- [ ] **Status-skanning** — Pågående/Kommande/Tidigare redan via badge; ingen parallell “grafisk kod”-yta
+- [ ] **Micro-typografi** — mellanrum, labels, metadata (löpande polish)
+- [x] **Verk meta** — kompakt stack (mindre formulärkänsla)
 
 ## Medvetet bortprioriterat
 
@@ -99,6 +115,19 @@ Se även `docs/ui-brand.md` → Platsidentitet.
 - Editorial magasin, podcasts, essäarkiv  
 - Jämförelse-feature-paritet med Hauser & Wirth / Gagosian / Zwirner  
 - Full-bleed kust-hero på utställnings-/konstnärssidor (Pater Noster-modell på fel yta)
+- Instagram-feed, tunga animationer, fler huvudmenyer “för att fylla”
+- Separat meny **Verk** (verk hittas via konstnär / utställning)
+
+### Review-filter (ChatGPT 2026-08) — håller / håller inte
+
+| Håller med | Håller inte / redan löst |
+|---|---|
+| Förfina, ingen stor redesign | “Inga fler menypunkter” — **Evenemang** är medveten undantag (mästeri) |
+| Art first, lokal utan turistton | Chasa OVR / 80–90 % viewport som *ny* modell — polish ok, Gagosian-paritet nej |
+| Hub konstnär ↔ verk ↔ utställning; `?show=` | Artistfilter = “för databas” nu — behåll; mjuk senare |
+| Inquire tydligare (inte shop) | Featured nyhetsmagasin — lätt variant ok; inte Hauser-journal |
+| Nästa konstnär rikare | Årsarkiv “tänk skalbart” — **årssubnav finns redan** |
+| Undvik IG-feed, shop, mer färg, mer meny | Ny separat grafisk kod AKTUELLT/… — badges räcker |
 
 ## Relaterat
 
