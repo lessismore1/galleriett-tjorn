@@ -44,7 +44,7 @@
 	<div class="container">
 		<div class="section-head">
 			<h2 class="label">Aktuellt</h2>
-			<a class="link-arrow" href="/utstallningar">Se alla utställningar</a>
+			<a class="link-arrow" href="/utstallningar">Se aktuella utställningar</a>
 		</div>
 		<div class="cards">
 			{#each featuredExhibitions as item}

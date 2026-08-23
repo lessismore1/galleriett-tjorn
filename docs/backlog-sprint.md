@@ -21,7 +21,7 @@ Tre lager som inte ska blandas:
 |---|---|---|
 | **GALLERIett (kärna)** | Konst, sal, inquire, program | Nuvarande G1 / Magnus-rytm |
 | **Plats (underton)** | Tjörn, västkust, “värt resan” | Ton från [KmH](https://konstmedhorisont.se/ar/2026), ljus/färg — inte symboler |
-| **Upplevelse (senare)** | Evenemang, boka | [Pater Noster](https://www.paternoster.se/) säljer *plats*; kopiera inte deras produktmodell till konstsidor |
+| **Upplevelse (senare)** | Evenemang, boka | Nav-platshållare `/evenemang` finns; full lista när mästeri/datum finns — se `docs/evenemang.md` |
 
 **Tumregel:** Ta bort loggan → får det inte läsa *hotell/ö*. Ta bort platsraden → får det inte kännas som *vilket galleri som helst i Stockholm*.
 
@@ -59,27 +59,34 @@ Se även `docs/ui-brand.md` → Platsidentitet.
 - [ ] Behåll “Tjörn” under logo; eventuell en mening på start/Om-länk
 - [ ] Diskret partnerlänk där det passar — utan destinationskampanjton
 
-### B — Rörligt innehåll (när material finns)
+### B — Evenemang / mästeri (när erbjudande + tillstånd finns)
+
+- [x] Nav **Evenemang** + platshållare `/evenemang` (som Video)
+- [ ] Lista kommande (vernissage, pub, sip & paint) — inte utställningar som aktivitetskort
+- [ ] Detaljsida med Boka; diskret länk från utställning vid vernissage
+- [ ] Gräns mot [ronnang.se/aktiviteter](https://ronnang.se/aktiviteter/): där community; här galleri/mästeri — se `docs/evenemang.md`
+
+### C — Rörligt innehåll (när material finns)
 
 - [ ] Korta konstnärs- eller utställningsklipp under **Video** / på utställning
 - [ ] Samma film kan återanvändas i nyhet “Från GALLERIett”
 
-### C — Konvertering (lätt, galleriton)
+### D — Konvertering (lätt, galleriton)
 
 - [ ] Behåll **mailto**-inquire; ev. kort formulär senare om mailto inte räcker
 - [ ] Ingen prislista/e-handel förrän process och lager är klart
 
-### D — Flerspråk (senare)
+### E — Flerspråk (senare)
 
 - [ ] **EN** synlig men inte aktiv tills innehåll finns (nuvarande: disabled / “Coming”)
 - [ ] Full översättning när det finns efterfrågan utanför SV (expansion, inte MVP)
 
-### E — Bildpresentation (valfritt, lågt prioritet)
+### F — Bildpresentation (valfritt, lågt prioritet)
 
 - [ ] Enkel lightbox/zoom på verk *om* besökare efterfrågar det — inte för att matcha Gagosian
 - [ ] Undvik tunga animationer “för liv”
 
-### F — Redaktionellt djup (långsikt)
+### G — Redaktionellt djup (långsikt)
 
 - [ ] Fler “Från GALLERIett”-artiklar kring aktuella shower
 - [ ] “I pressen” med stabila externa länkar (lokal/regional press)

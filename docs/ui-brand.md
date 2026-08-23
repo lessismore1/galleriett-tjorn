@@ -166,4 +166,4 @@ Inte standard på webben. Varumärket bärs av **logga + primär CTA + små acce
 Nya knappar → återanvänd `.btn` i stället för lokala svarta CTA-stilar.  
 Nya kort-ytor → `ArtistCard` / `ArtworkCard` / `ExhibitionRow` / `ExhibitionCard` / `NewsCard` + `--card-meta-hover`.
 
-**Evenemang** (mat/dryck/biljett) har **egen rytm** och egen yta — se `docs/evenemang.md`. Blanda inte in “Boka” som default på utställnings-/verkssidor.
+**Evenemang** (vernissage, pub, sip & paint / mästeri) har **egen rytm** och egen yta — nav-platshållare `/evenemang` (som `/video`). Se `docs/evenemang.md`. Blanda inte in “Boka” som default på utställnings-/verkssidor; utställningar hör inte under Evenemang (jfr rönnang.se Aktiviteter).
