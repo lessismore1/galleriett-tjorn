@@ -4,9 +4,12 @@
 		getOngoingExhibitions,
 		getUpcomingExhibitions,
 		getNewsIndex,
-		getRotatedSponsors
+		getRotatedSponsors,
+		newsCardHref,
+		newsCardExternal
 	} from '$lib/data/mockData.js';
 	import ExhibitionCard from '$lib/components/ExhibitionCard.svelte';
+	import NewsListItem from '$lib/components/NewsListItem.svelte';
 	import SponsorsCarousel from '$lib/components/SponsorsCarousel.svelte';
 
 	const ongoingList = getOngoingExhibitions();
@@ -90,16 +93,16 @@
 			<h2 class="label">Nyheter</h2>
 			<a class="link-arrow" href="/nyheter">Till nyheter</a>
 		</div>
-		<div class="news">
+		<div class="news-list">
 			{#each news.slice(0, 3) as item}
-				<a class="news-item" href={item.clickable ? `/nyheter/${item.slug}` : '/nyheter'}>
-					<img src={item.thumb ?? item.image} alt="" />
-					<div>
-						<p class="label">{item.category}</p>
-						<strong class="serif">{item.title}</strong>
-						<p class="muted">{item.dateLabel}</p>
-					</div>
-				</a>
+				<NewsListItem
+					href={newsCardHref(item)}
+					external={newsCardExternal(item)}
+					image={item.thumb ?? item.image}
+					category={item.category}
+					title={item.title}
+					dateLabel={item.dateLabel}
+				/>
 			{/each}
 		</div>
 	</div>
@@ -235,37 +238,10 @@
 		object-position: center;
 	}
 
-	.news {
+	.news-list {
 		display: grid;
 		gap: 1.5rem;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
-	}
-
-	.news-item {
-		display: grid;
-		grid-template-columns: 84px 1fr;
-		gap: 0.9rem;
-		align-items: start;
-	}
-
-	.news-item img {
-		width: 84px;
-		height: 84px;
-		object-fit: cover;
-		background: #e8e8e2;
-	}
-
-	.news-item strong {
-		display: block;
-		font-size: 1.05rem;
-		font-weight: 500;
-		margin: 0.15rem 0;
-	}
-
-	.muted {
-		margin: 0;
-		font-size: 0.75rem;
-		color: var(--text-muted);
 	}
 
 	.sponsors-lead {
@@ -279,7 +255,7 @@
 
 	@media (max-width: 900px) {
 		.cards,
-		.news {
+		.news-list {
 			grid-template-columns: 1fr;
 		}
 

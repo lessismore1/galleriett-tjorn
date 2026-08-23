@@ -5,7 +5,7 @@
 	import ArtworkCard from '$lib/components/ArtworkCard.svelte';
 	import ExhibitionRow from '$lib/components/ExhibitionRow.svelte';
 	import ExhibitionCard from '$lib/components/ExhibitionCard.svelte';
-	import NewsCard from '$lib/components/NewsCard.svelte';
+	import NewsListItem from '$lib/components/NewsListItem.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 
@@ -17,7 +17,7 @@
 		return artists[(i + 1) % artists.length];
 	});
 
-	const artistArticles = $derived(getArtistArticles(artist.slug).slice(0, 4));
+	const artistArticles = $derived(getArtistArticles(artist.slug).slice(0, 3));
 
 	const promoWork = $derived(artist.works?.[0] ?? null);
 	const portraitSrc = $derived(artist.image || artist.heroImage || null);
@@ -270,16 +270,15 @@
 			<a class="link-arrow" href="/nyheter">Visa alla</a>
 		</div>
 		{#if artistArticles.length}
-			<div class="news-grid">
+			<div class="news-list">
 				{#each artistArticles as item}
-					<NewsCard
+					<NewsListItem
 						href={newsCardHref(item)}
 						external={newsCardExternal(item)}
-						image={item.image}
+						image={item.thumb ?? item.image}
 						category={item.category}
 						title={item.title}
 						dateLabel={item.dateLabel}
-						excerpt={item.excerpt}
 					/>
 				{/each}
 			</div>
@@ -625,21 +624,15 @@
 		}
 	}
 
-	.news-grid {
+	.news-list {
 		display: grid;
-		gap: 2rem;
+		gap: 1.5rem;
 		grid-template-columns: 1fr;
 	}
 
-	@media (min-width: 600px) {
-		.news-grid {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-	}
-
-	@media (min-width: 1100px) {
-		.news-grid {
-			grid-template-columns: repeat(4, minmax(0, 1fr));
+	@media (min-width: 900px) {
+		.news-list {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
 		}
 	}
 

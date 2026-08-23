@@ -73,7 +73,8 @@ Konstnär och utställning: sentinel under breadcrumbs → `body.subnav-stuck` d
 | Verkskort | `ArtworkCard` | konstnärssida Verk, utställning Verk |
 | Utställningsrad | `ExhibitionRow` | `/utstallningar` (Aktuella); konstnär → Aktuella |
 | Utställningskort | `ExhibitionCard` | startsida Aktuellt; **Tidigare** (`/utstallningar/tidigare`); konstnär → Tidigare |
-| Nyhetskort | `NewsCard` | `/nyheter`; konstnär → Nyheter (egna + I pressen) |
+| Nyhetskort | `NewsCard` | `/nyheter` (filter/bläddring) |
+| Nyhetsrad | `NewsListItem` | startsida Nyheter; konstnär → Nyheter (teaser, max ~3) |
 
 ### `ArtistCard`-lägen
 
@@ -128,11 +129,22 @@ Vertikalt nyhetskort: bild → kategori → titel → datum → excerpt.
 | `excerpt` | teaser (valfri) |
 
 **Kategorier:** **Från GALLERIett** (intern artikel) · **I pressen** (extern källa via `source.url`).  
-**Användning:** `/nyheter` (filter); konstnär → en sektion **Nyheter** (max ~4 + “Visa alla”). Citat (`pressQuote`) under samma sektion, inte som kort.
+**Användning:** `/nyheter` (filter). Citat (`pressQuote`) på konstnär under samma sektion, inte som kort.
+
+### `NewsListItem`
+
+Horisontell teaser: **tumme | kategori · titel · datum** (text viktigare än bild).
+
+| Prop | Roll |
+|---|---|
+| `href` / `external` | samma som `NewsCard` |
+| `image` | liten kvadrat (84px); gärna `thumb` om finns |
+
+**Användning:** startsida + konstnär (kompakt lista). Inte på `/nyheter` — där `NewsCard`.
 
 ## Designbegränsning — kort på vit och beige
 
-`ArtistCard`, `ArtworkCard`, `ExhibitionCard`, `ExhibitionRow` och `NewsCard` ska fungera på **både** `.band` (vit) och `.band-soft` (beige).
+`ArtistCard`, `ArtworkCard`, `ExhibitionCard`, `ExhibitionRow`, `NewsCard` och `NewsListItem` ska fungera på **både** `.band` (vit) och `.band-soft` (beige).
 
 - Hover på meta får **inte** vara samma färg som sektionsbakgrunden.
 - Kort ska använda `var(--card-meta-hover)` (inte hårdkoda en hover-färg).
@@ -164,6 +176,6 @@ Inte standard på webben. Varumärket bärs av **logga + primär CTA + små acce
 ## Check
 
 Nya knappar → återanvänd `.btn` i stället för lokala svarta CTA-stilar.  
-Nya kort-ytor → `ArtistCard` / `ArtworkCard` / `ExhibitionRow` / `ExhibitionCard` / `NewsCard` + `--card-meta-hover`.
+Nya kort-ytor → `ArtistCard` / `ArtworkCard` / `ExhibitionRow` / `ExhibitionCard` / `NewsCard` / `NewsListItem` + `--card-meta-hover`.
 
 **Evenemang** (vernissage, pub, sip & paint / mästeri) har **egen rytm** och egen yta — nav-platshållare `/evenemang` (som `/video`). Se `docs/evenemang.md`. Blanda inte in “Boka” som default på utställnings-/verkssidor; utställningar hör inte under Evenemang (jfr rönnang.se Aktiviteter).
