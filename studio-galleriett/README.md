@@ -4,7 +4,7 @@ Lokal Studio mot Sanity Cloud.
 
 | | |
 |---|---|
-| **projectId** | `811b9elz` |
+| **projectId** | `81lb9elz` |
 | **dataset** | `production` |
 | **Status** | Schema klart; **datasetet lämnas tomt** (ingen mock-seed) |
 

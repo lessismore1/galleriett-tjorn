@@ -8,7 +8,7 @@ export default defineConfig({
   name: 'galleriett',
   title: 'GALLERIett',
 
-  projectId: '811b9elz',
+  projectId: '81lb9elz',
   dataset: 'production',
 
   plugins: [structureTool({structure: deskStructure}), visionTool()],
