@@ -65,7 +65,7 @@ async function uploadImage(src) {
 }
 
 const hero101 = await uploadImage('/images/ex-101-hero.jpg')
-const hero106 = await uploadImage('/images/ex-tystnad.jpg')
+const hero106 = await uploadImage('/images/ex-104-hero.jpg')
 
 await client
   .patch('exhibition.101-ljus-och-horisont')
@@ -77,7 +77,7 @@ await client
   .patch('exhibition.106-erik-halvorsen-tystnadens-rum')
   .set({image: hero106, cardImage: hero106})
   .commit()
-console.log('✓ 106 Tystnadens rum — egen affisch (ex-tystnad)')
+console.log('✓ 106 Tystnadens rum — ex-104-hero (riktig foto, inte UI-thumb)')
 
 await client
   .patch('artist.02-erik-halvorsen')
@@ -85,4 +85,4 @@ await client
   .commit()
 console.log('✓ Erik Halvorsen heroImage')
 
-console.log('\nKlart — ladda om Studio.')
+console.log('\nKlart — ladda om Studio/web.')

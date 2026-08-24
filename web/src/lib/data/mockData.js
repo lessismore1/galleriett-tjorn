@@ -166,7 +166,7 @@ export const artists = [
 		bio: 'Halvorsen arbetar med skulptur där materialets tyngd möter arkitektonisk klarhet.',
 		website: null,
 		image: '/images/artist-erik.jpg',
-		heroImage: '/images/ex-tystnad.jpg',
+		heroImage: '/images/ex-104-hero.jpg',
 		works: [
 			{
 				title: 'Tomrum I',
@@ -662,8 +662,8 @@ export const exhibitions = [
 		intro: 'Erik Halvorsen visar skulpturer som formar tystnad och rum.',
 		pressRelease:
 			'Tystnadens rum är Erik Halvorsens första separatutställning på GALLERIett.\n\nSkulpturerna arbetar med material, tyngd och tomrum — betong, sten, brons och trä i former som både bär och lämnar öppningar. Halvorsen låter galleriets rum bli en del av verken: skuggor, avstånd och stillhet får lika stor vikt som massan.\n\nUtställningen samlar nya och tidigare verk i en koncentrerad installation. Vernissage 3 oktober 2026 kl. 18. Utställningen pågår till 2 november 2026.',
-		image: '/images/ex-tystnad.jpg',
-		cardImage: '/images/ex-tystnad.jpg',
+		image: '/images/ex-104-hero.jpg',
+		cardImage: '/images/ex-104-hero.jpg',
 		works: [
 			{ title: 'Tomrum I', image: '/images/work-104-a.jpg' },
 			{ title: 'Bärande', image: '/images/work-104-b.jpg' },
