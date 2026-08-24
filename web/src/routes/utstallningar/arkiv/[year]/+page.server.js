@@ -1,13 +1,14 @@
 import { redirect } from '@sveltejs/kit';
-import { getArchiveYears } from '$lib/data/mockData.js';
+import { fetchArchiveYears } from '$lib/sanity/exhibitions';
 
 /** @type {import('./$types').EntryGenerator} */
-export function entries() {
-	return getArchiveYears().map((year) => ({ year: String(year) }));
+export async function entries() {
+	const years = await fetchArchiveYears();
+	return years.map((year) => ({ year: String(year) }));
 }
 
-/** @type {import('./$types').PageLoad} */
-export function load({ params }) {
+/** @type {import('./$types').PageServerLoad} */
+export async function load({ params }) {
 	const year = Number(params.year);
 	const target = Number.isFinite(year)
 		? `/utstallningar/tidigare/${year}`

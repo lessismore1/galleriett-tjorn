@@ -1,12 +1,12 @@
-import { getCurrentExhibitions, getPastYears } from '$lib/data/mockData.js';
+import { fetchCurrentExhibitions, fetchPastYears } from '$lib/sanity/exhibitions';
 
-/** @type {import('./$types').PageLoad} */
-export function load() {
-	const list = getCurrentExhibitions();
+/** @type {import('./$types').PageServerLoad} */
+export async function load() {
+	const list = await fetchCurrentExhibitions();
 	return {
 		filter: /** @type {const} */ ('current'),
 		list,
-		pastYears: getPastYears(),
+		pastYears: await fetchPastYears(),
 		pastYear: null,
 		emptyLabel: 'Inga aktuella utställningar just nu.',
 		seo: {

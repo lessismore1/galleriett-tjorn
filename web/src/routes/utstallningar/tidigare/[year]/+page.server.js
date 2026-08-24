@@ -1,20 +1,21 @@
 import { error } from '@sveltejs/kit';
-import { getPastYears, getPastExhibitions } from '$lib/data/mockData.js';
+import { fetchPastYears, fetchPastExhibitions } from '$lib/sanity/exhibitions';
 
 /** @type {import('./$types').EntryGenerator} */
-export function entries() {
-	return getPastYears().map((year) => ({ year: String(year) }));
+export async function entries() {
+	const years = await fetchPastYears();
+	return years.map((year) => ({ year: String(year) }));
 }
 
-/** @type {import('./$types').PageLoad} */
-export function load({ params }) {
+/** @type {import('./$types').PageServerLoad} */
+export async function load({ params }) {
 	const year = Number(params.year);
-	const pastYears = getPastYears();
+	const pastYears = await fetchPastYears();
 	if (!Number.isFinite(year) || !pastYears.includes(year)) {
 		error(404, 'År hittades inte');
 	}
 
-	const list = getPastExhibitions(year);
+	const list = await fetchPastExhibitions(year);
 	return {
 		filter: /** @type {const} */ ('past'),
 		list,
