@@ -20,6 +20,9 @@
 .DS_Store
 *.pem
 
+# Dataset export archives (sanity dataset export)
+*.tar.gz
+
 # Typescript
 *.tsbuildinfo
 
