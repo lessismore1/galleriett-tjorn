@@ -1,17 +1,31 @@
 import { createClient, type SanityClient } from '@sanity/client';
 import { createImageUrlBuilder } from '@sanity/image-url';
-import { env } from '$env/dynamic/private';
+import { SANITY_API_READ_TOKEN } from '$env/static/private';
 import { env as publicEnv } from '$env/dynamic/public';
 
 const projectId = publicEnv.PUBLIC_SANITY_PROJECT_ID || '81lb9elz';
 const dataset = publicEnv.PUBLIC_SANITY_DATASET || 'development';
 
+/**
+ * Build-time token for adapter-static prerender.
+ * Prefer `$env/static/private` (inlined by Vite) and bracket `process.env` (Pages CI).
+ * `$env/dynamic/private` is empty in SvelteKit's postbuild analyse fork.
+ */
+function getReadToken(): string | undefined {
+	const fromStatic = SANITY_API_READ_TOKEN;
+	if (fromStatic) return fromStatic;
+	// Bracket access avoids Vite statically replacing an unset env with undefined
+	const fromProcess =
+		typeof process !== 'undefined' ? process.env['SANITY_API_READ_TOKEN'] : undefined;
+	return fromProcess || undefined;
+}
+
 /** Server-only client (prerender/build). Private dataset requires SANITY_API_READ_TOKEN. */
 export function getSanityClient(): SanityClient {
-	const token = env.SANITY_API_READ_TOKEN;
+	const token = getReadToken();
 	if (!token) {
 		throw new Error(
-			'SANITY_API_READ_TOKEN saknas. Skapa en Viewer-token i Sanity Manage och lägg den i web/.env (se .env.example).'
+			'SANITY_API_READ_TOKEN saknas. Lokalt: web/.env. Cloudflare Pages: Settings → Variables and secrets → Production (available at build), sedan Retry deployment.'
 		);
 	}
 	return createClient({
