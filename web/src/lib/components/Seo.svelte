@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { site } from '$lib/data/mockData.js';
 
 	let {
 		title,
@@ -13,6 +12,12 @@
 		image?: string | null;
 		type?: string;
 	} = $props();
+
+	const site = $derived(
+		(page.data as { site?: { url: string } }).site ?? {
+			url: 'https://galleriett-tjorn.pages.dev'
+		}
+	);
 
 	/** Prerender defaultar till sveltekit-prerender om kit.prerender.origin saknas — fallback till site.url. */
 	const origin = $derived(

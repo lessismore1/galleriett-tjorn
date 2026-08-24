@@ -1,7 +1,9 @@
 <script lang="ts">
-	import { sponsors } from '$lib/data/mockData.js';
 	import Seo from '$lib/components/Seo.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+
+	let { data } = $props();
+	const sponsors = $derived(data.sponsors);
 </script>
 
 <Seo

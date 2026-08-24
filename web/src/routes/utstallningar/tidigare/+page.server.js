@@ -1,9 +1,9 @@
 import { redirect } from '@sveltejs/kit';
-import { getPastYears } from '$lib/data/mockData.js';
+import { fetchPastYears } from '$lib/sanity/exhibitions';
 
-/** @type {import('./$types').PageLoad} */
-export function load() {
-	const years = getPastYears();
+/** @type {import('./$types').PageServerLoad} */
+export async function load() {
+	const years = await fetchPastYears();
 	if (years.length) {
 		throw redirect(307, `/utstallningar/tidigare/${years[0]}`);
 	}

@@ -21,11 +21,14 @@ Referensdesign ligger i [`../docs/gui-mockups/`](../docs/gui-mockups/):
 | `04-utstallningar.png` | `/utstallningar` |
 | `05-kontakt.png` | `/kontakt` |
 
-Mockdata: `src/lib/data/mockData.js`
+CMS: Sanity (`development`, private) via `PUBLIC_SANITY_*` + `SANITY_API_READ_TOKEN` (Viewer). Se `.env.example`.
+
+`src/lib/data/mockData.js` används bara som källa till Studio-seed (`npm run seed:mock` i `studio-galleriett`), inte av webben längre.
 
 ## Bygg
 
 ```sh
+cp .env.example .env   # fyll Viewer-token
 npm run build
 npm run preview
 ```

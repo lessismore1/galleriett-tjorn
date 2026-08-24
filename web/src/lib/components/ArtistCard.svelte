@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { getArtistProgram } from '$lib/data/mockData.js';
+
+	type ArtistProgram = {
+		status: 'ongoing' | 'upcoming';
+		exhibition: { title?: string; image?: string };
+	};
 
 	type ArtistLike = {
 		slug: string;
@@ -8,6 +12,7 @@
 		specialty: string;
 		image: string;
 		works?: { title?: string; image: string }[];
+		program?: ArtistProgram | null;
 	};
 
 	type MediaMode = 'carousel' | 'portrait';
@@ -25,7 +30,7 @@
 		showBadge?: boolean;
 	} = $props();
 
-	const program = $derived(getArtistProgram(artist.slug));
+	const program = $derived(artist.program ?? null);
 	const href = $derived(`/konstnarer/${artist.slug}`);
 
 	const workSrc = $derived(artist.works?.[0]?.image ?? null);

@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { getRotatedSponsors } from '$lib/data/mockData.js';
 
 	let {
-		sponsors = getRotatedSponsors()
+		sponsors = []
 	}: {
 		sponsors?: {
 			id: string;

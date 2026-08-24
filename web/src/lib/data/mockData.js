@@ -1,4 +1,7 @@
-/** Mockdata för Galleri Ett — baserad på GUI-mockuper i docs/gui-mockups */
+/**
+ * Seed-källa för studio-galleriett/scripts/seed-mock.mjs.
+ * Webben läser inte längre denna fil — data kommer från Sanity.
+ */
 
 export const site = {
 	name: 'GALLERIett',
@@ -829,7 +832,7 @@ export const exhibitions = [
 		pressRelease:
 			'GALLERIett presenterar Ljus & Horisont, en grupputställning med Sara Lindqvist, Erik Halvorsen, Lisa Werner och Maja Ström.\n\nUtställningen tar avstamp i horisontlinjen som både geografisk och inre gräns. Verken rör sig mellan öppet hav, dämpat dagsljus och det stilla mörker som präglar Västkusten under senhösten.\n\nSara Lindqvist bidrar med måleri i lager av ljus och stillhet. Erik Halvorsen visar skulptur där material och rum samspelar. Lisa Werner arbetar med figur och färg i dämpad skala, medan Maja Ström utforskar abstrakta färgytor i stort format.\n\nLjus & Horisont är den första utställningen i GALLERIetts nya numrering och markerar starten på galleriets utställningsarkiv.\n\nVernissage 1 november 2025 kl. 15–18. Utställningen pågår till 15 december 2025.',
 		image: '/images/ex-101-hero.jpg',
-		cardImage: '/images/ex-thumb-2.jpg',
+		cardImage: '/images/ex-101-hero.jpg',
 		works: [
 			{ title: 'Horisont I — Sara Lindqvist', image: '/images/work-1.jpg?v=2' },
 			{ title: 'Kustljus — Sara Lindqvist', image: '/images/work-2.jpg?v=2' },

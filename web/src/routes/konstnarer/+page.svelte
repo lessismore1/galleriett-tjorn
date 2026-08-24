@@ -2,10 +2,12 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
-	import { artists, getArtistProgram } from '$lib/data/mockData.js';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import ArtistCard from '$lib/components/ArtistCard.svelte';
 	import Seo from '$lib/components/Seo.svelte';
+
+	let { data } = $props();
+	const artists = $derived(data.artists);
 
 	const filters = [
 		'Alla konstnärer',
@@ -69,7 +71,7 @@
 			.filter((a) => {
 				if (filter === 'Alla konstnärer') return true;
 				if (filter === 'Aktuellt') {
-					const status = getArtistProgram(a.slug)?.status;
+					const status = a.program?.status;
 					return status === 'ongoing' || status === 'upcoming';
 				}
 				return a.specialty === filter;
@@ -77,9 +79,9 @@
 			.filter((a) => !query || a.name.toLowerCase().includes(query.toLowerCase()))
 			.sort((a, b) => {
 				if (filter === 'Aktuellt') {
-					const rank = (slug: string) =>
-						getArtistProgram(slug)?.status === 'ongoing' ? 0 : 1;
-					const d = rank(a.slug) - rank(b.slug);
+					const rank = (artist: (typeof artists)[number]) =>
+						artist.program?.status === 'ongoing' ? 0 : 1;
+					const d = rank(a) - rank(b);
 					if (d !== 0) return d;
 				}
 				return a.name.localeCompare(b.name, 'sv');

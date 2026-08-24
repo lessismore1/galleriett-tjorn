@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { site } from '$lib/data/mockData.js';
-	import { findWorkRefByImage, workHref } from '$lib/data/mockData.js';
+	import { page } from '$app/state';
 	import ArtworkCard from '$lib/components/ArtworkCard.svelte';
 	import ArtistCard from '$lib/components/ArtistCard.svelte';
 	import Seo from '$lib/components/Seo.svelte';
@@ -9,20 +8,21 @@
 
 	let { data } = $props();
 	const ex = $derived(data.exhibition);
+	const site = $derived(
+		(page.data as { site?: { email: string } }).site ?? {
+			email: 'info@galleriett-tjorn.se'
+		}
+	);
 
 	const worksWithLinks = $derived(
-		(ex.works ?? []).map((work) => {
-			const ref = findWorkRefByImage(work.image);
-			const resolved = ref?.work;
-			return {
-				title: resolved?.title ?? work.title,
-				image: work.image,
-				year: resolved?.year ?? null,
-				medium: resolved?.medium ?? null,
-				dimensions: resolved?.dimensions ?? null,
-				href: ref ? workHref(ref.artist.slug, ref.work, { show: ex.slug }) : null
-			};
-		})
+		(ex.works ?? []).map((work) => ({
+			title: work.title,
+			image: work.image,
+			year: work.year ?? null,
+			medium: work.medium ?? null,
+			dimensions: work.dimensions ?? null,
+			href: work.href ?? null
+		}))
 	);
 
 	const pageTitle = $derived(`${ex.artist} | ${ex.title} · GALLERIett`);
@@ -157,7 +157,7 @@
 			<div class="section-head">
 				<h2 class="serif section-title">Pressmeddelande</h2>
 			</div>
-			{#each ex.pressRelease.split('\n').filter(Boolean) as para}
+			{#each (ex.pressRelease || '').split('\n').filter(Boolean) as para}
 				<p>{para}</p>
 			{/each}
 		</div>
@@ -201,7 +201,7 @@
 		<div class="section-head">
 			<h2 class="serif section-title">Installation</h2>
 		</div>
-		{#if ex.installationViews.length}
+		{#if ex.installationViews?.length}
 			<div class="install" style={`--cols: ${Math.min(ex.installationViews.length, 3)}`}>
 				{#each ex.installationViews as src, i}
 					<img {src} alt="Installation {i + 1}" />

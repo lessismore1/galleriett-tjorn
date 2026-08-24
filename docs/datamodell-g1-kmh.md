@@ -1,6 +1,8 @@
 # Datamodell & URL — GALLERIett (G1) ↔ Konst med Horisont (KmH)
 
-Utkast 2026-08-10. Sanity: **engelska `name`**, svenska `title` i Studio-GUI.
+Utkast 2026-08-23 (uppdaterad: G1 Evenemang / `galleryEvent`). Sanity: **engelska `name`**, svenska `title` i Studio-GUI.
+
+Diagram: `docs/datamodell.png` (även `docs/datamodell.svg`).
 
 ---
 
@@ -13,11 +15,14 @@ Utkast 2026-08-10. Sanity: **engelska `name`**, svenska `title` i Studio-GUI.
 | `artist` | Konstnär | Biografi, porträtt, CV utanför galleriet |
 | `artwork` | Konstverk | Ett verk, ägs av en konstnär (återanvänds) |
 | `exhibition` | Utställning | G1:s program (datum, pressmeddelande, hängning) |
+| `galleryEvent` | Evenemang | Vernissage, pub, sip & paint / mästeri (datum + boka) |
 | `article` | Artikel | Nyheter + media (`kind`) |
 | `location` | Plats | Fysisk plats (GALLERIett = en plats) |
 | `sponsor` | Sponsor | Logotyp + länk |
 | `video` | Video | Valfritt |
 | `siteSettings` | Webbplats | Singleton: adress, öppettider, om-text |
+
+**Namn:** Kod `galleryEvent` (inte `event`) så det **inte kolliderar** med KmH `event` = årsedition. Studio-GUI: **Evenemang**. Webb: `/evenemang`. Se `docs/evenemang.md`.
 
 ### Objects
 
@@ -39,7 +44,12 @@ artist ──< artwork >── exhibition.works[]
    │
    ├── article.artists[] / article.exhibition
    ├── pressQuotes[]          (object — citat, inte artiklar)
-   └── externalCv[]           (object — ej galleriets egna shows)
+   ├── externalCv[]           (object — ej galleriets egna shows)
+   │
+   └── galleryEvent.artists[] (valfritt — medverkar / samtal)
+         │
+         ├── exhibition → exhibition   (valfritt — vernissage till show)
+         └── location → location       (oftast GALLERIett / mästeri)
 ```
 
 **En källa till sanning**
@@ -52,6 +62,9 @@ artist ──< artwork >── exhibition.works[]
 | Utställning → verk | `exhibition.works[]` | ordning/hängning |
 | Konstnär → portfolio | — | `artwork` där `artist` matchar |
 | Artikel → konstnär/utställning | refs på `article` | direkt |
+| Evenemang → utställning | `galleryEvent.exhibition` (valfritt) | direkt |
+| Evenemang → konstnärer | `galleryEvent.artists[]` (valfritt) | direkt |
+| Utställning → evenemang | — | reverse: `galleryEvent` som refererar exhibition |
 
 `exhibition.status` beräknas från `start`/`end` (lagra inte manuellt).
 
@@ -61,6 +74,20 @@ artist ──< artwork >── exhibition.works[]
 |---|---|
 | `gallery` | Från GALLERIett |
 | `press` | I pressen |
+
+**Inte** evenemang — det är `galleryEvent`, inte en artikelkategori.
+
+### `galleryEvent` (skiss)
+
+| Fält | Roll |
+|---|---|
+| `slug`, `title`, `date` / `datesLabel` | URL + rubrik + när |
+| `kind` | `vernissage` \| `pub` \| `sip-paint` \| `samtal` \| … |
+| `price`, `capacity`, `bookingUrl` / `bookingMailto` | Boka |
+| `exhibition` | valfri ref → utställning |
+| `artists[]` | valfria refs |
+| `location` | oftast GALLERIett |
+| `image`, `body` | |
 
 ---
 
@@ -95,7 +122,8 @@ Bare `/konstnarer/...` = aktuellt år (`event.isCurrent`).
 | Konstnär | `artist` | `artist` | **Ja** — samma doc-form |
 | Verk | `artwork` | `artwork` | **Ja** |
 | Plats | `location` (1 galleri + ev. fler) | `location` (+ `area`) | **Ja** — utöka `kind` |
-| Program | `exhibition` (löpande kalender) | `event` (årsedition) | **Nära men olika** |
+| Program (konst) | `exhibition` (löpande kalender) | `event` (årsedition) | **Nära men olika** |
+| Evenemang / kväll | `galleryEvent` (vernissage, pub, …) | — | **G1-specifikt** (≠ KmH `event`) |
 | Koppling show↔plats↔verk | på `exhibition` | `artistParticipation` | Olika mönster, samma idé |
 | Nyheter/media | `article` | (saknas / ej samma) | G1-specifikt |
 | Installationsbilder | på `exhibition` | ej central | G1-specifikt |
@@ -106,15 +134,20 @@ Bare `/konstnarer/...` = aktuellt år (`event.isCurrent`).
 **Delvis sant på entitetsnivå, inte på produktytan.**
 
 - Delad kärna: `artist`, `artwork`, `location` (+ ev. `technique`).
-- KmH lägger på: `event`, `area`, `artistParticipation`, anmälan, reels, kartnummer.
-- G1 lägger på: `exhibition` (galleriets egen kalender), `article`, installation views, site/sponsorer.
+- KmH lägger på: `event` (år), `area`, `artistParticipation`, anmälan, reels, kartnummer.
+- G1 lägger på: `exhibition`, `galleryEvent`, `article`, installation views, site/sponsorer.
 
 GALLERIett som **plats** i KmH (`location` “GALLERI ett”) är redan verklighet i GUI — samma entity kan återanvändas.
 
-**G1-utställning ≠ KmH-event.**  
-Ett G1-show har start/slut och pressmeddelande. Ett KmH-event är en årsedition med många platser. Undvik att slå ihop dem till en typ; låt dem referera samma `artist` / `artwork` / `location`.
+**Tre saker som inte ska blandas:**
 
-Valfritt på `exhibition`: `facebookEventUrl` (Facebook-event för just den utställningen). Visas som diskret text-CTA i heron när fältet är satt.
+| | G1 `exhibition` | G1 `galleryEvent` | KmH `event` |
+|---|---|---|---|
+| Jobb | Konstprogram / hängning | Kväll, boka, mästeri | Årsedition, många platser |
+| CTA | Se verk, inquire | **Boka** | Deltagande / karta |
+| URL | `/utstallningar/...` | `/evenemang/...` | `/` eller `/ar/{year}/` |
+
+Valfritt på `exhibition`: `facebookEventUrl` (Facebook-event för just den utställningen). Visas som diskret text-CTA i heron när fältet är satt. Det **ersätter inte** `galleryEvent` när ni har eget bokningsflöde.
 
 ---
 
@@ -141,7 +174,7 @@ location
 | `publicVenue` | bibliotek, restaurang | 3 st KmH | eventuellt |
 | `artistStudio` | konstnärens ateljé | — | ja |
 
-**G1:** de flesta `exhibition.location` → samma `gallery`-plats (GALLERIett).  
+**G1:** de flesta `exhibition.location` och `galleryEvent.location` → samma `gallery`-plats (GALLERIett).  
 **KmH:** `artistParticipation.location` pekar på venue eller ateljé per år.
 
 Ateljé 2027: skapa `location` med `kind: artistStudio` + `hostedByArtist`, *eller* tillåt tillfälligt “inline studio”-adress på participation om platsen bara lever ett år — föredra dock riktiga `location`-docs om de ska ha karta/öppettider.
@@ -186,6 +219,8 @@ När 2027 är `isCurrent`: bare `/konstnarer/...` → 2027; 2026 lever kvar unde
 /konstnarer/{slug}
 /utstallningar
 /utstallningar/{slug}
+/evenemang
+/evenemang/{slug}
 /nyheter
 /nyheter/{slug}
 /om
@@ -245,11 +280,13 @@ Samma komponent-API (`Header`, `Footer`, `BrandEdge`) i en delad UI-kit eller co
 | `artist` | Konstnär |
 | `artwork` | Konstverk |
 | `exhibition` | Utställning |
-| `event` | Evenemang / År |
+| `galleryEvent` | Evenemang |
+| `event` | Evenemang / År *(KmH endast)* |
 | `location` | Plats |
 | `area` | Område |
 | `article` | Artikel |
 | `kind: gallery \| press` | (visas som Från GALLERIett / I pressen i webben) |
+| `galleryEvent.kind` | vernissage / pub / sip-paint / samtal |
 | `kind: gallery \| publicVenue \| artistStudio` | Galleri / Publik lokal / Ateljé |
 
 Fält: `name`, `slug`, `profileImage`, `openingHours`, `exhibitedWorks`, … — **engelska**.  
@@ -267,10 +304,11 @@ Beskrivningar och `title` — **svenska**.
              │               │
      ┌───────▼──────┐ ┌──────▼──────────────┐
      │ G1 surface   │ │ KmH surface         │
-     │ exhibition   │ │ event               │
-     │ article      │ │ artistParticipation │
-     │ siteSettings │ │ area                │
-     │ sponsor      │ │ registration, reels │
+     │ exhibition   │ │ event (årsedition)  │
+     │ galleryEvent │ │ artistParticipation │
+     │ article      │ │ area                │
+     │ siteSettings │ │ registration, reels │
+     │ sponsor      │ │                     │
      └──────────────┘ └─────────────────────┘
 ```
 
@@ -279,14 +317,15 @@ Beskrivningar och `title` — **svenska**.
 1. **Två dataset**, delad schema-paket (enklast driftsmässigt), eller  
 2. **Ett dataset** + `sites[]` / brand-fält på dokument (kräver strikt filtrering i Studio och web).
 
-Börja med (1); sikta på samma type-namn så (2) blir möjligt.
+Börja med (1); sikta på samma type-namn så (2) blir möjligt. Håll `galleryEvent` och KmH `event` som **skilda typer** även i delat paket.
 
 ---
 
 ## 9. Nästa steg
 
-1. Låsa URL-regler ovan (särskilt: inget `/ar` på G1).  
+1. Låsa URL-regler ovan (särskilt: inget `/ar` på G1; `/evenemang` på G1).  
 2. Utöka KmH `location` med `kind` + `hostedByArtist` inför 2027.  
-3. Bygga ut G1 Studio: `artwork`, `article`, `location`, multi-artist på `exhibition`.  
+3. Bygga ut G1 Studio: `artwork`, `article`, `location`, `galleryEvent`, multi-artist på `exhibition`.  
 4. Extrahera gemensamma GUI-tokens (brand-edge, header, footer).  
 5. Migreringsplan för G1-slugbar utan sifferprefix.
+6. Full evenemangslista när mästeri/datum finns — se `docs/evenemang.md`.
