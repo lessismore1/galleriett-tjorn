@@ -59,9 +59,11 @@ export async function fetchCurrentExhibitions() {
 
 export async function fetchPastExhibitions(year = null) {
 	const client = getSanityClient();
+	// Order före projection — annars finns inte idNumber kvar (heter `id` i resultatet).
 	const rows = await client.fetch(`
-    *[_type == "exhibition" && status != "ongoing" && status != "upcoming"] ${listProjection}
-    | order(idNumber desc)
+    *[_type == "exhibition" && status != "ongoing" && status != "upcoming"]
+    | order(start desc)
+    ${listProjection}
   `);
 	let list = (rows || []).map(mapListItem);
 	if (year != null) {
