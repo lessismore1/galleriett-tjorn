@@ -2,12 +2,19 @@
 	import { browser } from '$app/environment';
 	import { getArtistProgram } from '$lib/data/mockData.js';
 
+	type ArtistProgram = {
+		status: 'ongoing' | 'upcoming';
+		exhibition: { title?: string; image?: string };
+	};
+
 	type ArtistLike = {
 		slug: string;
 		name: string;
 		specialty: string;
 		image: string;
 		works?: { title?: string; image: string }[];
+		/** Om satt (t.ex. från Sanity-load) används den i stället för mock getArtistProgram. */
+		program?: ArtistProgram | null;
 	};
 
 	type MediaMode = 'carousel' | 'portrait';
@@ -25,7 +32,9 @@
 		showBadge?: boolean;
 	} = $props();
 
-	const program = $derived(getArtistProgram(artist.slug));
+	const program = $derived(
+		artist.program !== undefined ? artist.program : getArtistProgram(artist.slug)
+	);
 	const href = $derived(`/konstnarer/${artist.slug}`);
 
 	const workSrc = $derived(artist.works?.[0]?.image ?? null);
