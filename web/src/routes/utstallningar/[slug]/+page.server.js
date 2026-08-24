@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { fetchExhibitionPage, fetchExhibitionSlugs } from '$lib/sanity/exhibitions';
+import { fetchExhibitionPage } from '$lib/sanity/exhibitions';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }) {
@@ -7,11 +7,3 @@ export async function load({ params }) {
 	if (!page) throw error(404, 'Utställningen hittades inte');
 	return page;
 }
-
-/** @type {import('./$types').EntryGenerator} */
-export async function entries() {
-	const slugs = await fetchExhibitionSlugs();
-	return (slugs || []).map((slug) => ({ slug }));
-}
-
-export const prerender = true;

@@ -1,12 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
-import { fetchClickableNewsSlugs, fetchNewsArticle } from '$lib/sanity/articles';
+import { fetchNewsArticle } from '$lib/sanity/articles';
 import { getSanityClient, urlForWebp } from '$lib/sanity';
-
-/** @type {import('./$types').EntryGenerator} */
-export async function entries() {
-	const slugs = await fetchClickableNewsSlugs();
-	return (slugs || []).map((slug) => ({ slug }));
-}
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }) {
@@ -40,5 +34,3 @@ export async function load({ params }) {
 		}))
 	};
 }
-
-export const prerender = true;

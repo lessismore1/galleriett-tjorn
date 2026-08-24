@@ -31,5 +31,3 @@ export async function load() {
 		homeSponsors: rotateSponsors(sponsors)
 	};
 }
-
-export const prerender = true;

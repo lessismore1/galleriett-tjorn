@@ -1,0 +1,8 @@
+# Cloudflare Pages: utan pages_build_output_dir ignoreras filen vid deploy (ingen nodejs_compat).
+# SvelteKit + adapter-cloudflare bygger till .svelte-kit/cloudflare
+# https://svelte.dev/docs/kit/adapter-cloudflare
+
+name = "galleriett-tjorn"
+pages_build_output_dir = ".svelte-kit/cloudflare"
+compatibility_date = "2025-03-01"
+compatibility_flags = ["nodejs_compat"]

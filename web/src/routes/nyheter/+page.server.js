@@ -5,5 +5,3 @@ export async function load() {
 	const list = await fetchNewsIndex();
 	return { list };
 }
-
-export const prerender = true;

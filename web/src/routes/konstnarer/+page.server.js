@@ -5,5 +5,3 @@ export async function load() {
 	const artists = await fetchArtistsForList();
 	return { artists };
 }
-
-export const prerender = true;

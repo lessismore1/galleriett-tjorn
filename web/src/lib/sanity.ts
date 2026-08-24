@@ -1,31 +1,26 @@
 import { createClient, type SanityClient } from '@sanity/client';
 import { createImageUrlBuilder } from '@sanity/image-url';
-import { SANITY_API_READ_TOKEN } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { env as publicEnv } from '$env/dynamic/public';
 
 const projectId = publicEnv.PUBLIC_SANITY_PROJECT_ID || '81lb9elz';
-const dataset = publicEnv.PUBLIC_SANITY_DATASET || 'development';
+const dataset = publicEnv.PUBLIC_SANITY_DATASET || 'production';
 
-/**
- * Build-time token for adapter-static prerender.
- * Prefer `$env/static/private` (inlined by Vite) and bracket `process.env` (Pages CI).
- * `$env/dynamic/private` is empty in SvelteKit's postbuild analyse fork.
- */
 function getReadToken(): string | undefined {
-	const fromStatic = SANITY_API_READ_TOKEN;
-	if (fromStatic) return fromStatic;
-	// Bracket access avoids Vite statically replacing an unset env with undefined
-	const fromProcess =
-		typeof process !== 'undefined' ? process.env['SANITY_API_READ_TOKEN'] : undefined;
-	return fromProcess || undefined;
+	// `$env/dynamic/private` — .env lokalt, platform.env på Cloudflare Pages
+	return env.SANITY_API_READ_TOKEN || undefined;
 }
 
-/** Server-only client (prerender/build). Private dataset requires SANITY_API_READ_TOKEN. */
+/**
+ * Server-only Sanity client (SSR on Cloudflare / local).
+ * Private datasets need SANITY_API_READ_TOKEN (Viewer). Public production can omit it.
+ */
 export function getSanityClient(): SanityClient {
 	const token = getReadToken();
-	if (!token) {
+	// development is private — require token. production is public — token optional.
+	if (!token && dataset !== 'production') {
 		throw new Error(
-			'SANITY_API_READ_TOKEN saknas. Lokalt: web/.env. Cloudflare Pages: Settings → Variables and secrets → Production (available at build), sedan Retry deployment.'
+			'SANITY_API_READ_TOKEN saknas. Lokalt: web/.env. Cloudflare: Variables and secrets (runtime).'
 		);
 	}
 	return createClient({
@@ -33,7 +28,7 @@ export function getSanityClient(): SanityClient {
 		dataset,
 		apiVersion: '2025-01-01',
 		token,
-		useCdn: false
+		useCdn: !token
 	});
 }
 

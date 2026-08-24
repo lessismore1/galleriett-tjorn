@@ -6,7 +6,18 @@ declare global {
 		// interface Locals {}
 		// interface PageData {}
 		// interface PageState {}
-		// interface Platform {}
+		interface Platform {
+			env: {
+				SANITY_API_READ_TOKEN?: string;
+				PUBLIC_SANITY_PROJECT_ID?: string;
+				PUBLIC_SANITY_DATASET?: string;
+				PUBLIC_SITE_URL?: string;
+			};
+			context: {
+				waitUntil(promise: Promise<unknown>): void;
+			};
+			caches: CacheStorage & { default: Cache };
+		}
 	}
 }
 

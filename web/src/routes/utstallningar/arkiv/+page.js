@@ -4,5 +4,3 @@ import { redirect } from '@sveltejs/kit';
 export function load() {
 	throw redirect(301, '/utstallningar/tidigare');
 }
-
-export const prerender = true;
