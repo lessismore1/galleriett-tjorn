@@ -13,7 +13,10 @@ function mapListItem(ex) {
 		title: ex.title,
 		datesLabel: ex.datesLabel || '',
 		status: ex.status || 'past',
-		image: urlForWebp(ex.cardImage || ex.image, 1000),
+		/** Affisch/hero — används i utställningslistor (som live-sajten). */
+		image: urlForWebp(ex.image, 1000),
+		/** Valfri kortbild — t.ex. startsidans aktuellt-kort. */
+		cardImage: urlForWebp(ex.cardImage, 1000) || undefined,
 		intro: ex.intro || null,
 		start: ex.start
 	};
