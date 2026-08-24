@@ -88,18 +88,24 @@ Lista i v1 räcker; full månadskalender först vid tät frekvens.
 
 ## Datamodell (skiss)
 
-Håll `event` **skilt** från `exhibition`:
+Håll G1-evenemang **skilt** från `exhibition` och från KmH `event` (årsedition).
+
+| | |
+|---|---|
+| Sanity `name` | **`galleryEvent`** (kolliderar inte med KmH `event`) |
+| Studio-titel | Evenemang |
+| Webb | `/evenemang`, `/evenemang/{slug}` |
 
 | Fält | Exempel |
 |---|---|
 | `slug`, `title`, `date` / `datesLabel` | `vernissage-pub-aug`, “Vernissage + pub” |
 | `kind` | `vernissage`, `pub`, `sip-paint`, `samtal`, … |
 | `price`, `capacity`, `bookingUrl` / `bookingMailto` | |
-| `exhibitionSlug` (valfritt) | koppling till utställning |
-| `artistSlugs` (valfritt) | |
+| `exhibition` (valfritt) | ref till utställning |
+| `artists[]` (valfritt) | |
 | `image`, `body` | |
 
-Se `docs/datamodell-g1-kmh.md` när detta spikas i data. (KmH `event` = årsedition — **inte** samma sak som G1-evenemangskväll.)
+Se `docs/datamodell-g1-kmh.md` + diagram `docs/datamodell.png`.
 
 ## CTA och varumärke
 

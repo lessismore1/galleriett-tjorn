@@ -2,16 +2,16 @@ import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemaTypes'
+import {deskStructure} from './deskStructure'
 
 export default defineConfig({
-  name: 'default',
-  title: 'Galleri Ett',
+  name: 'galleriett',
+  title: 'GALLERIett',
 
-  // Byt ut mot ditt Sanity projectId när projektet skapats
-  projectId: 'REPLACE_ME',
+  projectId: '811b9elz',
   dataset: 'production',
 
-  plugins: [structureTool(), visionTool()],
+  plugins: [structureTool({structure: deskStructure}), visionTool()],
 
   schema: {
     types: schemaTypes,

@@ -23,5 +23,12 @@
 # Typescript
 *.tsbuildinfo
 
+# Accidental tsc emit next to .ts sources
+/sanity.config.js
+/sanity.cli.js
+/deskStructure.js
+/structure.js
+schemaTypes/**/*.js
+
 # Dotenv
 *.local
