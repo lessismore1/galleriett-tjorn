@@ -30,5 +30,8 @@
 /structure.js
 schemaTypes/**/*.js
 
-# Dotenv
+# Dotenv / secrets (never commit)
+.env
+.env.*
+!.env.example
 *.local

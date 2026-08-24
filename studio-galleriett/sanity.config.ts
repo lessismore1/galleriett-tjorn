@@ -4,12 +4,15 @@ import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemaTypes'
 import {deskStructure} from './deskStructure'
 
+const projectId = process.env.SANITY_STUDIO_PROJECT_ID || '81lb9elz'
+const dataset = process.env.SANITY_STUDIO_DATASET || 'development'
+
 export default defineConfig({
   name: 'galleriett',
   title: 'GALLERIett',
 
-  projectId: '81lb9elz',
-  dataset: 'production',
+  projectId,
+  dataset,
 
   plugins: [structureTool({structure: deskStructure}), visionTool()],
 

@@ -5,8 +5,8 @@ Lokal Studio mot Sanity Cloud.
 | | |
 |---|---|
 | **projectId** | `81lb9elz` |
-| **dataset** | `production` |
-| **Status** | Schema klart; **datasetet lämnas tomt** (ingen mock-seed) |
+| **dataset** | `development` (seed); `production` tom tills ni byter |
+| **Status** | Schema klart; seed via `npm run seed:mock` |
 
 Webben (`web/`) kör fortfarande på `mockData.js` tills ni kopplar en Sanity-klient.
 
@@ -15,10 +15,19 @@ Webben (`web/`) kör fortfarande på `mockData.js` tills ni kopplar en Sanity-kl
 ```sh
 cd studio-galleriett
 npm install
+cp .env.example .env   # fyll SANITY_API_TOKEN
 npm run dev
 ```
 
-Öppna Studio (vanligen http://localhost:3333), logga in med ditt Sanity-konto.
+Öppna Studio (vanligen http://localhost:3333), logga in med ditt Sanity-konto. Dataset styrs av `SANITY_STUDIO_DATASET` i `.env` (default `development`).
+
+## Seed mock → development
+
+```sh
+npm run seed:mock
+```
+
+Laddar upp bilder från `web/static` och skapar konstnärer, verk, utställningar, nyheter, sponsorer, plats + webbplats. Idempotent (`createOrReplace`).
 
 ## Schema (G1)
 
