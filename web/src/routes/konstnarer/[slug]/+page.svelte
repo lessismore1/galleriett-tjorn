@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
-	import { artists, exhibitions, getArtistArticles, newsCardHref, newsCardExternal, workHref, site } from '$lib/data/mockData.js';
+	import { getArtistArticles, newsCardHref, newsCardExternal, workHref, site } from '$lib/data/mockData.js';
 	import ArtworkCard from '$lib/components/ArtworkCard.svelte';
 	import ExhibitionRow from '$lib/components/ExhibitionRow.svelte';
 	import ExhibitionCard from '$lib/components/ExhibitionCard.svelte';
@@ -11,17 +11,14 @@
 
 	let { data } = $props();
 	const artist = $derived(data.artist);
-
-	const next = $derived.by(() => {
-		const i = artists.findIndex((a) => a.slug === artist.slug);
-		return artists[(i + 1) % artists.length];
-	});
+	const next = $derived(data.next);
+	const exhibitionRows = $derived(data.exhibitionRows ?? []);
 
 	const nextImage = $derived(
-		next.image || next.heroImage || next.works?.[0]?.image || null
+		next?.image || next?.heroImage || next?.works?.[0]?.image || null
 	);
 
-	const nextWorkTitle = $derived(next.works?.[0]?.title ?? null);
+	const nextWorkTitle = $derived(next?.works?.[0]?.title ?? null);
 
 	const artistArticles = $derived(getArtistArticles(artist.slug).slice(0, 3));
 
@@ -36,26 +33,6 @@
 		);
 		return `mailto:${site.email}?subject=${subject}&body=${body}`;
 	});
-
-	const exhibitionRows = $derived(
-		(artist.exhibitions ?? []).map((ex) => {
-			const full = ex.slug ? exhibitions.find((e) => e.slug === ex.slug) : null;
-			const status = full?.status ?? null;
-			const current = status === 'ongoing' || status === 'upcoming';
-			return {
-				year: ex.year,
-				title: ex.id ? `${ex.id} · ${ex.title}` : ex.title,
-				cardTitle: ex.title,
-				venue: ex.venue,
-				datesLabel: full?.datesLabel ?? String(ex.year),
-				href: ex.slug ? `/utstallningar/${ex.slug}` : null,
-				image: full?.image ?? artist.image ?? null,
-				status,
-				intro: full?.intro ?? null,
-				current
-			};
-		})
-	);
 
 	const currentExhibitions = $derived(exhibitionRows.filter((ex) => ex.current));
 	const pastExhibitions = $derived(exhibitionRows.filter((ex) => !ex.current));
@@ -156,7 +133,7 @@
 		<div class="section-head">
 			<h2 class="serif section-title">Verk</h2>
 		</div>
-		{#if artist.works.length}
+		{#if artist.works?.length}
 			<div class="works">
 				{#each artist.works as work}
 					<ArtworkCard
@@ -187,10 +164,12 @@
 			{/if}
 		</div>
 		<dl>
-			<div>
-				<dt>Född</dt>
-				<dd>{artist.born}</dd>
-			</div>
+			{#if artist.born}
+				<div>
+					<dt>Född</dt>
+					<dd>{artist.born}</dd>
+				</div>
+			{/if}
 			{#if artist.education?.length}
 				<div>
 					<dt>Utbildning</dt>
@@ -199,14 +178,18 @@
 					{/each}
 				</div>
 			{/if}
-			<div>
-				<dt>Bor och verkar</dt>
-				<dd>{artist.lives}</dd>
-			</div>
-			<div>
-				<dt>Representerad i</dt>
-				<dd>{artist.representedIn.join(', ')}</dd>
-			</div>
+			{#if artist.lives}
+				<div>
+					<dt>Bor och verkar</dt>
+					<dd>{artist.lives}</dd>
+				</div>
+			{/if}
+			{#if artist.representedIn?.length}
+				<div>
+					<dt>Representerad i</dt>
+					<dd>{artist.representedIn.join(', ')}</dd>
+				</div>
+			{/if}
 		</dl>
 	</div>
 </section>
@@ -289,7 +272,7 @@
 				{/each}
 			</div>
 		{/if}
-		{#if artist.press.length}
+		{#if artist.press?.length}
 			<div class="press" class:spaced={artistArticles.length > 0}>
 				{#each artist.press as p}
 					<blockquote>
@@ -299,7 +282,7 @@
 				{/each}
 			</div>
 		{/if}
-		{#if !artistArticles.length && !artist.press.length}
+		{#if !artistArticles.length && !artist.press?.length}
 			<p class="empty">Inga nyheter publicerade ännu.</p>
 		{/if}
 	</div>
@@ -307,20 +290,22 @@
 
 <section class="band band-pad">
 	<div class="container more">
-		<a class="next" href={`/konstnarer/${next.slug}`}>
-			{#if nextImage}
-				<img class="next-img" src={nextImage} alt="" />
-			{/if}
-			<div class="next-copy">
-				<span class="label">Nästa konstnär</span>
-				<strong class="serif">{next.name}</strong>
-				{#if nextWorkTitle}
-					<em class="next-work">{nextWorkTitle}</em>
-				{:else if next.specialty}
-					<span class="next-specialty">{next.specialty}</span>
+		{#if next}
+			<a class="next" href={`/konstnarer/${next.slug}`}>
+				{#if nextImage}
+					<img class="next-img" src={nextImage} alt="" />
 				{/if}
-			</div>
-		</a>
+				<div class="next-copy">
+					<span class="label">Nästa konstnär</span>
+					<strong class="serif">{next.name}</strong>
+					{#if nextWorkTitle}
+						<em class="next-work">{nextWorkTitle}</em>
+					{:else if next.specialty}
+						<span class="next-specialty">{next.specialty}</span>
+					{/if}
+				</div>
+			</a>
+		{/if}
 	</div>
 </section>
 
