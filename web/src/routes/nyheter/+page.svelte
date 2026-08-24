@@ -1,12 +1,14 @@
 <script lang="ts">
-	import { getNewsIndex, newsCardHref, newsCardExternal } from '$lib/data/mockData.js';
 	import Seo from '$lib/components/Seo.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import NewsCard from '$lib/components/NewsCard.svelte';
+	import { newsCardHref, newsCardExternal } from '$lib/newsLinks';
+
+	let { data } = $props();
 
 	let filter = $state('Alla');
 	const filters = ['Alla', 'Från GALLERIett', 'I pressen'];
-	const list = getNewsIndex();
+	const list = $derived(data.list);
 
 	const filtered = $derived(
 		list.filter((item) => filter === 'Alla' || item.category === filter)

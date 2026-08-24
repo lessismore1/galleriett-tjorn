@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
-	import { getArtistArticles, newsCardHref, newsCardExternal, workHref, site } from '$lib/data/mockData.js';
+	import { workHref, site } from '$lib/data/mockData.js';
+	import { newsCardHref, newsCardExternal } from '$lib/newsLinks';
 	import ArtworkCard from '$lib/components/ArtworkCard.svelte';
 	import ExhibitionRow from '$lib/components/ExhibitionRow.svelte';
 	import ExhibitionCard from '$lib/components/ExhibitionCard.svelte';
@@ -13,14 +14,12 @@
 	const artist = $derived(data.artist);
 	const next = $derived(data.next);
 	const exhibitionRows = $derived(data.exhibitionRows ?? []);
+	const artistArticles = $derived(data.artistArticles ?? []);
 
 	const nextImage = $derived(
 		next?.image || next?.heroImage || next?.works?.[0]?.image || null
 	);
-
 	const nextWorkTitle = $derived(next?.works?.[0]?.title ?? null);
-
-	const artistArticles = $derived(getArtistArticles(artist.slug).slice(0, 3));
 
 	const promoWork = $derived(artist.works?.[0] ?? null);
 	const portraitSrc = $derived(artist.image || artist.heroImage || null);

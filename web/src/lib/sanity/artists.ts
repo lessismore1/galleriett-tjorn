@@ -1,4 +1,5 @@
 import { getSanityClient, urlForWebp } from '$lib/sanity';
+import { fetchArtistArticles } from '$lib/sanity/articles';
 
 const artistsListQuery = `*[_type == "artist"] | order(name asc) {
   "slug": slug.current,
@@ -181,5 +182,7 @@ export async function fetchArtistPage(slug) {
 			}
 		: null;
 
-	return { artist, exhibitionRows, next };
+	const artistArticles = (await fetchArtistArticles(slug)).slice(0, 3);
+
+	return { artist, exhibitionRows, next, artistArticles };
 }

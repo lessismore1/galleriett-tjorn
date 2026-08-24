@@ -1,23 +1,17 @@
 <script lang="ts">
-	import {
-		about,
-		getOngoingExhibitions,
-		getUpcomingExhibitions,
-		getNewsIndex,
-		getRotatedSponsors,
-		newsCardHref,
-		newsCardExternal
-	} from '$lib/data/mockData.js';
 	import ExhibitionCard from '$lib/components/ExhibitionCard.svelte';
 	import NewsListItem from '$lib/components/NewsListItem.svelte';
 	import SponsorsCarousel from '$lib/components/SponsorsCarousel.svelte';
+	import { newsCardHref, newsCardExternal } from '$lib/newsLinks';
 
-	const ongoingList = getOngoingExhibitions();
-	const ongoing = ongoingList[0];
-	const featuredExhibitions = [...ongoingList, ...getUpcomingExhibitions()].slice(0, 2);
-	const news = getNewsIndex();
-	const featuredNews = news.find((n) => n.clickable) ?? news[0];
-	const homeSponsors = getRotatedSponsors();
+	let { data } = $props();
+
+	const ongoing = $derived(data.ongoing);
+	const featuredExhibitions = $derived(data.featuredExhibitions);
+	const news = $derived(data.news);
+	const featuredNews = $derived(data.featuredNews);
+	const about = $derived(data.about);
+	const homeSponsors = $derived(data.homeSponsors);
 
 	function cardSrc(item: { cardImage?: string; image: string }) {
 		return item.cardImage ?? item.image;

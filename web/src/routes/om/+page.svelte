@@ -1,6 +1,9 @@
 <script lang="ts">
-	import { about, site } from '$lib/data/mockData.js';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+
+	let { data } = $props();
+	const about = $derived(data.about);
+	const site = $derived(data.site);
 </script>
 
 <Breadcrumbs crumbs={[{ name: 'Om' }]} />

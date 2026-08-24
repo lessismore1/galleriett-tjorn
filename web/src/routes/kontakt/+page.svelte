@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { site } from '$lib/data/mockData.js';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 
-	const addr = `${site.address.street}, ${site.address.postal}`;
+	let { data } = $props();
+	const site = $derived(data.site);
+	const addr = $derived(`${site.address.street}, ${site.address.postal}`);
 </script>
 
 <Breadcrumbs crumbs={[{ name: 'Kontakt' }]} />
