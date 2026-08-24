@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { site } from '$lib/data/mockData.js';
+	import { page } from '$app/state';
 	import ArtworkCard from '$lib/components/ArtworkCard.svelte';
 	import ArtistCard from '$lib/components/ArtistCard.svelte';
 	import Seo from '$lib/components/Seo.svelte';
@@ -8,6 +8,11 @@
 
 	let { data } = $props();
 	const ex = $derived(data.exhibition);
+	const site = $derived(
+		(page.data as { site?: { email: string } }).site ?? {
+			email: 'info@galleriett-tjorn.se'
+		}
+	);
 
 	const worksWithLinks = $derived(
 		(ex.works ?? []).map((work) => ({

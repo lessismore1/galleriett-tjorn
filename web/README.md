@@ -23,7 +23,7 @@ Referensdesign ligger i [`../docs/gui-mockups/`](../docs/gui-mockups/):
 
 CMS: Sanity (`development`, private) via `PUBLIC_SANITY_*` + `SANITY_API_READ_TOKEN` (Viewer). Se `.env.example`.
 
-Mockdata finns kvar i `src/lib/data/mockData.js` för sidor som ännu inte bytts.
+`src/lib/data/mockData.js` används bara som källa till Studio-seed (`npm run seed:mock` i `studio-galleriett`), inte av webben längre.
 
 ## Bygg
 

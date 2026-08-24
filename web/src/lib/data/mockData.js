@@ -1,4 +1,7 @@
-/** Mockdata för Galleri Ett — baserad på GUI-mockuper i docs/gui-mockups */
+/**
+ * Seed-källa för studio-galleriett/scripts/seed-mock.mjs.
+ * Webben läser inte längre denna fil — data kommer från Sanity.
+ */
 
 export const site = {
 	name: 'GALLERIett',

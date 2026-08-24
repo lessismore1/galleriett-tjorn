@@ -1,9 +1,21 @@
 <script lang="ts">
-	import { site } from '$lib/data/mockData.js';
+	let {
+		site
+	}: {
+		site: {
+			email: string;
+			phone: string;
+			hours: string;
+			address: { street: string; postal: string };
+			partners: { name: string; url: string | null }[];
+			credit: { name: string; url: string };
+			social: { facebook: string; instagram: string };
+		};
+	} = $props();
 
-	const addr = `${site.address.street}, ${site.address.postal}`;
-	const ownPartners = site.partners.slice(0, 3);
-	const morePartners = site.partners.slice(3);
+	const addr = $derived(`${site.address.street}, ${site.address.postal}`);
+	const ownPartners = $derived(site.partners.slice(0, 3));
+	const morePartners = $derived(site.partners.slice(3));
 </script>
 
 <footer class="footer">

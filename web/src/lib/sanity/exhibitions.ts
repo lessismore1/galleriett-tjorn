@@ -1,5 +1,5 @@
 import { getSanityClient, urlForWebp } from '$lib/sanity';
-import { workHref } from '$lib/data/mockData.js';
+import { workHref } from '$lib/workLinks.js';
 
 function exhibitionYear(start) {
 	return Number(String(start || '').slice(0, 4));

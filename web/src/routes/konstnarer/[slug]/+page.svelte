@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
-	import { workHref, site } from '$lib/data/mockData.js';
+	import { workHref } from '$lib/workLinks.js';
 	import { newsCardHref, newsCardExternal } from '$lib/newsLinks';
 	import ArtworkCard from '$lib/components/ArtworkCard.svelte';
 	import ExhibitionRow from '$lib/components/ExhibitionRow.svelte';
@@ -15,6 +15,12 @@
 	const next = $derived(data.next);
 	const exhibitionRows = $derived(data.exhibitionRows ?? []);
 	const artistArticles = $derived(data.artistArticles ?? []);
+	const site = $derived(
+		(page.data as { site?: { url: string; email: string } }).site ?? {
+			url: 'https://galleriett-tjorn.pages.dev',
+			email: 'info@galleriett-tjorn.se'
+		}
+	);
 
 	const nextImage = $derived(
 		next?.image || next?.heroImage || next?.works?.[0]?.image || null

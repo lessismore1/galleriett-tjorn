@@ -2,18 +2,20 @@
 	import { browser } from '$app/environment';
 	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/state';
-	import {
-		site,
-		workHref,
-		statusLabels,
-		getShowBrowse
-	} from '$lib/data/mockData.js';
+	import { workHref } from '$lib/workLinks.js';
+	import { statusLabels } from '$lib/labels.js';
 	import Seo from '$lib/components/Seo.svelte';
 
 	let { data } = $props();
 
 	const artist = $derived(data.artist);
 	const work = $derived(data.work);
+	const site = $derived(
+		(page.data as { site?: { url: string; email: string } }).site ?? {
+			url: 'https://galleriett-tjorn.pages.dev',
+			email: 'info@galleriett-tjorn.se'
+		}
+	);
 
 	/**
 	 * ?show= får inte läsas via page.url.searchParams på prerenderade sidor
@@ -34,7 +36,9 @@
 		syncShowSlug();
 	});
 
-	const showBrowse = $derived(showSlug ? getShowBrowse(showSlug, work.slug) : null);
+	const showBrowse = $derived(
+		showSlug ? data.showBrowseBySlug?.[showSlug] ?? null : null
+	);
 
 	const browse = $derived.by(() => {
 		if (showBrowse && showSlug) {

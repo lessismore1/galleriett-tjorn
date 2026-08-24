@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { getArtistProgram } from '$lib/data/mockData.js';
 
 	type ArtistProgram = {
 		status: 'ongoing' | 'upcoming';
@@ -13,7 +12,6 @@
 		specialty: string;
 		image: string;
 		works?: { title?: string; image: string }[];
-		/** Om satt (t.ex. från Sanity-load) används den i stället för mock getArtistProgram. */
 		program?: ArtistProgram | null;
 	};
 
@@ -32,9 +30,7 @@
 		showBadge?: boolean;
 	} = $props();
 
-	const program = $derived(
-		artist.program !== undefined ? artist.program : getArtistProgram(artist.slug)
-	);
+	const program = $derived(artist.program ?? null);
 	const href = $derived(`/konstnarer/${artist.slug}`);
 
 	const workSrc = $derived(artist.works?.[0]?.image ?? null);

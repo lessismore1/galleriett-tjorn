@@ -4,7 +4,8 @@
 	import Footer from '$lib/components/Footer.svelte';
 	import '../app.css';
 
-	let { children } = $props();
+	let { children, data } = $props();
+	const site = $derived(data.site);
 </script>
 
 <svelte:head>
@@ -15,13 +16,13 @@
 		href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
 		rel="stylesheet"
 	/>
-	<title>GALLERIett — Tjörn</title>
+	<title>{site.name} — Tjörn</title>
 </svelte:head>
 
 <div class="site">
-	<Header />
+	<Header {site} />
 	<main>
 		{@render children()}
 	</main>
-	<Footer />
+	<Footer {site} />
 </div>

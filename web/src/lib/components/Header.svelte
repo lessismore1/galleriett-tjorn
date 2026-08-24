@@ -1,6 +1,14 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { nav, site } from '$lib/data/mockData.js';
+	import { nav } from '$lib/nav.js';
+
+	let {
+		site
+	}: {
+		site: {
+			name: string;
+		};
+	} = $props();
 
 	let open = $state(false);
 

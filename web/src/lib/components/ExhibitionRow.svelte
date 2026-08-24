@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { statusLabels } from '$lib/data/mockData.js';
+	import { statusLabels } from '$lib/labels.js';
 
 	let {
 		href = null,

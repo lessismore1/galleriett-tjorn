@@ -46,12 +46,18 @@ const workPageQuery = `*[_type == "artwork" && slug.current == $workSlug && arti
     status,
     datesLabel,
     start,
-    image
+    image,
+    "sequence": works[]->{
+      title,
+      "slug": slug.current,
+      "artistSlug": artist->slug.current,
+      "artistName": artist->name
+    }
   }
 }`;
 
 /**
- * Verk-sida: verk + konstnär + prev/next bland konstnärens verk + featuredIn.
+ * Verk-sida: verk + konstnär + prev/next bland konstnärens verk + featuredIn + show-browse.
  */
 export async function fetchWorkPage(artistSlug, workSlug) {
 	const client = getSanityClient();
@@ -93,6 +99,27 @@ export async function fetchWorkPage(artistSlug, workSlug) {
 		image: urlForWebp(ex.image, 800)
 	}));
 
+	/** @type {Record<string, { exhibition: { title: string, slug: string }, index: number, total: number, prev: any, next: any, allHref: string }>} */
+	const showBrowseBySlug = {};
+	for (const ex of raw.featuredIn || []) {
+		const items = (ex.sequence || []).filter((i) => i?.slug && i?.artistSlug);
+		const i = items.findIndex((item) => item.slug === workSlug);
+		if (i < 0 || !items.length) continue;
+		const total = items.length;
+		const mapItem = (item) => ({
+			artist: { slug: item.artistSlug, name: item.artistName },
+			work: { slug: item.slug, title: item.title }
+		});
+		showBrowseBySlug[ex.slug] = {
+			exhibition: { title: ex.title, slug: ex.slug },
+			index: i,
+			total,
+			prev: mapItem(items[(i - 1 + total) % total]),
+			next: mapItem(items[(i + 1) % total]),
+			allHref: `/utstallningar/${ex.slug}#works`
+		};
+	}
+
 	return {
 		artist,
 		work,
@@ -100,6 +127,7 @@ export async function fetchWorkPage(artistSlug, workSlug) {
 		next,
 		index: Math.max(index, 0),
 		total: works.length,
-		featuredIn
+		featuredIn,
+		showBrowseBySlug
 	};
 }
