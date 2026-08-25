@@ -13,7 +13,14 @@ export const deskStructure: StructureResolver = (S) =>
       S.divider(),
       S.documentTypeListItem('artist').title('Konstnärer'),
       S.documentTypeListItem('artwork').title('Verk'),
-      S.documentTypeListItem('exhibition').title('Utställningar'),
+      S.listItem()
+        .title('Utställningar')
+        .schemaType('exhibition')
+        .child(
+          S.documentTypeList('exhibition')
+            .title('Utställningar')
+            .defaultOrdering([{field: 'idNumber', direction: 'asc'}])
+        ),
       S.documentTypeListItem('galleryEvent').title('Evenemang'),
       S.documentTypeListItem('article').title('Nyheter'),
       S.divider(),

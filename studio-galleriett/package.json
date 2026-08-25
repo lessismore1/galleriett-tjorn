@@ -13,6 +13,7 @@
     "seed:mock": "node scripts/seed-mock.mjs",
     "cleanup:keep-104": "node scripts/cleanup-keep-104.mjs",
     "renumber:series": "node scripts/renumber-keep-series.mjs",
+    "renumber:exhibitions-chrono": "node scripts/renumber-exhibitions-chrono.mjs",
     "seed:tks": "node scripts/seed-tks.mjs"
   },
   "keywords": [

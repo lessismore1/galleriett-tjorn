@@ -115,6 +115,11 @@ export default defineType({
   },
   orderings: [
     {
+      title: 'Utställnings-ID',
+      name: 'idNumberAsc',
+      by: [{field: 'idNumber', direction: 'asc'}],
+    },
+    {
       title: 'Startdatum (nyast)',
       name: 'startDesc',
       by: [{field: 'start', direction: 'desc'}],
