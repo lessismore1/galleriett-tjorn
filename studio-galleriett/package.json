@@ -10,7 +10,9 @@
     "deploy-graphql": "sanity graphql deploy",
     "dev": "sanity dev",
     "start": "sanity start",
-    "seed:mock": "node scripts/seed-mock.mjs"
+    "seed:mock": "node scripts/seed-mock.mjs",
+    "cleanup:keep-104": "node scripts/cleanup-keep-104.mjs",
+    "renumber:series": "node scripts/renumber-keep-series.mjs"
   },
   "keywords": [
     "sanity"
