@@ -1,8 +1,11 @@
 /**
- * Seed/uppdatera G1-konstnär 13 från KmH-profilen
- * barbro-liselotte-holmgren-gadd (Sanity 6dam8g9m/production).
+ * Seed/uppdatera G1-konstnär från KmH Sanity-profil.
  *
- *   node scripts/seed-artist-from-kmh.mjs
+ *   node scripts/seed-artist-from-kmh.mjs --kmh=<slug> --id=<nn> [--exhibition=<ex-slug>]
+ *
+ * Exempel:
+ *   node scripts/seed-artist-from-kmh.mjs --kmh=barbro-liselotte-holmgren-gadd --id=13 --exhibition=105-cheeky-points
+ *   node scripts/seed-artist-from-kmh.mjs --kmh=ann-louise-schwieger --id=14 --exhibition=106-sprakande-farger
  */
 import {createClient} from '@sanity/client'
 import {readFileSync, existsSync} from 'node:fs'
@@ -32,7 +35,24 @@ function loadEnv() {
   }
 }
 
+function arg(name) {
+  const prefix = `--${name}=`
+  const hit = process.argv.find((a) => a.startsWith(prefix))
+  return hit ? hit.slice(prefix.length) : undefined
+}
+
 loadEnv()
+
+const kmhSlug = arg('kmh')
+const idNumber = Number(arg('id'))
+const exhibitionSlug = arg('exhibition')
+
+if (!kmhSlug || !Number.isFinite(idNumber) || idNumber < 1) {
+  console.error(
+    'Användning: node scripts/seed-artist-from-kmh.mjs --kmh=<slug> --id=<nn> [--exhibition=<ex-slug>]'
+  )
+  process.exit(1)
+}
 
 const kmh = createClient({
   projectId: '6dam8g9m',
@@ -53,10 +73,6 @@ if (!process.env.SANITY_API_TOKEN) {
   console.error('Saknar SANITY_API_TOKEN')
   process.exit(1)
 }
-
-const KMH_SLUG = 'barbro-liselotte-holmgren-gadd'
-const G1_ARTIST_ID = 'artist.13-liselotte-holmgren-gadd'
-const G1_SLUG = '13-liselotte-holmgren-gadd'
 
 function introFromDescription(desc) {
   if (!desc) return undefined
@@ -99,15 +115,29 @@ async function main() {
         "imageUrl": image.asset->url
       }
     }`,
-    {slug: KMH_SLUG}
+    {slug: kmhSlug}
   )
 
   if (!src) {
-    console.error('Hittar inte KmH-artist', KMH_SLUG)
+    console.error('Hittar inte KmH-artist', kmhSlug)
     process.exit(1)
   }
 
+  const g1Slug = `${String(idNumber).padStart(2, '0')}-${slugify(src.name)}`
+  const g1ArtistId = `artist.${g1Slug}`
+  // Behåll befintligt G1-_id om stub redan finns under kortare slug (t.ex. 14-ann-louise-schwieger)
+  const preferredStubId = `artist.${String(idNumber).padStart(2, '0')}-${slugify(
+    src.name.replace(/^Barbro\s+/i, '')
+  )}`
+  const existingByIdNumber = await g1.fetch(
+    `*[_type=="artist" && idNumber==$n][0]{ _id, "slug": slug.current }`,
+    {n: idNumber}
+  )
+  const artistId = existingByIdNumber?._id || preferredStubId || g1ArtistId
+  const artistSlug = existingByIdNumber?.slug || preferredStubId.replace(/^artist\./, '') || g1Slug
+
   console.log('KmH:', src.name, '· verk:', src.artworks?.length || 0)
+  console.log('G1:', artistId, artistSlug)
 
   const specialty = Array.isArray(src.techniques)
     ? src.techniques.filter(Boolean).join(' · ')
@@ -115,15 +145,15 @@ async function main() {
 
   const profileImage = await uploadFromUrl(
     src.profileUrl,
-    'liselotte-holmgren-gadd-portrait.jpg'
+    `${artistSlug}-portrait.jpg`
   )
 
   await g1.createOrReplace({
-    _id: G1_ARTIST_ID,
+    _id: artistId,
     _type: 'artist',
-    idNumber: 13,
+    idNumber,
     name: src.name,
-    slug: {_type: 'slug', current: G1_SLUG},
+    slug: {_type: 'slug', current: artistSlug},
     specialty,
     intro: introFromDescription(src.description),
     bio: src.description || undefined,
@@ -136,7 +166,7 @@ async function main() {
         year: '2026',
         title: 'Konst med Horisont',
         place: 'GALLERIett / Tjörn',
-        note: 'https://konstmedhorisont.se/ar/2026/konstnarer/barbro-liselotte-holmgren-gadd',
+        note: `https://konstmedhorisont.se/ar/2026/konstnarer/${kmhSlug}`,
       },
       ...(src.website
         ? [
@@ -150,9 +180,11 @@ async function main() {
         : []),
     ],
   })
-  console.log('✓ artist', G1_SLUG, '—', src.name)
+  console.log('✓ artist', artistSlug, '—', src.name)
 
-  let workNum = 1301
+  let workNum = idNumber * 100 + 1 // 14 → 1401
+  if (workNum < 1001) workNum = 1000 + idNumber * 10 + 1
+
   for (const w of src.artworks || []) {
     if (!w?.title || !w?.imageUrl) {
       console.warn('  hoppar verk utan titel/bild:', w?.title)
@@ -167,7 +199,7 @@ async function main() {
       idNumber: workNum,
       title: w.title,
       slug: {_type: 'slug', current: workSlug},
-      artist: {_type: 'reference', _ref: G1_ARTIST_ID},
+      artist: {_type: 'reference', _ref: artistId},
       year: 2026,
       medium: w.technique || undefined,
       dimensions: w.dimensions || undefined,
@@ -178,29 +210,35 @@ async function main() {
     workNum += 1
   }
 
-  const ex = await g1.fetch(
-    `*[_type=="exhibition" && slug.current=="105-cheeky-points"][0]{ _id }`
-  )
-  if (ex?._id) {
-    const workIds = await g1.fetch(
-      `*[_type=="artwork" && artist._ref==$aid] | order(idNumber asc){ _id }`,
-      {aid: G1_ARTIST_ID}
+  if (exhibitionSlug) {
+    const ex = await g1.fetch(
+      `*[_type=="exhibition" && slug.current==$slug][0]{ _id }`,
+      {slug: exhibitionSlug}
     )
-    await g1
-      .patch(ex._id)
-      .set({
-        artistLabel: src.name,
-        works: (workIds || []).map((w, i) => ({
-          _type: 'reference',
-          _ref: w._id,
-          _key: `w${i}`,
-        })),
-      })
-      .commit()
-    console.log('✓ kopplade', workIds.length, 'verk till 105-cheeky-points')
+    if (ex?._id) {
+      const workIds = await g1.fetch(
+        `*[_type=="artwork" && artist._ref==$aid] | order(idNumber asc){ _id }`,
+        {aid: artistId}
+      )
+      await g1
+        .patch(ex._id)
+        .set({
+          artistLabel: src.name,
+          artists: [{_type: 'reference', _ref: artistId, _key: 'a0'}],
+          works: (workIds || []).map((w, i) => ({
+            _type: 'reference',
+            _ref: w._id,
+            _key: `w${i}`,
+          })),
+        })
+        .commit()
+      console.log('✓ kopplade', workIds.length, 'verk till', exhibitionSlug)
+    } else {
+      console.warn('Hittar inte exhibition', exhibitionSlug)
+    }
   }
 
-  console.log('\nKlart:', `https://galleriett-tjorn.pages.dev/konstnarer/${G1_SLUG}`)
+  console.log('\nKlart:', `https://galleriett-tjorn.pages.dev/konstnarer/${artistSlug}`)
 }
 
 main().catch((err) => {
