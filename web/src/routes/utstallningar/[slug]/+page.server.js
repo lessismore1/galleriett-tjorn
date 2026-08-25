@@ -2,7 +2,8 @@ import { error, redirect } from '@sveltejs/kit';
 import { fetchExhibitionPage } from '$lib/sanity/exhibitions';
 
 const SLUG_REDIRECTS = {
-	'104-ljus-farg-form': '101-ljus-farg-form'
+	'104-ljus-farg-form': '101-ljus-farg-form',
+	'90-nar-datid-moter-nutid': '90-brytningstid-del-2'
 };
 
 /** @type {import('./$types').PageServerLoad} */
