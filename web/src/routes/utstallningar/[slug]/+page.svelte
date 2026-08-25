@@ -25,6 +25,21 @@
 		}))
 	);
 
+	const hasWorks = $derived(worksWithLinks.length > 0);
+	const hasInstallation = $derived((ex.installationViews?.length ?? 0) > 0);
+	/** Stub/grupp utan riktig profil (t.ex. TKS-medlemmar) visas inte som konstnärskort. */
+	const relatedArtists = $derived(
+		(data.related ?? []).filter(
+			(a) =>
+				Boolean(a?.image) &&
+				a.slug !== '15-tks-medlemmar' &&
+				!/tks-medlemmar/i.test(a.slug || '') &&
+				!/^TKS-medlemmar$/i.test(a.name || '')
+		)
+	);
+	const hasRelatedArtists = $derived(relatedArtists.length > 0);
+	const hasPress = $derived(Boolean(ex.pressRelease?.trim()));
+
 	const pageTitle = $derived(`${ex.artist} | ${ex.title} · GALLERIett`);
 	const pageDescription = $derived(
 		ex.intro?.trim() ||
@@ -143,41 +158,62 @@
 		{/if}
 		<strong class="ex-name serif">{ex.artist} <span class="sep">|</span> {ex.title}</strong>
 		<div class="subnav-links">
-			<a href="#press-release">Pressmeddelande</a>
-			<a href="#works">Verk</a>
-			<a href="#installation">Installation</a>
+			{#if hasPress}
+				<a href="#press-release">Pressmeddelande</a>
+			{/if}
+			{#if hasWorks}
+				<a href="#works">Verk</a>
+			{/if}
+			{#if hasInstallation}
+				<a href="#installation">Installation</a>
+			{/if}
 		</div>
 		<span class="dela">Dela</span>
 	</div>
 </nav>
 
-<section id="press-release" class="band band-pad">
-	<div class="container press">
-		<div class="text">
-			<div class="section-head">
-				<h2 class="serif section-title">Pressmeddelande</h2>
-			</div>
-			{#each (ex.pressRelease || '').split('\n').filter(Boolean) as para}
-				<p>{para}</p>
-			{/each}
-		</div>
-		<aside class="facts">
-			{#each facts as fact}
-				<div class="fact">
-					<span class="fact-label">{fact.label}</span>
-					<span class="fact-value">{fact.value}</span>
+{#if hasPress}
+	<section id="press-release" class="band band-pad">
+		<div class="container press">
+			<div class="text">
+				<div class="section-head">
+					<h2 class="serif section-title">Pressmeddelande</h2>
 				</div>
-			{/each}
-		</aside>
-	</div>
-</section>
-
-<section id="works" class="band-soft band-pad">
-	<div class="container">
-		<div class="section-head">
-			<h2 class="serif section-title">Verk</h2>
+				{#each (ex.pressRelease || '').split('\n').filter(Boolean) as para}
+					<p>{para}</p>
+				{/each}
+			</div>
+			<aside class="facts">
+				{#each facts as fact}
+					<div class="fact">
+						<span class="fact-label">{fact.label}</span>
+						<span class="fact-value">{fact.value}</span>
+					</div>
+				{/each}
+			</aside>
 		</div>
-		{#if worksWithLinks.length}
+	</section>
+{:else}
+	<section class="band band-pad">
+		<div class="container press">
+			<aside class="facts facts-solo">
+				{#each facts as fact}
+					<div class="fact">
+						<span class="fact-label">{fact.label}</span>
+						<span class="fact-value">{fact.value}</span>
+					</div>
+				{/each}
+			</aside>
+		</div>
+	</section>
+{/if}
+
+{#if hasWorks}
+	<section id="works" class="band-soft band-pad">
+		<div class="container">
+			<div class="section-head">
+				<h2 class="serif section-title">Verk</h2>
+			</div>
 			<div class="works">
 				{#each worksWithLinks as work}
 					<ArtworkCard
@@ -190,40 +226,40 @@
 					/>
 				{/each}
 			</div>
-		{:else}
-			<p class="empty">Inga verk publicerade.</p>
-		{/if}
-	</div>
-</section>
-
-<section id="installation" class="band-soft band-pad install-band">
-	<div class="container">
-		<div class="section-head">
-			<h2 class="serif section-title">Installation</h2>
 		</div>
-		{#if ex.installationViews?.length}
+	</section>
+{/if}
+
+{#if hasInstallation}
+	<section
+		id="installation"
+		class="band-soft band-pad"
+		class:install-band={hasWorks}
+	>
+		<div class="container">
+			<div class="section-head">
+				<h2 class="serif section-title">Installation</h2>
+			</div>
 			<div class="install" style={`--cols: ${Math.min(ex.installationViews.length, 3)}`}>
 				{#each ex.installationViews as src, i}
 					<img {src} alt="Installation {i + 1}" />
 				{/each}
 			</div>
-		{:else}
-			<p class="empty">Inga installationsbilder ännu.</p>
-		{/if}
-	</div>
-</section>
+		</div>
+	</section>
+{/if}
 
-{#if data.related.length}
+{#if hasRelatedArtists}
 	<section class="band band-pad">
 		<div class="container">
 			<div class="section-head">
 				<h2 class="serif section-title">
-					{data.related.length === 1 ? 'Utställande konstnär' : 'Utställande konstnärer'}
+					{relatedArtists.length === 1 ? 'Utställande konstnär' : 'Utställande konstnärer'}
 				</h2>
 				<a class="link-arrow" href="/konstnarer">Visa alla konstnärer</a>
 			</div>
 			<div class="artists">
-				{#each data.related as a}
+				{#each relatedArtists as a}
 					<ArtistCard artist={a} mediaMode="portrait" showIcon={false} showBadge={false} />
 				{/each}
 			</div>
@@ -549,6 +585,10 @@
 
 	.facts {
 		border-top: 1px solid var(--border);
+	}
+
+	.facts-solo {
+		max-width: 28rem;
 	}
 
 	.fact {
