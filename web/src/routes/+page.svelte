@@ -6,7 +6,7 @@
 
 	let { data } = $props();
 
-	const ongoing = $derived(data.ongoing);
+	const hero = $derived(data.hero);
 	const featuredExhibitions = $derived(data.featuredExhibitions);
 	const news = $derived(data.news);
 	const featuredNews = $derived(data.featuredNews);
@@ -16,23 +16,27 @@
 	function cardSrc(item: { cardImage?: string; image: string }) {
 		return item.cardImage ?? item.image;
 	}
+
+	const heroLabel = $derived(
+		hero?.status === 'ongoing' ? 'Pågående utställning' : 'Nästa utställning'
+	);
 </script>
 
 <section class="hero">
-	{#if ongoing}
+	{#if hero}
 		<img
-			src={ongoing.image}
-			alt="{ongoing.artist} — {ongoing.title}"
+			src={hero.image}
+			alt="{hero.artist} — {hero.title}"
 			class="hero-img"
 		/>
 		<div class="container hero-copy">
-			<p class="label hero-label">Pågående utställning</p>
+			<p class="label hero-label">{heroLabel}</p>
 			<h1 class="serif">
-				{ongoing.artist}<br />
-				<em>{ongoing.title}</em>
+				{hero.artist}<br />
+				<em>{hero.title}</em>
 			</h1>
-			<p class="dates">{ongoing.datesLabel}</p>
-			<a class="btn" href={`/utstallningar/${ongoing.slug}`}>Läs mer om utställningen →</a>
+			<p class="dates">{hero.datesLabel}</p>
+			<a class="btn" href={`/utstallningar/${hero.slug}`}>Läs mer om utställningen →</a>
 		</div>
 	{/if}
 </section>
