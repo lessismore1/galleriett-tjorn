@@ -29,11 +29,11 @@
 			alt="{hero.artist} — {hero.title}"
 			class="hero-img"
 		/>
-		<div class="container hero-copy">
+		<div class="hero-copy">
 			<p class="label hero-label">{heroLabel}</p>
 			<h1 class="serif">
-				{hero.artist}<br />
-				<em>{hero.title}</em>
+				<span class="hero-artist">{hero.artist}</span>
+				<em class="hero-title">{hero.title}</em>
 			</h1>
 			<p class="dates">{hero.datesLabel}</p>
 			<a class="btn" href={`/utstallningar/${hero.slug}`}>Läs mer om utställningen →</a>
@@ -152,8 +152,11 @@
 	.hero-copy {
 		position: relative;
 		z-index: 1;
+		/* Vänsterställd komposition — bredare än tidigare 36rem */
+		width: min(100% - 2.5rem, 48rem);
+		margin-inline: clamp(1.25rem, 4vw, 3rem) auto 0;
 		padding-block: 3.5rem 4rem;
-		max-width: 36rem;
+		box-sizing: border-box;
 	}
 
 	.hero-label {
@@ -165,14 +168,32 @@
 	}
 
 	h1 {
-		font-size: clamp(2.4rem, 6vw, 4rem);
 		margin: 0 0 0.75rem;
 		font-style: italic;
 		font-weight: 500;
+		line-height: 1.12;
 	}
 
-	h1 em {
+	.hero-artist,
+	.hero-title {
+		display: block;
+	}
+
+	.hero-artist {
+		font-size: clamp(1.85rem, 4.2vw, 3.1rem);
+		text-wrap: balance;
+	}
+
+	.hero-title {
 		font-style: normal;
+		font-size: clamp(2.1rem, 5vw, 3.5rem);
+		margin-top: 0.15em;
+	}
+
+	@media (min-width: 900px) {
+		.hero-artist {
+			white-space: nowrap;
+		}
 	}
 
 	.dates {
