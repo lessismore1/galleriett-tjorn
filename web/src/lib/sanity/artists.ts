@@ -1,5 +1,6 @@
 import { getSanityClient, urlForWebp } from '$lib/sanity';
 import { fetchArtistArticles } from '$lib/sanity/articles';
+import { resolveExhibitionStatus } from '$lib/sanity/exhibitions';
 
 const artistsListQuery = `*[_type == "artist"] | order(name asc) {
   "slug": slug.current,
@@ -10,9 +11,11 @@ const artistsListQuery = `*[_type == "artist"] | order(name asc) {
     title,
     image
   },
-  "programEx": *[_type == "exhibition" && status in ["ongoing", "upcoming"] && references(^._id)]
-    | order(select(status == "ongoing" => 0, 1) asc, start asc)[0]{
+  "programCandidates": *[_type == "exhibition" && references(^._id)]
+    | order(start asc){
       status,
+      start,
+      end,
       title,
       "slug": slug.current,
       image,
@@ -33,14 +36,22 @@ export async function fetchArtistsForList() {
 			}))
 			.filter((w) => w.image);
 
-		const program = a.programEx
+		const programEx = (a.programCandidates || [])
+			.map((ex) => ({ ...ex, status: resolveExhibitionStatus(ex) }))
+			.filter((ex) => ex.status === 'ongoing' || ex.status === 'upcoming')
+			.sort((x, y) => {
+				if (x.status !== y.status) return x.status === 'ongoing' ? -1 : 1;
+				return String(x.start || '').localeCompare(String(y.start || ''));
+			})[0];
+
+		const program = programEx
 			? {
-					status: a.programEx.status,
+					status: programEx.status,
 					exhibition: {
-						title: a.programEx.title,
-						slug: a.programEx.slug,
-						datesLabel: a.programEx.datesLabel,
-						image: urlForWebp(a.programEx.image, 900)
+						title: programEx.title,
+						slug: programEx.slug,
+						datesLabel: programEx.datesLabel,
+						image: urlForWebp(programEx.image, 900)
 					}
 				}
 			: null;
@@ -144,7 +155,7 @@ export async function fetchArtistPage(slug) {
 	};
 
 	const exhibitionRows = (raw.exhibitions || []).map((ex) => {
-		const status = ex.status ?? null;
+		const status = resolveExhibitionStatus(ex);
 		const current = status === 'ongoing' || status === 'upcoming';
 		const year = ex.start ? Number(String(ex.start).slice(0, 4)) : null;
 		return {

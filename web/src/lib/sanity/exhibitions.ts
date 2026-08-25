@@ -5,14 +5,34 @@ function exhibitionYear(start) {
 	return Number(String(start || '').slice(0, 4));
 }
 
+/**
+ * Status från datum, om manuell override saknas.
+ * Matchar Studio-hjälptexten: lämna status tom — beräkna från start/end.
+ * @param {{ status?: string | null, start?: string | null, end?: string | null }} ex
+ * @param {string} [today] YYYY-MM-DD
+ * @returns {'ongoing' | 'upcoming' | 'past'}
+ */
+export function resolveExhibitionStatus(ex, today = new Date().toISOString().slice(0, 10)) {
+	const override = ex?.status;
+	if (override === 'ongoing' || override === 'upcoming' || override === 'past') {
+		return override;
+	}
+	const start = ex?.start || '';
+	const end = ex?.end || start;
+	if (start && end && today >= start && today <= end) return 'ongoing';
+	if (start && today < start) return 'upcoming';
+	return 'past';
+}
+
 function mapListItem(ex) {
+	const status = resolveExhibitionStatus(ex);
 	return {
 		id: ex.id,
 		slug: ex.slug,
 		artist: ex.artistLabel || '',
 		title: ex.title,
 		datesLabel: ex.datesLabel || '',
-		status: ex.status || 'past',
+		status,
 		/** Affisch/hero — används i utställningslistor (som live-sajten). */
 		image: urlForWebp(ex.image, 1000),
 		/** Valfri kortbild — t.ex. startsidans aktuellt-kort. */
@@ -29,6 +49,7 @@ const listProjection = `{
   artistLabel,
   status,
   start,
+  end,
   datesLabel,
   intro,
   image,
@@ -37,10 +58,9 @@ const listProjection = `{
 
 export async function fetchPastYears() {
 	const client = getSanityClient();
-	const starts = await client.fetch(
-		`*[_type == "exhibition" && status != "ongoing" && status != "upcoming" && defined(start)].start`
-	);
-	return [...new Set((starts || []).map(exhibitionYear).filter(Boolean))].sort((a, b) => b - a);
+	const rows = await client.fetch(`*[_type == "exhibition" && defined(start)]{ status, start, end }`);
+	const past = (rows || []).filter((e) => resolveExhibitionStatus(e) === 'past');
+	return [...new Set(past.map((e) => exhibitionYear(e.start)).filter(Boolean))].sort((a, b) => b - a);
 }
 
 export async function fetchArchiveYears() {
@@ -51,21 +71,26 @@ export async function fetchArchiveYears() {
 export async function fetchCurrentExhibitions() {
 	const client = getSanityClient();
 	const rows = await client.fetch(`
-    *[_type == "exhibition" && status in ["ongoing", "upcoming"]] ${listProjection}
-    | order(select(status == "ongoing" => 0, 1) asc, start asc)
+    *[_type == "exhibition"] ${listProjection}
+    | order(start asc)
   `);
-	return (rows || []).map(mapListItem);
+	return (rows || [])
+		.map(mapListItem)
+		.filter((e) => e.status === 'ongoing' || e.status === 'upcoming')
+		.sort((a, b) => {
+			if (a.status !== b.status) return a.status === 'ongoing' ? -1 : 1;
+			return String(a.start || '').localeCompare(String(b.start || ''));
+		});
 }
 
 export async function fetchPastExhibitions(year = null) {
 	const client = getSanityClient();
-	// Order före projection — annars finns inte idNumber kvar (heter `id` i resultatet).
 	const rows = await client.fetch(`
-    *[_type == "exhibition" && status != "ongoing" && status != "upcoming"]
+    *[_type == "exhibition"]
     | order(start desc)
     ${listProjection}
   `);
-	let list = (rows || []).map(mapListItem);
+	let list = (rows || []).map(mapListItem).filter((e) => e.status === 'past');
 	if (year != null) {
 		list = list.filter((e) => exhibitionYear(e.start) === year);
 	}
@@ -133,7 +158,7 @@ export async function fetchExhibitionPage(slug) {
 		artist: raw.artistLabel || '',
 		artistSlug: raw.artistSlugs?.[0] || null,
 		artistSlugs: raw.artistSlugs || [],
-		status: raw.status,
+		status: resolveExhibitionStatus(raw),
 		start: raw.start,
 		end: raw.end,
 		datesLabel: raw.datesLabel || '',
