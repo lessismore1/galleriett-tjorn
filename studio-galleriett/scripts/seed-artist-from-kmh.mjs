@@ -184,8 +184,8 @@ async function main() {
   })
   console.log('✓ artist', artistSlug, '—', src.name)
 
-  let workNum = idNumber * 100 + 1 // 14 → 1401
-  if (workNum < 1001) workNum = 1000 + idNumber * 10 + 1
+  const maxWorkId = await g1.fetch(`math::max(*[_type=="artwork"].idNumber)`)
+  let workNum = Math.max(1000, Number(maxWorkId) || 1000) + 1
 
   for (const w of src.artworks || []) {
     if (!w?.title || !w?.imageUrl) {
