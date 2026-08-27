@@ -28,13 +28,13 @@ export default defineType({
       title: 'Profildjup',
       type: 'string',
       description:
-        'Styr listor och badges. stub = tunn post (ofta dold på /konstnarer). kmh = länka till KmH. historical = tidigare/avlidna konstnärer.',
+        'Styr listor och badges. stub = tunn post (ofta dold på /konstnarer). kmh = länka till KmH. historical = avlidna / historiska konstnärer (badge: Historisk).',
       options: {
         list: [
           {title: 'Full (G1-profil)', value: 'full'},
           {title: 'Stub (tunn)', value: 'stub'},
           {title: 'KmH (länk till Konst med Horisont)', value: 'kmh'},
-          {title: 'Historisk / tidigare', value: 'historical'},
+          {title: 'Historisk (avliden)', value: 'historical'},
         ],
         layout: 'radio',
       },
@@ -61,7 +61,19 @@ export default defineType({
       description: 'Slug på konstmedhorisont.se — används för extern länk.',
       hidden: ({document}) => document?.profileKind !== 'kmh' && !document?.kmhSlug,
     }),
-    defineField({name: 'born', title: 'Född', type: 'string', description: 't.ex. 1983, Göteborg, Sverige'}),
+    defineField({
+      name: 'born',
+      title: 'Född',
+      type: 'string',
+      description: 't.ex. 20 oktober 1910, Hunnebostrand — bara födelse, inte död.',
+    }),
+    defineField({
+      name: 'died',
+      title: 'Död',
+      type: 'string',
+      description: 't.ex. 8 februari 2016 — lämna tomt för levande. Kryssa även Avliden.',
+      hidden: ({document}) => !document?.deceased && document?.profileKind !== 'historical' && !document?.died,
+    }),
     defineField({
       name: 'education',
       title: 'Utbildning',

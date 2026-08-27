@@ -29,12 +29,26 @@
 
 	const promoWork = $derived(artist.works?.[0] ?? null);
 	const portraitSrc = $derived(artist.image || artist.heroImage || null);
-
+	const isHistorical = $derived(
+		Boolean(artist.deceased || artist.died || artist.profileKind === 'historical')
+	);
+	const lifespanLine = $derived.by(() => {
+		const born = artist.born?.trim() || '';
+		const died = artist.died?.trim() || '';
+		if (born && died) return `${born} – ${died}`;
+		if (died) return `Död ${died}`;
+		if (born) return isHistorical ? born : `Född ${born}`;
+		return '';
+	});
 	const contactMailto = $derived.by(() => {
-		const subject = encodeURIComponent(`Angående ${artist.name}`);
+		const subject = encodeURIComponent(
+			isHistorical ? `Angående verk av ${artist.name}` : `Angående ${artist.name}`
+		);
 		const link = `${site.url}${page.url.pathname}`;
 		const body = encodeURIComponent(
-			`Hej GALLERIett,\n\nJag vill komma i kontakt angående konstnären ${artist.name}.\n\nLänk: ${link}\n\nVänliga hälsningar\n`
+			isHistorical
+				? `Hej GALLERIett,\n\nJag vill komma i kontakt angående verk av ${artist.name}.\n\nLänk: ${link}\n\nVänliga hälsningar\n`
+				: `Hej GALLERIett,\n\nJag vill komma i kontakt angående konstnären ${artist.name}.\n\nLänk: ${link}\n\nVänliga hälsningar\n`
 		);
 		return `mailto:${site.email}?subject=${subject}&body=${body}`;
 	});
@@ -90,9 +104,16 @@
 			<div class="hero-copy">
 				<p class="label">Konstnär</p>
 				<h1 class="serif">{artist.name}</h1>
-				<p class="born">Född {artist.born}</p>
+				{#if lifespanLine}
+					<p class="born">{lifespanLine}</p>
+				{/if}
+				{#if artist.presentedBy}
+					<p class="presented">Verk visas via {artist.presentedBy}</p>
+				{/if}
 				<p class="intro">{artist.intro}</p>
-				<a class="btn" href={contactMailto}>Maila konstnären →</a>
+				<a class="btn" href={contactMailto}
+					>{isHistorical ? 'Kontakta galleriet →' : 'Maila konstnären →'}</a
+				>
 			</div>
 			{#if promoWork || portraitSrc}
 				<div class="hero-media" class:solo={!promoWork || !portraitSrc}>
@@ -173,6 +194,18 @@
 				<div>
 					<dt>Född</dt>
 					<dd>{artist.born}</dd>
+				</div>
+			{/if}
+			{#if artist.died}
+				<div>
+					<dt>Död</dt>
+					<dd>{artist.died}</dd>
+				</div>
+			{/if}
+			{#if artist.presentedBy}
+				<div>
+					<dt>Visas via</dt>
+					<dd>{artist.presentedBy}</dd>
 				</div>
 			{/if}
 			{#if artist.education?.length}
@@ -342,6 +375,13 @@
 		letter-spacing: var(--track-label);
 		text-transform: uppercase;
 		color: var(--text-muted);
+		margin: 0 0 0.35rem;
+	}
+
+	.presented {
+		font-family: var(--font-sans);
+		font-size: var(--text-meta);
+		color: var(--text-secondary);
 		margin: 0 0 0.75rem;
 	}
 

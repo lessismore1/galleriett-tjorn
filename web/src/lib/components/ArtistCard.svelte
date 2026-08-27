@@ -79,7 +79,7 @@
 				: program?.status === 'upcoming'
 					? { text: 'Kommande', title: program.exhibition.title }
 					: artist.profileKind === 'historical' || artist.deceased
-						? { text: 'Tidigare', title: 'Tidigare konstnär' }
+						? { text: 'Historisk', title: 'Historisk / avliden konstnär' }
 						: artist.profileKind === 'kmh' && artist.kmhUrl
 							? { text: 'KmH', title: 'Profil på Konst med Horisont' }
 							: null
