@@ -28,16 +28,21 @@
 	const hasWorks = $derived(worksWithLinks.length > 0);
 	const hasInstallation = $derived((ex.installationViews?.length ?? 0) > 0);
 	const hasVideos = $derived((ex.videos?.length ?? 0) > 0);
-	/** Stub/grupp utan riktig profil visas inte. Historiska med porträtt visas. */
+	/** Visa alla utställare A–Ö. Stubs utan porträtt får monogramkort. Dölj bara TKS-gruppen. */
 	const relatedArtists = $derived(
 		(data.related ?? []).filter(
-			(a) =>
-				Boolean(a?.image) &&
-				a.slug !== '15-tks-medlemmar' &&
-				!/tks-medlemmar/i.test(a.slug || '')
+			(a) => a.slug !== '15-tks-medlemmar' && !/tks-medlemmar/i.test(a.slug || '')
 		)
 	);
 	const hasRelatedArtists = $derived(relatedArtists.length > 0);
+
+	function artistInitials(name: string) {
+		const parts = (name || '').trim().split(/\s+/).filter(Boolean);
+		if (parts.length >= 2) {
+			return `${parts[0][0] ?? ''}${parts[parts.length - 1][0] ?? ''}`.toUpperCase();
+		}
+		return (name || '?').slice(0, 2).toUpperCase();
+	}
 	const hasPress = $derived(Boolean(ex.pressRelease?.trim()));
 
 	const pageTitle = $derived(`${ex.artist} | ${ex.title} · GALLERIett`);
@@ -313,7 +318,17 @@
 			</div>
 			<div class="artists">
 				{#each relatedArtists as a}
-					<ArtistCard artist={a} mediaMode="portrait" showIcon={false} showBadge={false} />
+					{#if a.image}
+						<ArtistCard artist={a} mediaMode="portrait" showIcon={false} showBadge={false} />
+					{:else}
+						<a class="artist-stub" href={`/konstnarer/${a.slug}`}>
+							<div class="monogram" aria-hidden="true">{artistInitials(a.name)}</div>
+							<div class="stub-meta">
+								<h2 class="serif">{a.name} <span class="arrow" aria-hidden="true">→</span></h2>
+								<p>{a.specialty || 'Utställare'}</p>
+							</div>
+						</a>
+					{/if}
 				{/each}
 			</div>
 		</div>
@@ -788,6 +803,51 @@
 		display: grid;
 		gap: 1.25rem 0.85rem;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.artist-stub {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+		height: 100%;
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.monogram {
+		aspect-ratio: 1;
+		display: grid;
+		place-items: center;
+		background: #e8e8e2;
+		color: var(--text-muted);
+		font-family: var(--font-serif, Georgia, serif);
+		font-size: clamp(2rem, 4vw, 2.75rem);
+		font-weight: 500;
+		letter-spacing: 0.04em;
+	}
+
+	.stub-meta {
+		padding-top: 0.65rem;
+		min-width: 0;
+	}
+
+	.stub-meta h2 {
+		margin: 0;
+		font-size: 1.15rem;
+		font-weight: 500;
+	}
+
+	.stub-meta .arrow {
+		font-size: 0.95em;
+		font-weight: 600;
+	}
+
+	.stub-meta p {
+		margin: 0.2rem 0 0;
+		font-size: var(--text-meta, 0.7rem);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--text-muted);
 	}
 
 	@media (min-width: 900px) {
