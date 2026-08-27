@@ -22,6 +22,14 @@ export default defineType({
     defineField({name: 'instagramUrl', title: 'Instagram', type: 'url'}),
     defineField({name: 'facebookUrl', title: 'Facebook', type: 'url'}),
     defineField({
+      name: 'showSponsors',
+      title: 'Visa sponsorer på sajten',
+      type: 'boolean',
+      description:
+        'När av: sponsor-sektion på startsidan och /sponsorer döljs. Kod och Studio-innehåll sparas — slå på när sponsorpaket är klart.',
+      initialValue: false,
+    }),
+    defineField({
       name: 'location',
       title: 'Primär plats',
       type: 'reference',

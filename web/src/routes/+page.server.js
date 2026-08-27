@@ -30,6 +30,7 @@ export async function load() {
 			body: '',
 			image: '/images/about-building.jpg'
 		},
-		homeSponsors: rotateSponsors(sponsors)
+		showSponsors: settings?.showSponsors === true,
+		homeSponsors: settings?.showSponsors === true ? rotateSponsors(sponsors) : []
 	};
 }

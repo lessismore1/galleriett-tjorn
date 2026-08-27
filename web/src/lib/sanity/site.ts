@@ -28,7 +28,8 @@ export async function fetchSiteSettings() {
     about,
     aboutImage,
     instagramUrl,
-    facebookUrl
+    facebookUrl,
+    showSponsors
   }`);
 
 	const addressLines = String(row?.address || '')
@@ -56,6 +57,8 @@ export async function fetchSiteSettings() {
 		partners: SITE_DEFAULTS.partners,
 		credit: SITE_DEFAULTS.credit,
 		mapsUrl: SITE_DEFAULTS.mapsUrl,
+		/** Default av — visa först när sponsorpaket är publicerade. */
+		showSponsors: row?.showSponsors === true,
 		about: {
 			label: 'Om GALLERIett',
 			headline: 'Ett galleri för samtidskonst på Tjörn',

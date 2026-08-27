@@ -11,6 +11,7 @@
 	const news = $derived(data.news);
 	const featuredNews = $derived(data.featuredNews);
 	const about = $derived(data.about);
+	const showSponsors = $derived(data.showSponsors === true);
 	const homeSponsors = $derived(data.homeSponsors);
 
 	function cardSrc(item: { cardImage?: string; image: string }) {
@@ -106,16 +107,18 @@
 	</div>
 </section>
 
-<section class="section band-soft sponsors">
-	<div class="container">
-		<div class="section-head">
-			<h2 class="label">Sponsorer</h2>
-			<a class="link-arrow" href="/sponsorer">Till sponsorer</a>
+{#if showSponsors}
+	<section class="section band-soft sponsors">
+		<div class="container">
+			<div class="section-head">
+				<h2 class="label">Sponsorer</h2>
+				<a class="link-arrow" href="/sponsorer">Till sponsorer</a>
+			</div>
+			<p class="sponsors-lead">Ett varmt tack till alla sponsorer</p>
+			<SponsorsCarousel sponsors={homeSponsors} />
 		</div>
-		<p class="sponsors-lead">Ett varmt tack till alla sponsorer</p>
-		<SponsorsCarousel sponsors={homeSponsors} />
-	</div>
-</section>
+	</section>
+{/if}
 
 <style>
 	.hero {
