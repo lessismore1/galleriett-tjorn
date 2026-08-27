@@ -3,6 +3,7 @@
 	import { page } from '$app/state';
 	import ArtworkCard from '$lib/components/ArtworkCard.svelte';
 	import ArtistCard from '$lib/components/ArtistCard.svelte';
+	import VideoCard from '$lib/components/VideoCard.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 
@@ -40,19 +41,6 @@
 			return `${parts[0][0] ?? ''}${parts[parts.length - 1][0] ?? ''}`.toUpperCase();
 		}
 		return (name || '?').slice(0, 2).toUpperCase();
-	}
-
-	function videoOpenLabel(url: string) {
-		try {
-			const host = new URL(url).hostname.replace(/^www\./, '');
-			if (host.includes('instagram.com')) return 'Öppna på Instagram →';
-			if (host.includes('konstmedhorisont')) return 'Öppna på Konst med Horisont →';
-			if (host.includes('youtube.com') || host.includes('youtu.be')) return 'Öppna på YouTube →';
-			if (host.includes('vimeo.com')) return 'Öppna på Vimeo →';
-		} catch {
-			/* ignore */
-		}
-		return 'Öppna video →';
 	}
 
 	const hasPress = $derived(Boolean(ex.pressRelease?.trim()));
@@ -304,15 +292,14 @@
 			</div>
 			<div class="videos">
 				{#each ex.videos as v}
-					<a class="video-card" href={v.url} target="_blank" rel="noreferrer">
-						{#if v.thumbnail}
-							<img src={v.thumbnail} alt="" />
-						{/if}
-						<div class="video-meta">
-							<strong>{v.title}</strong>
-							<span>{videoOpenLabel(v.url)}</span>
-						</div>
-					</a>
+					<VideoCard
+						href={v.url}
+						image={v.thumbnail}
+						artists={v.artists}
+						title={v.title}
+						dateLabel={v.dateLabel}
+						alt=""
+					/>
 				{/each}
 			</div>
 		</div>
@@ -777,38 +764,8 @@
 
 	.videos {
 		display: grid;
-		gap: 1rem;
+		gap: 1.5rem 1.25rem;
 		grid-template-columns: repeat(auto-fill, minmax(14rem, 20rem));
-	}
-
-	.video-card {
-		display: grid;
-		gap: 0.6rem;
-		color: inherit;
-		text-decoration: none;
-	}
-
-	.video-card img {
-		width: 100%;
-		aspect-ratio: 4 / 3;
-		object-fit: cover;
-		background: #ddd;
-	}
-
-	.video-meta {
-		display: grid;
-		gap: 0.2rem;
-	}
-
-	.video-meta strong {
-		font-weight: 600;
-	}
-
-	.video-meta span {
-		font-size: var(--text-meta, 0.75rem);
-		letter-spacing: var(--track-label, 0.04em);
-		text-transform: uppercase;
-		color: var(--text-muted);
 	}
 
 	.artists {

@@ -1,5 +1,6 @@
 import { getSanityClient, urlForWebp } from '$lib/sanity';
 import { workHref } from '$lib/workLinks.js';
+import { formatVideoDate, videoCardArtists, videoCardTitle } from '$lib/sanity/videos';
 
 function exhibitionYear(start) {
 	return Number(String(start || '').slice(0, 4));
@@ -143,7 +144,10 @@ const detailQuery = `*[_type == "exhibition" && slug.current == $slug][0]{
     url,
     description,
     publishedAt,
-    thumbnail
+    thumbnail,
+    "artistNames": artists[]->name,
+    "artistLabel": ^.artistLabel,
+    "exhibitionTitle": ^.title
   }
 }`;
 
@@ -190,10 +194,18 @@ export async function fetchExhibitionPage(slug) {
 		videos: (raw.videos || [])
 			.filter((v) => v?.url)
 			.map((v) => ({
-				title: v.title || 'Video',
+				title: videoCardTitle({
+					title: v.title,
+					exhibitionTitle: v.exhibitionTitle || raw.title
+				}),
 				url: v.url,
 				description: v.description || '',
 				publishedAt: v.publishedAt || null,
+				dateLabel: formatVideoDate(v.publishedAt),
+				artists: videoCardArtists({
+					artistNames: v.artistNames,
+					artistLabel: v.artistLabel || raw.artistLabel
+				}),
 				thumbnail: urlForWebp(v.thumbnail, 800)
 			})),
 		works: (raw.works || []).map((w) => ({
