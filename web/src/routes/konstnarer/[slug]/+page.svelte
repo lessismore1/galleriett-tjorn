@@ -36,7 +36,7 @@
 		const born = artist.born?.trim() || '';
 		const died = artist.died?.trim() || '';
 		if (born && died) return `${born} – ${died}`;
-		if (died) return `Död ${died}`;
+		if (died) return `Dog ${died}`;
 		if (born) return isHistorical ? born : `Född ${born}`;
 		return '';
 	});
@@ -198,7 +198,7 @@
 			{/if}
 			{#if artist.died}
 				<div>
-					<dt>Död</dt>
+					<dt>Dog</dt>
 					<dd>{artist.died}</dd>
 				</div>
 			{/if}

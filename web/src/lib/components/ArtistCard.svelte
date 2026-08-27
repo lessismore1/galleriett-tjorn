@@ -15,6 +15,8 @@
 		program?: ArtistProgram | null;
 		profileKind?: 'full' | 'stub' | 'kmh' | 'historical' | string;
 		deceased?: boolean;
+		born?: string;
+		died?: string;
 		kmhUrl?: string | null;
 	};
 
@@ -69,6 +71,15 @@
 			list.push({ kind: 'portrait', src: portraitSrc, label: artist.name });
 		}
 		return list;
+	});
+
+	const lifespan = $derived.by(() => {
+		const born = artist.born?.trim() || '';
+		const died = artist.died?.trim() || '';
+		if (born && died) return `${born} – ${died}`;
+		if (died) return `Dog ${died}`;
+		if (born && (artist.deceased || artist.profileKind === 'historical')) return born;
+		return '';
 	});
 
 	const badge = $derived(
@@ -238,6 +249,9 @@
 		{/if}
 		<div class="meta-text">
 			<h2 class="serif">{artist.name}</h2>
+			{#if lifespan}
+				<p class="lifespan">{lifespan}</p>
+			{/if}
 			<p>{artist.specialty}</p>
 		</div>
 		<span class="arrow" aria-hidden="true">→</span>
@@ -389,6 +403,14 @@
 	.meta-text {
 		min-width: 0;
 		flex: 1;
+	}
+
+	.lifespan {
+		margin: 0.15rem 0 0;
+		font-size: var(--text-meta, 0.75rem);
+		letter-spacing: var(--track-label, 0.04em);
+		text-transform: uppercase;
+		color: var(--text-muted, #6b6b63);
 	}
 
 	.arrow {

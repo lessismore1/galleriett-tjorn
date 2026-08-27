@@ -48,6 +48,19 @@ export default defineType({
       initialValue: false,
     }),
     defineField({
+      name: 'born',
+      title: 'Född',
+      type: 'string',
+      description: 't.ex. 20 oktober 1910, Hunnebostrand',
+    }),
+    defineField({
+      name: 'died',
+      title: 'Dog',
+      type: 'string',
+      description: 't.ex. 22 september 1997, Stenungsund. Syns när Avliden / historisk person är på.',
+      hidden: ({document}) => !document?.deceased && document?.profileKind !== 'historical' && !document?.died,
+    }),
+    defineField({
       name: 'presentedBy',
       title: 'Verk visas via',
       type: 'string',
@@ -60,19 +73,6 @@ export default defineType({
       type: 'string',
       description: 'Slug på konstmedhorisont.se — används för extern länk.',
       hidden: ({document}) => document?.profileKind !== 'kmh' && !document?.kmhSlug,
-    }),
-    defineField({
-      name: 'born',
-      title: 'Född',
-      type: 'string',
-      description: 't.ex. 20 oktober 1910, Hunnebostrand — bara födelse, inte död.',
-    }),
-    defineField({
-      name: 'died',
-      title: 'Död',
-      type: 'string',
-      description: 't.ex. 8 februari 2016 — lämna tomt för levande. Kryssa även Avliden.',
-      hidden: ({document}) => !document?.deceased && document?.profileKind !== 'historical' && !document?.died,
     }),
     defineField({
       name: 'education',
@@ -114,14 +114,19 @@ export default defineType({
       specialty: 'specialty',
       kind: 'profileKind',
       idNumber: 'idNumber',
+      born: 'born',
+      died: 'died',
       media: 'image',
     },
-    prepare({title, specialty, kind, idNumber, media}) {
+    prepare({title, specialty, kind, idNumber, born, died, media}) {
       const id = idNumber != null ? `${String(idNumber).padStart(2, '0')} · ` : ''
       const kindLabel = kind && kind !== 'full' ? ` · ${kind}` : ''
+      const life =
+        born && died ? `${born} – ${died}` : died ? `Dog ${died}` : born ? `Född ${born}` : ''
+      const lifeBit = life ? ` · ${life}` : ''
       return {
         title: `${id}${title || 'Namnlös'}`,
-        subtitle: `${specialty || '—'}${kindLabel}`,
+        subtitle: `${specialty || '—'}${kindLabel}${lifeBit}`,
         media,
       }
     },

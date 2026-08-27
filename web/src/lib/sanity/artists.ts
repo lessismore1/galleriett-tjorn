@@ -12,6 +12,8 @@ const artistsListQuery = `*[_type == "artist"
   specialty,
   profileKind,
   deceased,
+  born,
+  died,
   kmhSlug,
   image,
   "works": *[_type == "artwork" && references(^._id)] | order(idNumber asc)[0...1]{
@@ -69,6 +71,8 @@ export async function fetchArtistsForList() {
 			specialty: a.specialty || '',
 			profileKind: a.profileKind || 'full',
 			deceased: Boolean(a.deceased),
+			born: a.born || '',
+			died: a.died || '',
 			kmhSlug: a.kmhSlug || null,
 			kmhUrl: a.kmhSlug
 				? `https://konstmedhorisont.se/ar/2026/konstnarer/${a.kmhSlug}`
