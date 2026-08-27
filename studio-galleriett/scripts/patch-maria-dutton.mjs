@@ -1,5 +1,5 @@
 /**
- * Komplettera Maria Dutton (id 20) från mariadutton.com/biography.
+ * Komplettera Maria Dutton (id 20) från mariadutton.com/biography + porträtt.
  *   node scripts/patch-maria-dutton.mjs
  */
 import {createClient} from '@sanity/client'
@@ -45,11 +45,14 @@ if (!process.env.SANITY_API_TOKEN) {
   process.exit(1)
 }
 
+/** Porträtt från mariadutton.com/biography (fotograf Katia Rainbow). */
+const PORTRAIT_URL =
+  'https://s3.amazonaws.com/wbstaticfiles/users/16148/533615_artist-maria-biryukova-dutton-photograph-by-katia-rainbow.jpg'
+
 const patch = {
   name: 'Maria Dutton',
   specialty: 'Akvarell, tusch och grafik',
-  // Behåll stub tills porträtt finns — syns på utställning, inte /konstnarer-listan
-  profileKind: 'stub',
+  profileKind: 'full',
   deceased: false,
   born: '1976, Moskva',
   education: [
@@ -87,6 +90,23 @@ Källa: https://www.mariadutton.com/biography`,
   ],
 }
 
+async function uploadPortrait() {
+  const res = await fetch(PORTRAIT_URL, {
+    headers: {'User-Agent': 'Mozilla/5.0 (compatible; GALLERIettBot/1.0)'},
+  })
+  if (!res.ok) throw new Error(`Porträtt HTTP ${res.status}`)
+  const buf = Buffer.from(await res.arrayBuffer())
+  const asset = await client.assets.upload('image', buf, {
+    filename: 'maria-dutton-portrait-katia-rainbow.jpg',
+    contentType: res.headers.get('content-type') || 'image/jpeg',
+  })
+  return {
+    _type: 'image',
+    asset: {_type: 'reference', _ref: asset._id},
+    alt: 'Maria Biryukova-Dutton. Foto: Katia Rainbow',
+  }
+}
+
 async function main() {
   const artist = await client.fetch(
     `*[_type=="artist" && idNumber==20][0]{_id, name, "slug":slug.current, image}`
@@ -96,13 +116,23 @@ async function main() {
     process.exit(1)
   }
 
-  // website field? check schema - may not exist. Use intro/bio only.
-  await client.patch(artist._id).set(patch).unset(['died', 'presentedBy']).commit()
+  let image = artist.image
+  if (!image?.asset?._ref) {
+    image = await uploadPortrait()
+    console.log('✓ Porträtt uppladdat')
+  } else {
+    console.log('  Porträtt fanns redan — behåller')
+  }
+
+  await client
+    .patch(artist._id)
+    .set({...patch, image})
+    .unset(['died', 'presentedBy'])
+    .commit()
+
   console.log('✓', artist.name, artist._id)
-  console.log('  profileKind: stub (uppgradera till full när porträtt finns)')
+  console.log('  profileKind: full')
   console.log(' ', `https://galleriett-tjorn.pages.dev/konstnarer/${artist.slug}`)
-  console.log('  Bio:', 'https://www.mariadutton.com/biography')
-  if (!artist.image) console.log('  Saknar porträtt — monogram på utställning tills bild finns')
 }
 
 main().catch((e) => {
