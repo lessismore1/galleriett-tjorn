@@ -355,10 +355,6 @@
 		line-height: 1.5;
 	}
 
-	.historiska .section-head h2 {
-		/* ingen lila/glow — bara tydlig sektion */
-	}
-
 	.grid {
 		display: grid;
 		gap: 2rem 1.5rem;

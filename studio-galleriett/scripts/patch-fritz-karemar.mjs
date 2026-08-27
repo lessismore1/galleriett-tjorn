@@ -1,6 +1,7 @@
 /**
- * Uppdatera Fritz Kåremar: biografi + verk visas via Agneta Wilhelmson Kåremar.
+ * Uppdatera Fritz Kåremar från familjesidan.
  *   node scripts/patch-fritz-karemar.mjs
+ * Källa: https://www.familjesidan.se/cases/14d1438f-aaf6-43b7-bb7c-0b59d087a901
  */
 import {createClient} from '@sanity/client'
 import {readFileSync} from 'node:fs'
@@ -31,17 +32,17 @@ const patch = {
   deceased: true,
   profileKind: 'historical',
   presentedBy: 'Agneta Wilhelmson Kåremar',
-  born: '1920',
-  died: '8 februari 2016, Stenungsund',
+  born: '14 januari 1921',
+  died: '8 februari 2016',
   intro:
-    'Konstnär och skoldirektör (1920–2016), verksam i Stenungsund/Bohuslän. En av initiativtagarna till Stenungsunds konstförening. Verk visas via Agneta Wilhelmson Kåremar.',
-  bio: `Fritz Kåremar (1920–2016) var svensk konstnär och skoldirektör, bosatt i Stenungsund. Han var starkt engagerad i det lokala kulturlivet i Bohuslän – särskilt Stenungsund och Tjörn – och en av initiativtagarna till konstföreningen i Stenungsund. Han stödde andra konstnärer och det lokala konstlivet.
+    'Konstnär och skoldirektör (1921–2016), verksam i Stenungsund/Bohuslän. En av initiativtagarna till Stenungsunds konstförening. Verk visas via Agneta Wilhelmson Kåremar.',
+  bio: `Fritz Kåremar, född 14 januari 1921, död 8 februari 2016, var svensk konstnär och skoldirektör, bosatt i Stenungsund. Han var starkt engagerad i det lokala kulturlivet i Bohuslän – särskilt Stenungsund och Tjörn – och en av initiativtagarna till konstföreningen i Stenungsund. Han stödde andra konstnärer och det lokala konstlivet.
 
 Oljemålningar visades under Brytningstid del 2 (2024) på GALLERIett i Rönnäng; verk utställda via Agneta Wilhelmson Kåremar.
 
-Dog 8 februari 2016. Förväxla inte med den skånske målaren Fritz Kärfve (1880–1967).
+Förväxla inte med den skånske målaren Fritz Kärfve (1880–1967).
 
-Källor: DN Till minne / publik biografi (maj 2016); Sveriges statskalender; GALLERIett Brytningstid.`,
+Källor: https://www.familjesidan.se/cases/14d1438f-aaf6-43b7-bb7c-0b59d087a901 ; Göteborgs-Posten; GALLERIett Brytningstid.`,
 }
 
 const artist = await client.fetch(
