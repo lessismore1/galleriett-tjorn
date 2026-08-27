@@ -122,7 +122,9 @@
 		position: relative;
 		min-height: min(58vh, 560px);
 		display: grid;
-		align-items: end;
+		align-items: center;
+		justify-items: start;
+		padding-inline: var(--pad);
 		color: #fff;
 		background: #1a1a12;
 		overflow: hidden;
@@ -152,10 +154,11 @@
 	.hero-copy {
 		position: relative;
 		z-index: 1;
-		/* Vänsterställd komposition — bredare än tidigare 36rem */
-		width: min(100% - 2.5rem, 48rem);
-		margin-inline: clamp(1.25rem, 4vw, 3rem) auto 0;
-		padding-block: 3.5rem 4rem;
+		/* Bred vänsterkolumn, men inne i sidans rytm — inte kant-flush */
+		width: min(44rem, 100%);
+		margin-left: clamp(1.75rem, 28vw, 18rem);
+		margin-top: -5vh;
+		padding-block: 2rem 2.25rem;
 		box-sizing: border-box;
 	}
 
