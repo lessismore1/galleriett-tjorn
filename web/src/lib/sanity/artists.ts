@@ -3,7 +3,7 @@ import { fetchArtistArticles } from '$lib/sanity/articles';
 import { resolveExhibitionStatus } from '$lib/sanity/exhibitions';
 
 const artistsListQuery = `*[_type == "artist"
-  && slug.current != "15-tks-medlemmar"
+  && !(slug.current match "*tks-medlemmar")
   && defined(image.asset)
   && (profileKind in ["full", "kmh", "historical"] || !defined(profileKind))
 ] | order(name asc) {

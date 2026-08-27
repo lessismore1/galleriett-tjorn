@@ -30,9 +30,7 @@
 	const hasVideos = $derived((ex.videos?.length ?? 0) > 0);
 	/** Visa alla utställare A–Ö. Stubs utan porträtt får monogramkort. Dölj bara TKS-gruppen. */
 	const relatedArtists = $derived(
-		(data.related ?? []).filter(
-			(a) => a.slug !== '15-tks-medlemmar' && !/tks-medlemmar/i.test(a.slug || '')
-		)
+		(data.related ?? []).filter((a) => !/tks-medlemmar/i.test(a.slug || ''))
 	);
 	const hasRelatedArtists = $derived(relatedArtists.length > 0);
 
