@@ -202,7 +202,8 @@ export async function fetchExhibitionPage(slug) {
 				: null,
 			image: urlForWebp(a.image, 600),
 			program: null
-		}));
+		}))
+		.sort((a, b) => a.name.localeCompare(b.name, 'sv'));
 
 	const list = all || [];
 	const index = list.findIndex((e) => e.slug === slug);
