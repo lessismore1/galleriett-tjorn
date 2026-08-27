@@ -94,6 +94,15 @@ export default defineType({
       name: 'facebookEventUrl',
       title: 'Facebook-event',
       type: 'url',
+      description:
+        'Endast riktiga Facebook-event (RSVP). Visas som “Kommer”-CTA bara för kommande/pågående. Instagram och andra källor → fältet Källor.',
+    }),
+    defineField({
+      name: 'sources',
+      title: 'Källor',
+      type: 'array',
+      description: 'Instagram-inlägg, affischer, artiklar m.m. — dokumentation, inte RSVP.',
+      of: [{type: 'sourceLink'}],
     }),
     defineField({name: 'seo', title: 'SEO', type: 'seo'}),
   ],

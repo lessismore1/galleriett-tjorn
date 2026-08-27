@@ -47,6 +47,14 @@
 	const facebookEventUrl = $derived(
 		typeof ex.facebookEventUrl === 'string' ? ex.facebookEventUrl.trim() : ''
 	);
+	const isLiveRsvp =
+		$derived(
+			(ex.status === 'ongoing' || ex.status === 'upcoming') &&
+				/facebook\.com\/events\//i.test(facebookEventUrl)
+		);
+	const sources = $derived(
+		Array.isArray(ex.sources) ? ex.sources.filter((s) => s?.url) : []
+	);
 
 	const facts = $derived([
 		{ label: 'Konstnär', value: ex.artist },
@@ -117,7 +125,7 @@
 				<p class="title serif">{ex.title}</p>
 				<p class="dates">{ex.datesLabel}</p>
 				<p class="intro">{ex.intro}</p>
-				{#if facebookEventUrl}
+				{#if isLiveRsvp}
 					<div class="fb-cta">
 						<a
 							class="fb-link"
@@ -135,6 +143,20 @@
 							<span class="fb-arrow" aria-hidden="true">→</span>
 						</a>
 						<p class="fb-hint">På event-sidan: tryck <strong>Kommer</strong> så syns det för dina vänner.</p>
+					</div>
+				{/if}
+				{#if sources.length}
+					<div class="sources">
+						<p class="sources-label">Källa</p>
+						<ul class="sources-list">
+							{#each sources as s}
+								<li>
+									<a href={s.url} target="_blank" rel="noopener noreferrer"
+										>{s.label || 'Länk'} →</a
+									>
+								</li>
+							{/each}
+						</ul>
 					</div>
 				{/if}
 			</div>
@@ -373,6 +395,37 @@
 	.fb-hint strong {
 		font-weight: 600;
 		color: var(--text-secondary);
+	}
+
+	.sources {
+		margin-top: 1.15rem;
+		max-width: 34rem;
+	}
+
+	.sources-label {
+		margin: 0 0 0.35rem;
+		font-family: var(--font-sans);
+		font-size: var(--text-label);
+		letter-spacing: var(--track-label);
+		text-transform: uppercase;
+		font-weight: 600;
+		color: var(--text-muted);
+	}
+
+	.sources-list {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.sources-list a {
+		font-family: var(--font-sans);
+		font-size: var(--text-body);
+		color: var(--text-secondary);
+	}
+
+	.sources-list a:hover {
+		color: var(--text);
 	}
 
 	.hero-img {

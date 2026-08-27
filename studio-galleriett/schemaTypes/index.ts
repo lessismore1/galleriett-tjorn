@@ -11,6 +11,7 @@ import seo from './objects/seo'
 import pressQuote from './objects/pressQuote'
 import externalCvEntry from './objects/externalCvEntry'
 import installationView from './objects/installationView'
+import sourceLink from './objects/sourceLink'
 
 export const schemaTypes = [
   // documents
@@ -28,4 +29,5 @@ export const schemaTypes = [
   pressQuote,
   externalCvEntry,
   installationView,
+  sourceLink,
 ]
