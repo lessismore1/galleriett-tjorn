@@ -815,7 +815,7 @@
 	}
 
 	.monogram {
-		aspect-ratio: 1;
+		aspect-ratio: 4 / 3;
 		display: grid;
 		place-items: center;
 		background: #e8e8e2;
