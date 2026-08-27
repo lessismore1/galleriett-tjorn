@@ -89,11 +89,7 @@
 				? { text: 'Pågående', title: program.exhibition.title }
 				: program?.status === 'upcoming'
 					? { text: 'Kommande', title: program.exhibition.title }
-					: artist.profileKind === 'historical' || artist.deceased
-						? { text: 'Historisk', title: 'Historisk / avliden konstnär' }
-						: artist.profileKind === 'kmh' && artist.kmhUrl
-							? { text: 'KmH', title: 'Profil på Konst med Horisont' }
-							: null
+					: null
 	);
 
 	let index = $state(0);

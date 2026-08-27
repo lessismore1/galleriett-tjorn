@@ -10,7 +10,9 @@
 	const artists = $derived(data.artists);
 
 	const filters = [
-		'Alla konstnärer',
+		'Alla',
+		'Samtida',
+		'Historiska',
 		'Aktuellt',
 		'Måleri',
 		'Skulptur',
@@ -20,10 +22,13 @@
 	] as const;
 
 	type Filter = (typeof filters)[number];
+	type Artist = (typeof artists)[number];
 
 	/** Query-värde för filter (UX / tillbaka-knapp). Canonical förblir /konstnarer. */
 	const filterToParam: Record<Filter, string | null> = {
-		'Alla konstnärer': null,
+		Alla: null,
+		Samtida: 'samtida',
+		Historiska: 'historiska',
 		Aktuellt: 'aktuellt',
 		Måleri: 'maleri',
 		Skulptur: 'skulptur',
@@ -43,12 +48,26 @@
 
 	function filterFromSearch(search: string): Filter {
 		const raw = new URLSearchParams(search).get('filter');
-		if (!raw) return 'Alla konstnärer';
-		return paramToFilter[raw] ?? 'Alla konstnärer';
+		if (!raw) return 'Alla';
+		if (raw === 'alla' || raw === 'alla-konstnarer') return 'Alla';
+		return paramToFilter[raw] ?? 'Alla';
+	}
+
+	function isHistorical(a: Artist) {
+		return a.profileKind === 'historical' || Boolean(a.deceased);
+	}
+
+	function matchesMedium(a: Artist, medium: string) {
+		const s = (a.specialty || '').toLowerCase();
+		const key = medium.toLowerCase();
+		if (key === 'måleri') {
+			return /måleri|olja|akvarell|akryl|teckn/.test(s);
+		}
+		return s.includes(key);
 	}
 
 	/** Prerender får inte läsa url.search — default vid build, synka från URL i webbläsaren. */
-	let filter = $state<Filter>('Alla konstnärer');
+	let filter = $state<Filter>('Alla');
 	let query = $state('');
 
 	$effect(() => {
@@ -69,29 +88,45 @@
 	const filtered = $derived(
 		artists
 			.filter((a) => {
-				if (filter === 'Alla konstnärer') return true;
+				if (filter === 'Alla') return true;
+				if (filter === 'Samtida') return !isHistorical(a);
+				if (filter === 'Historiska') return isHistorical(a);
 				if (filter === 'Aktuellt') {
 					const status = a.program?.status;
 					return status === 'ongoing' || status === 'upcoming';
 				}
-				return a.specialty === filter;
+				return matchesMedium(a, filter);
 			})
 			.filter((a) => !query || a.name.toLowerCase().includes(query.toLowerCase()))
 			.sort((a, b) => {
 				if (filter === 'Aktuellt') {
-					const rank = (artist: (typeof artists)[number]) =>
-						artist.program?.status === 'ongoing' ? 0 : 1;
+					const rank = (artist: Artist) => (artist.program?.status === 'ongoing' ? 0 : 1);
 					const d = rank(a) - rank(b);
 					if (d !== 0) return d;
 				}
 				return a.name.localeCompare(b.name, 'sv');
 			})
 	);
+
+	const samtida = $derived(filtered.filter((a) => !isHistorical(a)));
+	const historiska = $derived(filtered.filter((a) => isHistorical(a)));
+	/** Två sektioner när vi visar blandat (Alla) eller medium/aktuellt med båda grupper. */
+	const useSections = $derived(
+		filter === 'Alla' ||
+			((filter === 'Aktuellt' ||
+				filter === 'Måleri' ||
+				filter === 'Skulptur' ||
+				filter === 'Glas' ||
+				filter === 'Fotografi' ||
+				filter === 'Installation') &&
+				samtida.length > 0 &&
+				historiska.length > 0)
+	);
 </script>
 
 <Seo
 	title="Konstnärer · GALLERIett"
-	description="Konstnärer representerade av GALLERIett på Tjörn — måleri, skulptur, glas, fotografi och installation."
+	description="Samtida och historiska konstnärer på GALLERIett, Tjörn — island of art med både nutid och lokal konsthistoria."
 	image="/images/artists-hero.jpg"
 />
 
@@ -102,8 +137,8 @@
 		<div>
 			<h1 class="serif">Konstnärer</h1>
 			<p>
-				GALLERIett representerar konstnärer inom måleri, skulptur, fotografi och installation —
-				med fokus på samtidskonst.
+				Samtida konst — och historiska Tjörnkonstnärer. GALLERIett ger plats åt båda, så att
+				«island of art» rymmer nutid och lokal konsthistoria.
 			</p>
 			<a class="link-arrow" href="/om">Om vårt arbete</a>
 		</div>
@@ -114,7 +149,7 @@
 <section class="band-soft">
 	<div class="container list-wrap">
 		<div class="toolbar">
-			<div class="filters">
+			<div class="filters" role="tablist" aria-label="Filtrera konstnärer">
 				{#each filters as f}
 					<button type="button" class:active={filter === f} onclick={() => setFilter(f)}>{f}</button>
 				{/each}
@@ -126,11 +161,74 @@
 		</div>
 
 		{#if filtered.length}
-			<div class="grid">
-				{#each filtered as artist (artist.slug)}
-					<ArtistCard {artist} />
-				{/each}
-			</div>
+			{#if useSections}
+				<section class="artist-section" id="samtida" aria-labelledby="heading-samtida">
+					<header class="section-head">
+						<h2 id="heading-samtida" class="serif">Samtida</h2>
+						<p>Levande konstnärer i programmet — måleri, skulptur, glas och mer.</p>
+					</header>
+					{#if samtida.length}
+						<div class="grid">
+							{#each samtida as artist (artist.slug)}
+								<ArtistCard {artist} />
+							{/each}
+						</div>
+					{:else}
+						<p class="empty">Inga samtida konstnärer i detta filter.</p>
+					{/if}
+				</section>
+
+				<section class="artist-section historiska" id="historiska" aria-labelledby="heading-historiska">
+					<header class="section-head">
+						<h2 id="heading-historiska" class="serif">Historiska</h2>
+						<p>
+							Tidigare Tjörn- och Bohuslänkonstnärer vars verk fortfarande ställs ut — en del av
+							öns konsthistoria som få gallerier ger plats.
+						</p>
+					</header>
+					{#if historiska.length}
+						<div class="grid">
+							{#each historiska as artist (artist.slug)}
+								<ArtistCard {artist} />
+							{/each}
+						</div>
+					{:else}
+						<p class="empty">Inga historiska konstnärer i detta filter.</p>
+					{/if}
+				</section>
+			{:else if filter === 'Historiska'}
+				<section class="artist-section historiska" aria-labelledby="heading-historiska-only">
+					<header class="section-head">
+						<h2 id="heading-historiska-only" class="serif">Historiska</h2>
+						<p>
+							Tidigare Tjörn- och Bohuslänkonstnärer vars verk fortfarande ställs ut — en del av
+							öns konsthistoria som få gallerier ger plats.
+						</p>
+					</header>
+					<div class="grid">
+						{#each filtered as artist (artist.slug)}
+							<ArtistCard {artist} />
+						{/each}
+					</div>
+				</section>
+			{:else if filter === 'Samtida'}
+				<section class="artist-section" aria-labelledby="heading-samtida-only">
+					<header class="section-head">
+						<h2 id="heading-samtida-only" class="serif">Samtida</h2>
+					</header>
+					<div class="grid">
+						{#each filtered as artist (artist.slug)}
+							<ArtistCard {artist} />
+						{/each}
+					</div>
+				</section>
+			{:else}
+				<div class="grid">
+					{#each filtered as artist (artist.slug)}
+						<ArtistCard {artist} />
+					{/each}
+				</div>
+			{/if}
 		{:else}
 			<p class="empty">Inga konstnärer matchar filtret.</p>
 		{/if}
@@ -164,7 +262,7 @@
 
 	.intro p {
 		color: var(--text-secondary);
-		max-width: 28rem;
+		max-width: 32rem;
 		margin-bottom: 1rem;
 	}
 
@@ -229,6 +327,36 @@
 		height: 1px;
 		overflow: hidden;
 		clip: rect(0 0 0 0);
+	}
+
+	.artist-section {
+		margin-bottom: 3rem;
+	}
+
+	.artist-section:last-child {
+		margin-bottom: 0;
+	}
+
+	.section-head {
+		margin-bottom: 1.5rem;
+		max-width: 40rem;
+	}
+
+	.section-head h2 {
+		font-size: clamp(1.6rem, 3vw, 2.1rem);
+		font-weight: 500;
+		margin: 0 0 0.4rem;
+	}
+
+	.section-head p {
+		margin: 0;
+		color: var(--text-secondary);
+		font-size: var(--text-body, 1rem);
+		line-height: 1.5;
+	}
+
+	.historiska .section-head h2 {
+		/* ingen lila/glow — bara tydlig sektion */
 	}
 
 	.grid {
