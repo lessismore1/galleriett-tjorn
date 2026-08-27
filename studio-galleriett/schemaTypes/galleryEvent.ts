@@ -21,7 +21,7 @@ export default defineType({
         list: [
           {title: 'Vernissage', value: 'vernissage'},
           {title: 'Pub', value: 'pub'},
-          {title: 'Sip & paint', value: 'sip-paint'},
+          {title: 'Zipp & Paint', value: 'sip-paint'},
           {title: 'Samtal', value: 'samtal'},
           {title: 'Övrigt', value: 'other'},
         ],
