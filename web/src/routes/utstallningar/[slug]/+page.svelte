@@ -43,6 +43,20 @@
 		}
 		return (name || '?').slice(0, 2).toUpperCase();
 	}
+
+	function videoOpenLabel(url: string) {
+		try {
+			const host = new URL(url).hostname.replace(/^www\./, '');
+			if (host.includes('instagram.com')) return 'Öppna på Instagram →';
+			if (host.includes('konstmedhorisont')) return 'Öppna på Konst med Horisont →';
+			if (host.includes('youtube.com') || host.includes('youtu.be')) return 'Öppna på YouTube →';
+			if (host.includes('vimeo.com')) return 'Öppna på Vimeo →';
+		} catch {
+			/* ignore */
+		}
+		return 'Öppna video →';
+	}
+
 	const hasPress = $derived(Boolean(ex.pressRelease?.trim()));
 
 	const pageTitle = $derived(`${ex.artist} | ${ex.title} · GALLERIett`);
@@ -298,7 +312,7 @@
 						{/if}
 						<div class="video-meta">
 							<strong>{v.title}</strong>
-							<span>Öppna på Instagram →</span>
+							<span>{videoOpenLabel(v.url)}</span>
 						</div>
 					</a>
 				{/each}
