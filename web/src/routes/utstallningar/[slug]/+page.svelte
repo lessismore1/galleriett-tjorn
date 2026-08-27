@@ -270,7 +270,7 @@
 			<div class="section-head">
 				<h2 class="serif section-title">Installation</h2>
 			</div>
-			<div class="install" style={`--cols: ${Math.min(ex.installationViews.length, 3)}`}>
+			<div class="install">
 				{#each ex.installationViews as view, i}
 					<figure>
 						<img src={view.src} alt={view.alt || `Installation ${i + 1}`} />
@@ -290,7 +290,7 @@
 			<div class="section-head">
 				<h2 class="serif section-title">Video</h2>
 			</div>
-			<div class="videos" style={`--cols: ${Math.min(ex.videos.length, 2)}`}>
+			<div class="videos">
 				{#each ex.videos as v}
 					<a class="video-card" href={v.url} target="_blank" rel="noreferrer">
 						{#if v.thumbnail}
@@ -745,12 +745,12 @@
 	.install {
 		display: grid;
 		gap: 0.85rem;
-		grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(14rem, 20rem));
 	}
 
 	.install img {
 		width: 100%;
-		aspect-ratio: 16 / 10;
+		aspect-ratio: 4 / 3;
 		object-fit: cover;
 		background: #ddd;
 	}
@@ -766,7 +766,7 @@
 	.videos {
 		display: grid;
 		gap: 1rem;
-		grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(14rem, 20rem));
 	}
 
 	.video-card {
@@ -778,7 +778,7 @@
 
 	.video-card img {
 		width: 100%;
-		aspect-ratio: 16 / 10;
+		aspect-ratio: 4 / 3;
 		object-fit: cover;
 		background: #ddd;
 	}
