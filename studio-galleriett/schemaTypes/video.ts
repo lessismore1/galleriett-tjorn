@@ -16,7 +16,7 @@ export default defineType({
       name: 'url',
       title: 'Video-URL',
       type: 'url',
-      description: 'YouTube, Vimeo, …',
+      description: 'YouTube, Vimeo eller Instagram (reel/post). IG öppnas externt tills vi har egen spelare.',
     }),
     defineField({
       name: 'thumbnail',

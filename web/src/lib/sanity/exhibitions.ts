@@ -137,7 +137,14 @@ const detailQuery = `*[_type == "exhibition" && slug.current == $slug][0]{
     image,
     "artistSlug": artist->slug.current
   },
-  "installationViews": installationViews[].image
+  "installationViews": installationViews[]{ image, caption, alt },
+  "videos": *[_type == "video" && references(^._id)] | order(publishedAt asc){
+    title,
+    url,
+    description,
+    publishedAt,
+    thumbnail
+  }
 }`;
 
 export async function fetchExhibitionPage(slug) {
@@ -174,8 +181,21 @@ export async function fetchExhibitionPage(slug) {
 		image: urlForWebp(raw.image, 1400),
 		cardImage: urlForWebp(raw.cardImage, 1000),
 		installationViews: (raw.installationViews || [])
-			.map((img) => urlForWebp(img, 1200))
-			.filter(Boolean),
+			.map((row) => ({
+				src: urlForWebp(row?.image ?? row, 1200),
+				caption: row?.caption || '',
+				alt: row?.alt || row?.caption || 'Installation'
+			}))
+			.filter((v) => v.src),
+		videos: (raw.videos || [])
+			.filter((v) => v?.url)
+			.map((v) => ({
+				title: v.title || 'Video',
+				url: v.url,
+				description: v.description || '',
+				publishedAt: v.publishedAt || null,
+				thumbnail: urlForWebp(v.thumbnail, 800)
+			})),
 		works: (raw.works || []).map((w) => ({
 			title: w.title,
 			year: w.year,

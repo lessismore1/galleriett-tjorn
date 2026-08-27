@@ -27,6 +27,7 @@
 
 	const hasWorks = $derived(worksWithLinks.length > 0);
 	const hasInstallation = $derived((ex.installationViews?.length ?? 0) > 0);
+	const hasVideos = $derived((ex.videos?.length ?? 0) > 0);
 	/** Stub/grupp utan riktig profil visas inte. Historiska med porträtt visas. */
 	const relatedArtists = $derived(
 		(data.related ?? []).filter(
@@ -188,6 +189,9 @@
 			{#if hasInstallation}
 				<a href="#installation">Installation</a>
 			{/if}
+			{#if hasVideos}
+				<a href="#video">Video</a>
+			{/if}
 		</div>
 		<span class="dela">Dela</span>
 	</div>
@@ -262,8 +266,36 @@
 				<h2 class="serif section-title">Installation</h2>
 			</div>
 			<div class="install" style={`--cols: ${Math.min(ex.installationViews.length, 3)}`}>
-				{#each ex.installationViews as src, i}
-					<img {src} alt="Installation {i + 1}" />
+				{#each ex.installationViews as view, i}
+					<figure>
+						<img src={view.src} alt={view.alt || `Installation ${i + 1}`} />
+						{#if view.caption}
+							<figcaption>{view.caption}</figcaption>
+						{/if}
+					</figure>
+				{/each}
+			</div>
+		</div>
+	</section>
+{/if}
+
+{#if hasVideos}
+	<section id="video" class="band band-pad">
+		<div class="container">
+			<div class="section-head">
+				<h2 class="serif section-title">Video</h2>
+			</div>
+			<div class="videos" style={`--cols: ${Math.min(ex.videos.length, 2)}`}>
+				{#each ex.videos as v}
+					<a class="video-card" href={v.url} target="_blank" rel="noreferrer">
+						{#if v.thumbnail}
+							<img src={v.thumbnail} alt="" />
+						{/if}
+						<div class="video-meta">
+							<strong>{v.title}</strong>
+							<span>Öppna på Instagram →</span>
+						</div>
+					</a>
 				{/each}
 			</div>
 		</div>
@@ -706,6 +738,50 @@
 		aspect-ratio: 16 / 10;
 		object-fit: cover;
 		background: #ddd;
+	}
+
+	.install figcaption {
+		margin-top: 0.45rem;
+		font-size: var(--text-meta, 0.75rem);
+		letter-spacing: var(--track-label, 0.04em);
+		text-transform: uppercase;
+		color: var(--text-muted);
+	}
+
+	.videos {
+		display: grid;
+		gap: 1rem;
+		grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr));
+	}
+
+	.video-card {
+		display: grid;
+		gap: 0.6rem;
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.video-card img {
+		width: 100%;
+		aspect-ratio: 16 / 10;
+		object-fit: cover;
+		background: #ddd;
+	}
+
+	.video-meta {
+		display: grid;
+		gap: 0.2rem;
+	}
+
+	.video-meta strong {
+		font-weight: 600;
+	}
+
+	.video-meta span {
+		font-size: var(--text-meta, 0.75rem);
+		letter-spacing: var(--track-label, 0.04em);
+		text-transform: uppercase;
+		color: var(--text-muted);
 	}
 
 	.artists {
