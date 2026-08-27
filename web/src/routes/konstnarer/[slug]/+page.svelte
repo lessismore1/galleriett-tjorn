@@ -32,6 +32,9 @@
 	const isHistorical = $derived(
 		Boolean(artist.deceased || artist.died || artist.profileKind === 'historical')
 	);
+	const isStub = $derived(artist.profileKind === 'stub');
+	/** Stub/historisk: maila galleriet (kontaktdata saknas eller irrelevant). */
+	const mailGallery = $derived(isHistorical || isStub);
 	const lifespanLine = $derived.by(() => {
 		const born = artist.born?.trim() || '';
 		const died = artist.died?.trim() || '';
@@ -41,17 +44,33 @@
 		return '';
 	});
 	const contactMailto = $derived.by(() => {
-		const subject = encodeURIComponent(
-			isHistorical ? `Angående verk av ${artist.name}` : `Angående ${artist.name}`
-		);
+		const subject = encodeURIComponent(`Angående ${artist.name}`);
 		const link = `${site.url}${page.url.pathname}`;
 		const body = encodeURIComponent(
-			isHistorical
-				? `Hej GALLERIett,\n\nJag vill komma i kontakt angående verk av ${artist.name}.\n\nLänk: ${link}\n\nVänliga hälsningar\n`
+			mailGallery
+				? `Hej GALLERIett,\n\nJag vill komma i kontakt angående ${artist.name}.\n\nLänk: ${link}\n\nVänliga hälsningar\n`
 				: `Hej GALLERIett,\n\nJag vill komma i kontakt angående konstnären ${artist.name}.\n\nLänk: ${link}\n\nVänliga hälsningar\n`
 		);
 		return `mailto:${site.email}?subject=${subject}&body=${body}`;
 	});
+
+	const hasWorks = $derived((artist.works?.length ?? 0) > 0);
+	const hasBioText = $derived(Boolean(artist.bio?.trim()));
+	const hasBioFacts = $derived(
+		Boolean(
+			artist.born ||
+				artist.died ||
+				artist.presentedBy ||
+				artist.education?.length ||
+				artist.lives ||
+				artist.representedIn?.length ||
+				artist.website
+		)
+	);
+	const hasBiography = $derived(hasBioText || hasBioFacts);
+	const hasExhibitions = $derived(exhibitionRows.length > 0);
+	const hasNews = $derived(artistArticles.length > 0 || (artist.press?.length ?? 0) > 0);
+	const hasIntro = $derived(Boolean(artist.intro?.trim()));
 
 	const currentExhibitions = $derived(exhibitionRows.filter((ex) => ex.current));
 	const pastExhibitions = $derived(exhibitionRows.filter((ex) => !ex.current));
@@ -110,9 +129,11 @@
 				{#if artist.presentedBy}
 					<p class="presented">Verk visas via {artist.presentedBy}</p>
 				{/if}
-				<p class="intro">{artist.intro}</p>
+				{#if hasIntro}
+					<p class="intro">{artist.intro}</p>
+				{/if}
 				<a class="btn" href={contactMailto}
-					>{isHistorical ? 'Kontakta galleriet →' : 'Maila konstnären →'}</a
+					>{mailGallery ? 'Maila GALLERIett →' : 'Maila konstnären →'}</a
 				>
 			</div>
 			{#if promoWork || portraitSrc}
@@ -146,20 +167,28 @@
 		{/if}
 		<strong class="artist-name serif">{artist.name}</strong>
 		<div class="subnav-links">
-			<a href="#works">Verk</a>
-			<a href="#biography">Biografi</a>
-			<a href="#exhibitions">Utställningar</a>
-			<a href="#news">Nyheter</a>
+			{#if hasWorks}
+				<a href="#works">Verk</a>
+			{/if}
+			{#if hasBiography}
+				<a href="#biography">Biografi</a>
+			{/if}
+			{#if hasExhibitions}
+				<a href="#exhibitions">Utställningar</a>
+			{/if}
+			{#if hasNews}
+				<a href="#news">Nyheter</a>
+			{/if}
 		</div>
 	</div>
 </nav>
 
-<section id="works" class="band band-pad">
-	<div class="container">
-		<div class="section-head">
-			<h2 class="serif section-title">Verk</h2>
-		</div>
-		{#if artist.works?.length}
+{#if hasWorks}
+	<section id="works" class="band band-pad">
+		<div class="container">
+			<div class="section-head">
+				<h2 class="serif section-title">Verk</h2>
+			</div>
 			<div class="works">
 				{#each artist.works as work}
 					<ArtworkCard
@@ -172,67 +201,69 @@
 					/>
 				{/each}
 			</div>
-		{:else}
-			<p class="empty">Inga verk publicerade ännu.</p>
-		{/if}
-	</div>
-</section>
-
-<section id="biography" class="band-soft band-pad">
-	<div class="container bio">
-		<div>
-			<div class="section-head">
-				<h2 class="serif section-title">Biografi</h2>
-			</div>
-			<p>{artist.bio}</p>
-			{#if artist.website}
-				<a class="link-arrow" href={artist.website} target="_blank" rel="noreferrer">Hemsida</a>
-			{/if}
 		</div>
-		<dl>
-			{#if artist.born}
-				<div>
-					<dt>Född</dt>
-					<dd>{artist.born}</dd>
-				</div>
-			{/if}
-			{#if artist.died}
-				<div>
-					<dt>Dog</dt>
-					<dd>{artist.died}</dd>
-				</div>
-			{/if}
-			{#if artist.presentedBy}
-				<div>
-					<dt>Visas via</dt>
-					<dd>{artist.presentedBy}</dd>
-				</div>
-			{/if}
-			{#if artist.education?.length}
-				<div>
-					<dt>Utbildning</dt>
-					{#each artist.education as e}
-						<dd>{e}</dd>
-					{/each}
-				</div>
-			{/if}
-			{#if artist.lives}
-				<div>
-					<dt>Bor och verkar</dt>
-					<dd>{artist.lives}</dd>
-				</div>
-			{/if}
-			{#if artist.representedIn?.length}
-				<div>
-					<dt>Representerad i</dt>
-					<dd>{artist.representedIn.join(', ')}</dd>
-				</div>
-			{/if}
-		</dl>
-	</div>
-</section>
+	</section>
+{/if}
 
-{#if currentExhibitions.length || pastExhibitions.length}
+{#if hasBiography}
+	<section id="biography" class="band-soft band-pad">
+		<div class="container bio">
+			<div>
+				<div class="section-head">
+					<h2 class="serif section-title">Biografi</h2>
+				</div>
+				{#if hasBioText}
+					<p>{artist.bio}</p>
+				{/if}
+				{#if artist.website}
+					<a class="link-arrow" href={artist.website} target="_blank" rel="noreferrer">Hemsida</a>
+				{/if}
+			</div>
+			<dl>
+				{#if artist.born}
+					<div>
+						<dt>Född</dt>
+						<dd>{artist.born}</dd>
+					</div>
+				{/if}
+				{#if artist.died}
+					<div>
+						<dt>Dog</dt>
+						<dd>{artist.died}</dd>
+					</div>
+				{/if}
+				{#if artist.presentedBy}
+					<div>
+						<dt>Visas via</dt>
+						<dd>{artist.presentedBy}</dd>
+					</div>
+				{/if}
+				{#if artist.education?.length}
+					<div>
+						<dt>Utbildning</dt>
+						{#each artist.education as e}
+							<dd>{e}</dd>
+						{/each}
+					</div>
+				{/if}
+				{#if artist.lives}
+					<div>
+						<dt>Bor och verkar</dt>
+						<dd>{artist.lives}</dd>
+					</div>
+				{/if}
+				{#if artist.representedIn?.length}
+					<div>
+						<dt>Representerad i</dt>
+						<dd>{artist.representedIn.join(', ')}</dd>
+					</div>
+				{/if}
+			</dl>
+		</div>
+	</section>
+{/if}
+
+{#if hasExhibitions}
 	<section id="exhibitions" class="band band-pad">
 		<div class="container exhibitions-stack">
 			{#if currentExhibitions.length}
@@ -279,52 +310,42 @@
 			{/if}
 		</div>
 	</section>
-{:else}
-	<section id="exhibitions" class="band band-pad">
+{/if}
+
+{#if hasNews}
+	<section id="news" class="band-soft band-pad">
 		<div class="container">
 			<div class="section-head">
-				<h2 class="serif section-title">Utställningar</h2>
+				<h2 class="serif section-title">Nyheter</h2>
+				<a class="link-arrow" href="/nyheter">Visa alla</a>
 			</div>
-			<p class="empty">Inga utställningar listade.</p>
+			{#if artistArticles.length}
+				<div class="news-list">
+					{#each artistArticles as item}
+						<NewsListItem
+							href={newsCardHref(item)}
+							external={newsCardExternal(item)}
+							image={item.thumb ?? item.image}
+							category={item.category}
+							title={item.title}
+							dateLabel={item.dateLabel}
+						/>
+					{/each}
+				</div>
+			{/if}
+			{#if artist.press?.length}
+				<div class="press" class:spaced={artistArticles.length > 0}>
+					{#each artist.press as p}
+						<blockquote>
+							<p class="serif">“{p.quote}”</p>
+							<footer>{p.source}</footer>
+						</blockquote>
+					{/each}
+				</div>
+			{/if}
 		</div>
 	</section>
 {/if}
-
-<section id="news" class="band-soft band-pad">
-	<div class="container">
-		<div class="section-head">
-			<h2 class="serif section-title">Nyheter</h2>
-			<a class="link-arrow" href="/nyheter">Visa alla</a>
-		</div>
-		{#if artistArticles.length}
-			<div class="news-list">
-				{#each artistArticles as item}
-					<NewsListItem
-						href={newsCardHref(item)}
-						external={newsCardExternal(item)}
-						image={item.thumb ?? item.image}
-						category={item.category}
-						title={item.title}
-						dateLabel={item.dateLabel}
-					/>
-				{/each}
-			</div>
-		{/if}
-		{#if artist.press?.length}
-			<div class="press" class:spaced={artistArticles.length > 0}>
-				{#each artist.press as p}
-					<blockquote>
-						<p class="serif">“{p.quote}”</p>
-						<footer>{p.source}</footer>
-					</blockquote>
-				{/each}
-			</div>
-		{/if}
-		{#if !artistArticles.length && !artist.press?.length}
-			<p class="empty">Inga nyheter publicerade ännu.</p>
-		{/if}
-	</div>
-</section>
 
 <section class="band band-pad">
 	<div class="container more">
