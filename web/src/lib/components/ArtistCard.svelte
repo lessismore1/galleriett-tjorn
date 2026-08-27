@@ -13,6 +13,9 @@
 		image: string;
 		works?: { title?: string; image: string }[];
 		program?: ArtistProgram | null;
+		profileKind?: 'full' | 'stub' | 'kmh' | 'historical' | string;
+		deceased?: boolean;
+		kmhUrl?: string | null;
 	};
 
 	type MediaMode = 'carousel' | 'portrait';
@@ -75,7 +78,11 @@
 				? { text: 'Pågående', title: program.exhibition.title }
 				: program?.status === 'upcoming'
 					? { text: 'Kommande', title: program.exhibition.title }
-					: null
+					: artist.profileKind === 'historical' || artist.deceased
+						? { text: 'Tidigare', title: 'Tidigare konstnär' }
+						: artist.profileKind === 'kmh' && artist.kmhUrl
+							? { text: 'KmH', title: 'Profil på Konst med Horisont' }
+							: null
 	);
 
 	let index = $state(0);

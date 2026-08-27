@@ -130,7 +130,7 @@ async function main() {
     src.name.replace(/^Barbro\s+/i, '')
   )}`
   const existingByIdNumber = await g1.fetch(
-    `*[_type=="artist" && idNumber==$n][0]{ _id, "slug": slug.current }`,
+    `*[_type=="artist" && idNumber==$n][0]{ _id, "slug": slug.current, profileKind }`,
     {n: idNumber}
   )
   const artistId = existingByIdNumber?._id || preferredStubId || g1ArtistId
@@ -154,6 +154,8 @@ async function main() {
     idNumber,
     name: src.name,
     slug: {_type: 'slug', current: artistSlug},
+    profileKind: existingByIdNumber?.profileKind === 'full' ? 'full' : 'kmh',
+    kmhSlug,
     specialty,
     intro: introFromDescription(src.description),
     bio: src.description || undefined,

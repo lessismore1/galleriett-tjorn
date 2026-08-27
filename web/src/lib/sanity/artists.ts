@@ -2,10 +2,17 @@ import { getSanityClient, urlForWebp } from '$lib/sanity';
 import { fetchArtistArticles } from '$lib/sanity/articles';
 import { resolveExhibitionStatus } from '$lib/sanity/exhibitions';
 
-const artistsListQuery = `*[_type == "artist"] | order(name asc) {
+const artistsListQuery = `*[_type == "artist"
+  && slug.current != "15-tks-medlemmar"
+  && defined(image.asset)
+  && (profileKind in ["full", "kmh", "historical"] || !defined(profileKind))
+] | order(name asc) {
   "slug": slug.current,
   name,
   specialty,
+  profileKind,
+  deceased,
+  kmhSlug,
   image,
   "works": *[_type == "artwork" && references(^._id)] | order(idNumber asc)[0...1]{
     title,
@@ -60,6 +67,12 @@ export async function fetchArtistsForList() {
 			slug: a.slug,
 			name: a.name,
 			specialty: a.specialty || '',
+			profileKind: a.profileKind || 'full',
+			deceased: Boolean(a.deceased),
+			kmhSlug: a.kmhSlug || null,
+			kmhUrl: a.kmhSlug
+				? `https://konstmedhorisont.se/ar/2026/konstnarer/${a.kmhSlug}`
+				: null,
 			image: urlForWebp(a.image, 600),
 			works,
 			program

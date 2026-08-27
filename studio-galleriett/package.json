@@ -14,7 +14,8 @@
     "cleanup:keep-104": "node scripts/cleanup-keep-104.mjs",
     "renumber:series": "node scripts/renumber-keep-series.mjs",
     "renumber:exhibitions-chrono": "node scripts/renumber-exhibitions-chrono.mjs",
-    "seed:tks": "node scripts/seed-tks.mjs"
+    "seed:tks": "node scripts/seed-tks.mjs",
+    "seed:brytningstid-artists": "node scripts/seed-brytningstid-del2-artists.mjs"
   },
   "keywords": [
     "sanity"
@@ -33,6 +34,7 @@
     "@types/react": "^19.2.14",
     "eslint": "^9.28",
     "prettier": "^3.5",
+    "sharp": "^0.35.4",
     "typescript": "^5.8"
   },
   "prettier": {

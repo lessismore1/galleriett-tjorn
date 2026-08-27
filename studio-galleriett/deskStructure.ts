@@ -11,7 +11,14 @@ export const deskStructure: StructureResolver = (S) =>
         .id(SITE_SETTINGS_ID)
         .child(S.document().schemaType('siteSettings').documentId(SITE_SETTINGS_ID)),
       S.divider(),
-      S.documentTypeListItem('artist').title('Konstnärer'),
+      S.listItem()
+        .title('Konstnärer')
+        .schemaType('artist')
+        .child(
+          S.documentTypeList('artist')
+            .title('Konstnärer')
+            .defaultOrdering([{field: 'idNumber', direction: 'asc'}])
+        ),
       S.documentTypeListItem('artwork').title('Verk'),
       S.listItem()
         .title('Utställningar')

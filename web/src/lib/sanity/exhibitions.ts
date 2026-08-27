@@ -122,6 +122,9 @@ const detailQuery = `*[_type == "exhibition" && slug.current == $slug][0]{
     "slug": slug.current,
     name,
     specialty,
+    profileKind,
+    deceased,
+    kmhSlug,
     image
   },
   "works": works[]->{
@@ -190,6 +193,11 @@ export async function fetchExhibitionPage(slug) {
 			slug: a.slug,
 			name: a.name,
 			specialty: a.specialty || '',
+			profileKind: a.profileKind || 'stub',
+			deceased: Boolean(a.deceased),
+			kmhUrl: a.kmhSlug
+				? `https://konstmedhorisont.se/ar/2026/konstnarer/${a.kmhSlug}`
+				: null,
 			image: urlForWebp(a.image, 600),
 			program: null
 		}));

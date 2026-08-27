@@ -27,14 +27,13 @@
 
 	const hasWorks = $derived(worksWithLinks.length > 0);
 	const hasInstallation = $derived((ex.installationViews?.length ?? 0) > 0);
-	/** Stub/grupp utan riktig profil (t.ex. TKS-medlemmar) visas inte som konstnärskort. */
+	/** Stub/grupp utan riktig profil visas inte. Historiska med porträtt visas. */
 	const relatedArtists = $derived(
 		(data.related ?? []).filter(
 			(a) =>
 				Boolean(a?.image) &&
 				a.slug !== '15-tks-medlemmar' &&
-				!/tks-medlemmar/i.test(a.slug || '') &&
-				!/^TKS-medlemmar$/i.test(a.name || '')
+				!/tks-medlemmar/i.test(a.slug || '')
 		)
 	);
 	const hasRelatedArtists = $derived(relatedArtists.length > 0);

@@ -5,15 +5,62 @@ export default defineType({
   title: 'Konstnär',
   type: 'document',
   fields: [
+    defineField({
+      name: 'idNumber',
+      title: 'Konstnärs-ID',
+      type: 'number',
+      description: 't.ex. 11',
+      validation: (r) => r.required().min(1),
+    }),
     defineField({name: 'name', title: 'Namn', type: 'string', validation: (r) => r.required()}),
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      options: {source: 'name', maxLength: 96},
+      options: {
+        source: (doc) => [doc.idNumber, doc.name].filter(Boolean).join('-'),
+        maxLength: 96,
+      },
       validation: (r) => r.required(),
     }),
+    defineField({
+      name: 'profileKind',
+      title: 'Profildjup',
+      type: 'string',
+      description:
+        'Styr listor och badges. stub = tunn post (ofta dold på /konstnarer). kmh = länka till KmH. historical = tidigare/avlidna konstnärer.',
+      options: {
+        list: [
+          {title: 'Full (G1-profil)', value: 'full'},
+          {title: 'Stub (tunn)', value: 'stub'},
+          {title: 'KmH (länk till Konst med Horisont)', value: 'kmh'},
+          {title: 'Historisk / tidigare', value: 'historical'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'stub',
+    }),
     defineField({name: 'specialty', title: 'Inriktning', type: 'string'}),
+    defineField({
+      name: 'deceased',
+      title: 'Avliden / historisk person',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'presentedBy',
+      title: 'Verk visas via',
+      type: 'string',
+      description: 't.ex. Niklas Gadd (släkt/bo) när konstnären själv inte ställer ut.',
+      hidden: ({document}) => !document?.deceased && document?.profileKind !== 'historical',
+    }),
+    defineField({
+      name: 'kmhSlug',
+      title: 'KmH-slug',
+      type: 'string',
+      description: 'Slug på konstmedhorisont.se — används för extern länk.',
+      hidden: ({document}) => document?.profileKind !== 'kmh' && !document?.kmhSlug,
+    }),
     defineField({name: 'born', title: 'Född', type: 'string', description: 't.ex. 1983, Göteborg, Sverige'}),
     defineField({
       name: 'education',
@@ -50,9 +97,29 @@ export default defineType({
     defineField({name: 'seo', title: 'SEO', type: 'seo'}),
   ],
   preview: {
-    select: {title: 'name', subtitle: 'specialty', media: 'image'},
+    select: {
+      title: 'name',
+      specialty: 'specialty',
+      kind: 'profileKind',
+      idNumber: 'idNumber',
+      media: 'image',
+    },
+    prepare({title, specialty, kind, idNumber, media}) {
+      const id = idNumber != null ? `${String(idNumber).padStart(2, '0')} · ` : ''
+      const kindLabel = kind && kind !== 'full' ? ` · ${kind}` : ''
+      return {
+        title: `${id}${title || 'Namnlös'}`,
+        subtitle: `${specialty || '—'}${kindLabel}`,
+        media,
+      }
+    },
   },
   orderings: [
+    {
+      title: 'Konstnärs-ID',
+      name: 'idNumberAsc',
+      by: [{field: 'idNumber', direction: 'asc'}],
+    },
     {
       title: 'Namn A–Ö',
       name: 'nameAsc',
