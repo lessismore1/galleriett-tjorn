@@ -67,6 +67,24 @@ Bland tidiga inspirationer nämner hon statyer i Sommarträdgården i Sankt Pete
 Medverkade i Mellan skimmer & form på GALLERIett (juli 2025).
 
 Källa: https://www.mariadutton.com/biography`,
+  externalCv: [
+    {
+      _type: 'externalCvEntry',
+      _key: 'web',
+      year: '',
+      title: 'Hemsida · mariadutton.com',
+      place: 'https://www.mariadutton.com',
+      note: 'Biografi och verk',
+    },
+    {
+      _type: 'externalCvEntry',
+      _key: 'bio',
+      year: '',
+      title: 'Biography',
+      place: 'https://www.mariadutton.com/biography',
+      note: '',
+    },
+  ],
 }
 
 async function main() {
