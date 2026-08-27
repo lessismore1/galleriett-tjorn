@@ -1,5 +1,5 @@
 /**
- * Uppdatera Fritz Kåremar med dödsdatum (källa: användare / publik uppgift).
+ * Uppdatera Fritz Kåremar: biografi + verk visas via Agneta Wilhelmson Kåremar.
  *   node scripts/patch-fritz-karemar.mjs
  */
 import {createClient} from '@sanity/client'
@@ -27,25 +27,33 @@ const client = createClient({
 })
 
 const patch = {
-  specialty: 'Olja',
+  specialty: 'Målare · lokal kultur / Stenungsund–Tjörn',
   deceased: true,
   profileKind: 'historical',
-  born: 'död 8 februari 2016',
+  presentedBy: 'Agneta Wilhelmson Kåremar',
+  born: '1920',
+  died: '8 februari 2016, Stenungsund',
   intro:
-    'Historisk konstnär (död 8 februari 2016). Oljemålningar visades under Brytningstid del 2 (2024) på GALLERIett.',
-  bio: `Fritz Kåremar, död 8 februari 2016. Verk i olja visades postumt under Brytningstid del 2 på GALLERIett (oktober–november 2024).
+    'Konstnär och skoldirektör (1920–2016), verksam i Stenungsund/Bohuslän. En av initiativtagarna till Stenungsunds konstförening. Verk visas via Agneta Wilhelmson Kåremar.',
+  bio: `Fritz Kåremar (1920–2016) var svensk konstnär och skoldirektör, bosatt i Stenungsund. Han var starkt engagerad i det lokala kulturlivet i Bohuslän – särskilt Stenungsund och Tjörn – och en av initiativtagarna till konstföreningen i Stenungsund. Han stödde andra konstnärer och det lokala konstlivet.
 
-Öppen konstbiografi (utbildning, födelseort, lexikonposter) är fortfarande knapphändig online. Förväxla inte med den skånske målaren Fritz Kärfve (1880–1967).
+Oljemålningar visades under Brytningstid del 2 (2024) på GALLERIett i Rönnäng; verk utställda via Agneta Wilhelmson Kåremar.
 
-Källa dödsdatum: uppgift från galleriet / publik sökning (februari 2016).`,
+Dog 8 februari 2016. Förväxla inte med den skånske målaren Fritz Kärfve (1880–1967).
+
+Källor: DN Till minne / publik biografi (maj 2016); Sveriges statskalender; GALLERIett Brytningstid.`,
 }
 
-const artist = await client.fetch(`*[_type=="artist" && idNumber==23][0]{_id, name, "slug":slug.current}`)
+const artist = await client.fetch(
+  `*[_type=="artist" && idNumber==23][0]{_id, name, "slug":slug.current}`
+)
 if (!artist?._id) {
   console.error('Saknas id 23')
   process.exit(1)
 }
 
 await client.patch(artist._id).set(patch).commit()
-console.log('✓', artist.name, artist._id)
+console.log('✓', artist.name)
+console.log('  Född', patch.born, '· Dog', patch.died)
+console.log('  Visas via', patch.presentedBy)
 console.log(' ', `https://galleriett-tjorn.pages.dev/konstnarer/${artist.slug}`)
