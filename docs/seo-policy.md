@@ -47,6 +47,12 @@ Exempel G1: `/konstnarer?filter=aktuellt` → canonical `/konstnarer`.
 
 Sätt `kit.prerender.origin` (via `PUBLIC_SITE_URL` eller default `https://galleriett-tjorn.pages.dev` i `vite.config.ts`). Annars blir canonical/OG/mailto `http://sveltekit-prerender/...`.
 
+## Sitemap & robots
+
+- `/sitemap.xml` — dynamisk från Sanity (`web/src/routes/sitemap.xml/+server.ts`), samma mönster som KmH men G1-URL:er
+- `/robots.txt` — pekar på sitemap; origin från `PUBLIC_SITE_URL` om satt
+- Inga redirect-URL:er i sitemap (`/utstallningar/pagaende`, `/arkiv`, …)
+
 ## Canonical — detaljsidor
 
 | URL | Canonical |
