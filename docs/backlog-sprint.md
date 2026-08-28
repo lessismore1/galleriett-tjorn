@@ -74,8 +74,9 @@ Se även `docs/ui-brand.md` → Platsidentitet.
 ### D — Konvertering (lätt, galleriton)
 
 - [x] Behåll **mailto**-inquire; skärp copy på verk (“Intresserad… pris/tillgänglighet på förfrågan”) — inte e-handel
-- [ ] Ev. kort formulär senare om mailto inte räcker
+- [x] Kort formulär (dialog + Resend) för konstnär / verk / kontakt — cc till besökaren
 - [ ] Ingen prislista/e-handel förrän process och lager är klart
+- [ ] Evenemang `bookingMailto` → samma formulär (valfritt)
 
 ### E — Flerspråk (senare)
 

@@ -4,6 +4,59 @@
 	let { data } = $props();
 	const site = $derived(data.site);
 	const addr = $derived(`${site.address.street}, ${site.address.postal}`);
+	const siteUrl = $derived(site.url || 'https://galleriett-tjorn.pages.dev');
+
+	let name = $state('');
+	let email = $state('');
+	let subject = $state('');
+	let message = $state('');
+	let website = $state('');
+	let sending = $state(false);
+	let sent = $state(false);
+	let errorMsg = $state('');
+
+	async function onSubmit(e: Event) {
+		e.preventDefault();
+		if (sending) return;
+		errorMsg = '';
+		sending = true;
+		try {
+			const res = await fetch('/api/contact', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json'
+				},
+				body: JSON.stringify({
+					name,
+					email,
+					message,
+					subject: subject.trim() || 'Meddelande från kontaktformuläret',
+					contextText: 'Hej GALLERIett,\n\nMeddelande via kontaktformuläret.\n\nVänliga hälsningar',
+					pageUrl: `${siteUrl}/kontakt`,
+					kind: 'contact',
+					website
+				})
+			});
+			const payload = await res.json().catch(() => ({}));
+			if (!res.ok) {
+				errorMsg =
+					typeof payload?.message === 'string'
+						? payload.message
+						: 'Kunde inte skicka. Kontrollera uppgifterna och försök igen.';
+				return;
+			}
+			sent = true;
+			name = '';
+			email = '';
+			subject = '';
+			message = '';
+		} catch {
+			errorMsg = 'Nätverksfel. Försök igen.';
+		} finally {
+			sending = false;
+		}
+	}
 </script>
 
 <Breadcrumbs crumbs={[{ name: 'Kontakt' }]} />
@@ -25,33 +78,74 @@
 
 <section class="band-soft band-pad" id="formular">
 	<div class="container grid">
-		<form
-			class="form"
-			onsubmit={(e) => {
-				e.preventDefault();
-				alert('Tack! Formuläret är ännu en mockup — kopplas till backend senare.');
-			}}
-		>
-			<h2 class="label">Skicka ett meddelande</h2>
-			<label>
-				Namn
-				<input name="name" type="text" placeholder="Ditt namn" required />
-			</label>
-			<label>
-				E-post
-				<input name="email" type="email" placeholder="din@email.se" required />
-			</label>
-			<label>
-				Ämne
-				<input name="subject" type="text" placeholder="Ämne" />
-			</label>
-			<label>
-				Meddelande
-				<textarea name="message" rows="5" placeholder="Skriv ditt meddelande här..." required
-				></textarea>
-			</label>
-			<button class="btn" type="submit">Skicka meddelande →</button>
-		</form>
+		{#if sent}
+			<div class="form thanks">
+				<h2 class="label">Skicka ett meddelande</h2>
+				<p class="serif thanks-title">Tack!</p>
+				<p>Meddelandet är skickat. Du får en kopia (cc) till din e-post.</p>
+				<button class="btn" type="button" onclick={() => (sent = false)}>Skicka ett till</button>
+			</div>
+		{:else}
+			<form class="form" onsubmit={onSubmit}>
+				<h2 class="label">Skicka ett meddelande</h2>
+				<p class="notice">
+					Vi skickar till GALLERIett. Du får en kopia (cc) till din e-post, och svar går till dig.
+				</p>
+				<label>
+					Namn
+					<input
+						name="name"
+						type="text"
+						placeholder="Ditt namn"
+						required
+						bind:value={name}
+						disabled={sending}
+					/>
+				</label>
+				<label>
+					E-post
+					<input
+						name="email"
+						type="email"
+						placeholder="din@email.se"
+						required
+						bind:value={email}
+						disabled={sending}
+					/>
+				</label>
+				<label>
+					Ämne
+					<input
+						name="subject"
+						type="text"
+						placeholder="Ämne"
+						bind:value={subject}
+						disabled={sending}
+					/>
+				</label>
+				<label>
+					Meddelande
+					<textarea
+						name="message"
+						rows="5"
+						placeholder="Skriv ditt meddelande här..."
+						required
+						bind:value={message}
+						disabled={sending}
+					></textarea>
+				</label>
+				<label class="hp" aria-hidden="true">
+					Webbplats
+					<input type="text" name="website" tabindex="-1" autocomplete="off" bind:value={website} />
+				</label>
+				{#if errorMsg}
+					<p class="err" role="alert">{errorMsg}</p>
+				{/if}
+				<button class="btn" type="submit" disabled={sending}>
+					{sending ? 'Skickar…' : 'Skicka meddelande →'}
+				</button>
+			</form>
+		{/if}
 
 		<div>
 			<h2 class="label">Kontaktinformation</h2>
@@ -102,138 +196,157 @@
 <style>
 	.hero {
 		display: grid;
+		grid-template-columns: 1.1fr 0.9fr;
 		gap: 2rem;
-		padding-block: 3rem;
-		align-items: center;
-	}
-
-	.accent {
-		border-bottom: 2px solid var(--brand);
-		display: inline-block;
-		padding-bottom: 0.3rem;
-		color: var(--text);
-	}
-
-	h1 {
-		font-size: clamp(2.2rem, 5vw, 3.4rem);
-		margin: 1rem 0;
-	}
-
-	.lead {
-		color: var(--text-secondary);
-		max-width: 28rem;
-		margin-bottom: 1.25rem;
+		align-items: end;
+		padding-block: 3rem 2rem;
 	}
 
 	.hero img {
-		width: 100%;
 		aspect-ratio: 4 / 3;
 		object-fit: cover;
+		width: 100%;
+	}
+
+	.lead {
+		max-width: 36ch;
+		color: var(--text-secondary);
+	}
+
+	.accent {
+		color: var(--brand-dark);
 	}
 
 	.grid {
 		display: grid;
-		gap: 2.5rem;
+		grid-template-columns: 1.2fr 0.8fr;
+		gap: 2rem 3rem;
 	}
 
 	.form {
 		display: grid;
-		gap: 1rem;
+		gap: 0.85rem;
+		grid-column: 1 / -1;
 	}
 
-	label {
+	@media (min-width: 900px) {
+		.form {
+			grid-column: 1;
+			grid-row: 1 / span 2;
+		}
+	}
+
+	.form label {
 		display: grid;
 		gap: 0.35rem;
-		font-size: 0.7rem;
-		font-weight: 600;
-		letter-spacing: 0.06em;
+		font-size: var(--text-label);
+		letter-spacing: var(--track-label);
 		text-transform: uppercase;
+		font-weight: 600;
 		color: var(--text-muted);
 	}
 
-	input,
-	textarea {
+	.form input,
+	.form textarea {
 		font: inherit;
-		font-size: 0.95rem;
+		font-size: var(--text-body);
+		letter-spacing: normal;
+		text-transform: none;
+		font-weight: 400;
+		color: var(--text);
+		border: 1px solid var(--border);
+		padding: 0.7rem 0.85rem;
+		background: var(--bg);
+		width: 100%;
+	}
+
+	.form input:focus,
+	.form textarea:focus {
+		outline: 2px solid var(--brand);
+		outline-offset: 1px;
+	}
+
+	.notice {
+		margin: 0;
+		font-size: var(--text-meta);
+		color: var(--text-secondary);
 		text-transform: none;
 		letter-spacing: normal;
 		font-weight: 400;
-		color: var(--text);
-		border: none;
-		border-bottom: 1px solid var(--border);
-		padding: 0.65rem 0;
-		background: transparent;
+	}
+
+	.hp {
+		position: absolute;
+		left: -9999px;
+		height: 0;
+		overflow: hidden;
+	}
+
+	.err {
+		margin: 0;
+		color: #8b1e1e;
+		font-size: var(--text-meta);
+	}
+
+	.thanks-title {
+		margin: 0.25rem 0;
+		font-size: 1.75rem;
+	}
+
+	.form .btn:disabled {
+		opacity: 0.65;
+		cursor: wait;
 	}
 
 	.info {
 		list-style: none;
+		margin: 0;
 		padding: 0;
-		margin: 1rem 0 0;
+		display: grid;
+		gap: 1rem;
 	}
 
 	.info li {
-		padding: 0.85rem 0;
-		border-bottom: 1px solid var(--border);
-		font-size: 0.9rem;
-		color: var(--text-secondary);
+		display: grid;
+		gap: 0.2rem;
 	}
 
 	.info span {
-		display: block;
-		font-size: 0.65rem;
-		letter-spacing: 0.06em;
+		font-size: var(--text-label);
+		letter-spacing: var(--track-label);
 		text-transform: uppercase;
+		font-weight: 600;
 		color: var(--text-muted);
-		margin-bottom: 0.25rem;
 	}
 
 	.map {
-		aspect-ratio: 4 / 3;
-		background: #e8e8e2;
+		aspect-ratio: 16 / 10;
+		background: var(--border);
 		display: grid;
 		place-items: center;
 		color: var(--text-muted);
-		margin: 1rem 0;
-		font-size: 0.8rem;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
+		font-size: var(--text-meta);
+		margin-bottom: 0.75rem;
 	}
 
 	.visit-grid {
 		display: grid;
-		gap: 1.5rem;
+		grid-template-columns: 1fr 1fr;
+		gap: 2rem;
 		align-items: center;
 	}
 
-	.visit-grid h2 {
-		font-size: clamp(1.8rem, 4vw, 2.4rem);
-		margin: 0 0 0.75rem;
-		font-weight: 500;
-	}
-
-	.visit-grid p {
-		color: var(--text-secondary);
-		margin-bottom: 1rem;
-	}
-
 	.visit-grid img {
-		width: 100%;
-		aspect-ratio: 16 / 10;
+		aspect-ratio: 4 / 3;
 		object-fit: cover;
-		background: #e8e8e2;
+		width: 100%;
 	}
 
-	@media (min-width: 900px) {
-		.hero {
-			grid-template-columns: 1fr 1.1fr;
-		}
-
-		.grid {
-			grid-template-columns: 1.2fr 1fr 1fr;
-		}
-
+	@media (max-width: 800px) {
+		.hero,
+		.grid,
 		.visit-grid {
-			grid-template-columns: 0.9fr 1.1fr;
+			grid-template-columns: 1fr;
 		}
 	}
 </style>

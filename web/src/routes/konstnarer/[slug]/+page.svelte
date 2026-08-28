@@ -9,6 +9,7 @@
 	import NewsListItem from '$lib/components/NewsListItem.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import Seo from '$lib/components/Seo.svelte';
+	import ContactDialog from '$lib/components/ContactDialog.svelte';
 
 	let { data } = $props();
 	const artist = $derived(data.artist);
@@ -43,16 +44,14 @@
 		if (born) return isHistorical ? born : `Född ${born}`;
 		return '';
 	});
-	const contactMailto = $derived.by(() => {
-		const subject = encodeURIComponent(`Angående ${artist.name}`);
-		const link = `${site.url}${page.url.pathname}`;
-		const body = encodeURIComponent(
-			mailGallery
-				? `Hej GALLERIett,\n\nJag vill komma i kontakt angående ${artist.name}.\n\nLänk: ${link}\n\nVänliga hälsningar\n`
-				: `Hej GALLERIett,\n\nJag vill komma i kontakt angående konstnären ${artist.name}.\n\nLänk: ${link}\n\nVänliga hälsningar\n`
-		);
-		return `mailto:${site.email}?subject=${subject}&body=${body}`;
-	});
+	const contactPageUrl = $derived(`${site.url}${page.url.pathname}`);
+	const contactSubject = $derived(`Angående ${artist.name}`);
+	const contactContext = $derived(
+		mailGallery
+			? `Hej GALLERIett,\n\nJag vill komma i kontakt angående ${artist.name}.\n\nLänk: ${contactPageUrl}\n\nVänliga hälsningar`
+			: `Hej GALLERIett,\n\nJag vill komma i kontakt angående konstnären ${artist.name}.\n\nLänk: ${contactPageUrl}\n\nVänliga hälsningar`
+	);
+	let contactOpen = $state(false);
 
 	const hasWorks = $derived((artist.works?.length ?? 0) > 0);
 	const hasBioText = $derived(Boolean(artist.bio?.trim()));
@@ -132,9 +131,9 @@
 				{#if hasIntro}
 					<p class="intro">{artist.intro}</p>
 				{/if}
-				<a class="btn" href={contactMailto}
-					>{mailGallery ? 'Maila GALLERIett →' : 'Maila konstnären →'}</a
-				>
+				<button class="btn" type="button" onclick={() => (contactOpen = true)}>
+					{mailGallery ? 'Maila GALLERIett →' : 'Maila konstnären →'}
+				</button>
 			</div>
 			{#if promoWork || portraitSrc}
 				<div class="hero-media" class:solo={!promoWork || !portraitSrc}>
@@ -152,6 +151,15 @@
 		</div>
 	</div>
 </section>
+
+<ContactDialog
+	bind:open={contactOpen}
+	title={mailGallery ? 'Kontakta GALLERIett' : `Kontakta oss om ${artist.name}`}
+	subject={contactSubject}
+	contextText={contactContext}
+	pageUrl={contactPageUrl}
+	kind="artist"
+/>
 
 <div class="subnav-sentinel" bind:this={sentinelEl} aria-hidden="true"></div>
 {#if stuck}

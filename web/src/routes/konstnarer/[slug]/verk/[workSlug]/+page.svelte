@@ -5,6 +5,7 @@
 	import { workHref } from '$lib/workLinks.js';
 	import { statusLabels } from '$lib/labels.js';
 	import Seo from '$lib/components/Seo.svelte';
+	import ContactDialog from '$lib/components/ContactDialog.svelte';
 
 	let { data } = $props();
 
@@ -95,13 +96,25 @@
 			: []
 	);
 
-	const interestMailto = $derived.by(() => {
-		const subject = encodeURIComponent(`Intresse: ${work.title} — ${artist.name}`);
-		const body = encodeURIComponent(
-			`Hej GALLERIett,\n\nJag är intresserad av verket \"${work.title}\" (${work.year}) av ${artist.name}.\n\nLänk: ${shareUrl}\n\nVänliga hälsningar\n`
-		);
-		return `mailto:${site.email}?subject=${subject}&body=${body}`;
-	});
+	const interestSubject = $derived(`Intresse: ${work.title} — ${artist.name}`);
+	const interestContext = $derived(
+		`Hej GALLERIett,\n\nJag är intresserad av verket "${work.title}" (${work.year}) av ${artist.name}.\n\nLänk: ${shareUrl}\n\nVänliga hälsningar`
+	);
+	const similarSubject = $derived(`Fråga om liknande: ${work.title} — ${artist.name}`);
+	const similarContext = $derived(
+		`Hej GALLERIett,\n\nJag är intresserad av liknande verk som "${work.title}" (${work.year}) av ${artist.name}.\n\nLänk: ${shareUrl}\n\nVänliga hälsningar`
+	);
+	let contactOpen = $state(false);
+	let contactKind = $state<'work' | 'work-similar'>('work');
+
+	function openInterest() {
+		contactKind = 'work';
+		contactOpen = true;
+	}
+	function openSimilar() {
+		contactKind = 'work-similar';
+		contactOpen = true;
+	}
 
 	const shareMail = $derived.by(() => {
 		const subject = encodeURIComponent(`${work.title} — ${artist.name}`);
@@ -235,15 +248,13 @@
 					<p class="inquire-lead">
 						Kontakta GALLERIett — pris och tillgänglighet skickas på förfrågan.
 					</p>
-					<a class="btn cta" href={interestMailto}>Maila om verket →</a>
+					<button class="btn cta" type="button" onclick={openInterest}>Maila om verket →</button>
 				</div>
 			{:else if work.availability === 'sold'}
 				<div class="inquire">
 					<p class="sold-note">Verket är sålt. Hör gärna av dig om liknande verk.</p>
-					<a
-						class="btn cta ghost"
-						href={`mailto:${site.email}?subject=${encodeURIComponent(`Fråga om liknande: ${work.title} — ${artist.name}`)}`}
-						>Kontakta galleriet →</a
+					<button class="btn cta ghost" type="button" onclick={openSimilar}
+						>Kontakta galleriet →</button
 					>
 				</div>
 			{/if}
@@ -257,6 +268,15 @@
 		</div>
 	</div>
 </section>
+
+<ContactDialog
+	bind:open={contactOpen}
+	title={contactKind === 'work-similar' ? 'Fråga om liknande verk' : `Intresse: ${work.title}`}
+	subject={contactKind === 'work-similar' ? similarSubject : interestSubject}
+	contextText={contactKind === 'work-similar' ? similarContext : interestContext}
+	pageUrl={shareUrl}
+	kind={contactKind}
+/>
 
 <style>
 	.subnav {
