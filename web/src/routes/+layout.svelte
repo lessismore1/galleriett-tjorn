@@ -21,7 +21,10 @@
 		rel="stylesheet"
 		href={fontsHref}
 		media="print"
-		onload="this.media='all'"
+		onload={(e) => {
+			const el = e.currentTarget;
+			if (el instanceof HTMLLinkElement) el.media = 'all';
+		}}
 	/>
 	<noscript>
 		<link rel="stylesheet" href={fontsHref} />
