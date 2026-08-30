@@ -161,8 +161,35 @@
 		/* Mobil: ingen sidoförskjutning (28vw + width:100% stackade ut till höger). */
 		margin-left: 0;
 		margin-top: -2vh;
-		padding-block: 2rem 2.25rem;
+		padding: 1.15rem 1.1rem 1.35rem;
 		box-sizing: border-box;
+		/* Lokal scrim — dämpar inbakad bildtext bakom CTA */
+		background: rgba(20, 20, 16, 0.58);
+		box-shadow: 0 0 2.75rem 1.35rem rgba(20, 20, 16, 0.42);
+		-webkit-backdrop-filter: blur(8px);
+		backdrop-filter: blur(8px);
+	}
+
+	@media (max-width: 799px) {
+		.hero::after {
+			background: linear-gradient(
+				180deg,
+				rgba(20, 20, 16, 0.4) 0%,
+				rgba(20, 20, 16, 0.55) 50%,
+				rgba(20, 20, 16, 0.35) 100%
+			);
+		}
+
+		.hero-copy {
+			background: rgba(20, 20, 16, 0.72);
+			box-shadow: 0 0 2.5rem 1.5rem rgba(20, 20, 16, 0.55);
+		}
+
+		.hero-artist,
+		.hero-title,
+		.dates {
+			text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
+		}
 	}
 
 	@media (min-width: 800px) {
@@ -170,6 +197,9 @@
 			/* Desktop: inåt/centrerad i vänsterfältet, något upp */
 			margin-left: clamp(1.75rem, 22vw, 14rem);
 			margin-top: -5vh;
+			padding: 1.35rem 1.5rem 1.5rem;
+			background: rgba(20, 20, 16, 0.42);
+			box-shadow: 0 0 3rem 1.75rem rgba(20, 20, 16, 0.28);
 		}
 	}
 
