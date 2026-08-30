@@ -6,7 +6,7 @@
 	import VideoCard from '$lib/components/VideoCard.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
-	import { sanityImageDims } from '$lib/sanityImageDims';
+	import { sanityImageDims, sanitySrcSet } from '$lib/sanityImageDims';
 
 	let { data } = $props();
 	const ex = $derived(data.exhibition);
@@ -16,6 +16,7 @@
 		}
 	);
 	const heroDims = $derived(sanityImageDims(ex.image, 0.75));
+	const heroSrcSet = $derived(sanitySrcSet(ex.image, [640, 1000, 1400]));
 
 	const worksWithLinks = $derived(
 		(ex.works ?? []).map((work) => ({
@@ -171,6 +172,8 @@
 			<img
 				class="hero-img"
 				src={ex.image}
+				srcset={heroSrcSet}
+				sizes="(min-width: 901px) 55vw, 100vw"
 				alt="{ex.artist} — {ex.title}"
 				width={heroDims.width}
 				height={heroDims.height}

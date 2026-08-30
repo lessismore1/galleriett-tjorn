@@ -10,7 +10,7 @@
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import ContactDialog from '$lib/components/ContactDialog.svelte';
-	import { sanityImageDims } from '$lib/sanityImageDims';
+	import { sanityImageDims, sanitySrcSet } from '$lib/sanityImageDims';
 
 	let { data } = $props();
 	const artist = $derived(data.artist);
@@ -34,6 +34,8 @@
 	const lcpSrc = $derived(promoWork?.image || portraitSrc);
 	const lcpDims = $derived(sanityImageDims(lcpSrc, 1));
 	const portraitDims = $derived(sanityImageDims(portraitSrc, 1));
+	const promoSrcSet = $derived(sanitySrcSet(promoWork?.image, [480, 800, 1200]));
+	const portraitSrcSet = $derived(sanitySrcSet(portraitSrc, [360, 640, 900]));
 	const isHistorical = $derived(
 		Boolean(artist.deceased || artist.died || artist.profileKind === 'historical')
 	);
@@ -144,6 +146,8 @@
 					{#if promoWork}
 						<img
 							src={promoWork.image}
+							srcset={promoSrcSet}
+							sizes="(min-width: 900px) 40vw, 60vw"
 							alt={promoWork.title ? `${artist.name} — ${promoWork.title}` : artist.name}
 							width={lcpDims.width}
 							height={lcpDims.height}
@@ -154,6 +158,8 @@
 					{#if portraitSrc}
 						<img
 							src={portraitSrc}
+							srcset={portraitSrcSet}
+							sizes="(min-width: 900px) 30vw, 45vw"
 							alt={artist.name}
 							width={portraitDims.width}
 							height={portraitDims.height}

@@ -3,7 +3,7 @@
 	import NewsListItem from '$lib/components/NewsListItem.svelte';
 	import SponsorsCarousel from '$lib/components/SponsorsCarousel.svelte';
 	import { newsCardHref, newsCardExternal } from '$lib/newsLinks';
-	import { sanityImageDims } from '$lib/sanityImageDims';
+	import { sanityImageDims, sanitySrcSet } from '$lib/sanityImageDims';
 
 	let { data } = $props();
 
@@ -23,12 +23,15 @@
 		hero?.status === 'ongoing' ? 'Pågående utställning' : 'Nästa utställning'
 	);
 	const heroDims = $derived(sanityImageDims(hero?.image, 0.56));
+	const heroSrcSet = $derived(sanitySrcSet(hero?.image, [640, 1000, 1600]));
 </script>
 
 <section class="hero">
 	{#if hero}
 		<img
 			src={hero.image}
+			srcset={heroSrcSet}
+			sizes="100vw"
 			alt="{hero.artist} — {hero.title}"
 			class="hero-img"
 			width={heroDims.width}
