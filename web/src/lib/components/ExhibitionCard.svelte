@@ -33,8 +33,8 @@
 		return null;
 	});
 
-	const src = $derived(withSanityQuality(image, 60));
-	const srcset = $derived(sanitySrcSet(image, [480, 720, 1000, 1400], 60));
+	const src = $derived(withSanityQuality(image, 65));
+	const srcset = $derived(sanitySrcSet(image, [480, 720, 1000, 1400], 65));
 	/** Display-box 4:3 — not the asset’s intrinsic ratio. */
 	const dims = $derived.by(() => {
 		const w = sanityImageDims(image, 0.75).width;

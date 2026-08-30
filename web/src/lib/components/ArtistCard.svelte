@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { sanityImageDims, sanitySrcSet, withSanityQuality } from '$lib/sanityImageDims';
 
 	type ArtistProgram = {
 		status: 'ongoing' | 'upcoming';
@@ -27,12 +28,14 @@
 		artist,
 		mediaMode = 'carousel',
 		showIcon = true,
-		showBadge = true
+		showBadge = true,
+		sizes = '(max-width: 599px) 100vw, (max-width: 899px) 50vw, (max-width: 1099px) 33vw, 25vw'
 	}: {
 		artist: ArtistLike;
 		mediaMode?: MediaMode;
 		showIcon?: boolean;
 		showBadge?: boolean;
+		sizes?: string;
 	} = $props();
 
 	const program = $derived(artist.program ?? null);
@@ -105,6 +108,17 @@
 	const canCarousel = $derived(mediaMode === 'carousel' && slides.length > 1);
 	const canIconAlternate = $derived(showIcon && !!(workSrc && portraitSrc));
 	const showIconBlock = $derived(showIcon && !!(canIconAlternate || workSrc || portraitSrc));
+
+	const mediaSrc = $derived(withSanityQuality(current?.src, 65));
+	const mediaSrcSet = $derived(sanitySrcSet(current?.src, [480, 720, 1000, 1400], 65));
+	const mediaDims = $derived.by(() => {
+		const w = sanityImageDims(current?.src, 0.75).width;
+		return { width: w, height: Math.round((w * 3) / 4) };
+	});
+	const workIconSrc = $derived(withSanityQuality(workSrc, 65));
+	const workIconSrcSet = $derived(sanitySrcSet(workSrc, [96, 128, 192], 65));
+	const portraitIconSrc = $derived(withSanityQuality(portraitSrc, 65));
+	const portraitIconSrcSet = $derived(sanitySrcSet(portraitSrc, [96, 128, 192], 65));
 
 	function clearResetTimer() {
 		if (!resetTimer) return;
@@ -205,8 +219,12 @@
 
 		{#if current}
 			<img
-				src={current.src}
+				src={mediaSrc}
+				srcset={mediaSrcSet || undefined}
+				{sizes}
 				alt={`${artist.name} — ${current.label}`}
+				width={mediaDims.width}
+				height={mediaDims.height}
 				loading="lazy"
 				decoding="async"
 			/>
@@ -239,12 +257,54 @@
 		{#if showIconBlock}
 			<div class="icon" aria-hidden="true">
 				{#if canIconAlternate}
-					<img src={workSrc!} alt="" class="icon-img square" class:show={iconSlide === 0} loading="lazy" decoding="async" />
-					<img src={portraitSrc!} alt="" class="icon-img circle" class:show={iconSlide === 1} loading="lazy" decoding="async" />
+					<img
+						src={workIconSrc}
+						srcset={workIconSrcSet || undefined}
+						sizes="48px"
+						alt=""
+						class="icon-img square"
+						class:show={iconSlide === 0}
+						width="96"
+						height="96"
+						loading="lazy"
+						decoding="async"
+					/>
+					<img
+						src={portraitIconSrc}
+						srcset={portraitIconSrcSet || undefined}
+						sizes="48px"
+						alt=""
+						class="icon-img circle"
+						class:show={iconSlide === 1}
+						width="96"
+						height="96"
+						loading="lazy"
+						decoding="async"
+					/>
 				{:else if portraitSrc}
-					<img src={portraitSrc} alt="" class="icon-img circle show" loading="lazy" decoding="async" />
+					<img
+						src={portraitIconSrc}
+						srcset={portraitIconSrcSet || undefined}
+						sizes="48px"
+						alt=""
+						class="icon-img circle show"
+						width="96"
+						height="96"
+						loading="lazy"
+						decoding="async"
+					/>
 				{:else if workSrc}
-					<img src={workSrc} alt="" class="icon-img square show" loading="lazy" decoding="async" />
+					<img
+						src={workIconSrc}
+						srcset={workIconSrcSet || undefined}
+						sizes="48px"
+						alt=""
+						class="icon-img square show"
+						width="96"
+						height="96"
+						loading="lazy"
+						decoding="async"
+					/>
 				{/if}
 			</div>
 		{/if}
@@ -279,6 +339,8 @@
 	}
 
 	.media img {
+		position: absolute;
+		inset: 0;
 		width: 100%;
 		height: 100%;
 		object-fit: cover;

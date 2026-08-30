@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { sanityImageDims, sanitySrcSet, withSanityQuality } from '$lib/sanityImageDims';
+
 	let {
 		href,
 		image = null,
@@ -7,7 +9,8 @@
 		dateLabel = null,
 		subtitle = null,
 		badgeMuted = false,
-		alt = ''
+		alt = '',
+		sizes = '(max-width: 599px) 100vw, (max-width: 899px) 50vw, (max-width: 1099px) 33vw, 25vw'
 	}: {
 		href: string;
 		image?: string | null;
@@ -17,13 +20,30 @@
 		subtitle?: string | null;
 		badgeMuted?: boolean;
 		alt?: string;
+		sizes?: string;
 	} = $props();
+
+	const src = $derived(withSanityQuality(image, 65));
+	const srcset = $derived(sanitySrcSet(image, [480, 720, 1000, 1400], 65));
+	const dims = $derived.by(() => {
+		const w = sanityImageDims(image, 0.75).width;
+		return { width: w, height: Math.round((w * 3) / 4) };
+	});
 </script>
 
 <a class="card" {href}>
 	<div class="media">
 		{#if image}
-			<img src={image} {alt} />
+			<img
+				src={src}
+				srcset={srcset || undefined}
+				{sizes}
+				{alt}
+				width={dims.width}
+				height={dims.height}
+				loading="lazy"
+				decoding="async"
+			/>
 		{:else}
 			<div class="placeholder" aria-hidden="true"></div>
 		{/if}
@@ -57,13 +77,16 @@
 		position: relative;
 		overflow: hidden;
 		background: #e8e8e2;
+		aspect-ratio: 4 / 3;
 	}
 
 	.media img,
 	.placeholder {
-		aspect-ratio: 4 / 3;
-		object-fit: cover;
+		position: absolute;
+		inset: 0;
 		width: 100%;
+		height: 100%;
+		object-fit: cover;
 		display: block;
 		transition: transform 0.5s ease;
 	}

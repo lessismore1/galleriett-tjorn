@@ -24,12 +24,12 @@
 	);
 
 	const tag = $derived(href ? 'a' : 'div');
-	const src = $derived(withSanityQuality(image, 60));
-	const srcset = $derived(sanitySrcSet(image, [320, 480, 720, 1000], 60));
-	/** Display-box 4:5 — not the asset’s intrinsic ratio (avoids tall card stretch). */
+	const src = $derived(withSanityQuality(image, 65));
+	const srcset = $derived(sanitySrcSet(image, [320, 480, 720, 1000], 65));
+	/** Display-box 3:4 (IG portrait) — not the asset’s intrinsic ratio. */
 	const dims = $derived.by(() => {
-		const w = sanityImageDims(image, 1.25).width;
-		return { width: w, height: Math.round((w * 5) / 4) };
+		const w = sanityImageDims(image, 4 / 3).width;
+		return { width: w, height: Math.round((w * 4) / 3) };
 	});
 </script>
 
@@ -69,7 +69,7 @@
 		position: relative;
 		background: #e8e8e2;
 		overflow: hidden;
-		aspect-ratio: 4 / 5;
+		aspect-ratio: 3 / 4;
 	}
 
 	.media img {

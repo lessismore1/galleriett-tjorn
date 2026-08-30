@@ -35,11 +35,11 @@
 
 	const el = $derived(href ? 'a' : 'div');
 	/** Mobil full bredd; desktop ~55% (1.15fr av hero-liknande rad) */
-	const src = $derived(withSanityQuality(image, 60));
-	const srcset = $derived(sanitySrcSet(image, [480, 720, 1000, 1400], 60));
+	const src = $derived(withSanityQuality(image, 65));
+	const srcset = $derived(sanitySrcSet(image, [480, 720, 1000, 1400], 65));
 	const dims = $derived.by(() => {
-		const w = sanityImageDims(image, 0.69).width;
-		return { width: w, height: Math.round((w * 11) / 16) };
+		const w = sanityImageDims(image, 9 / 16).width;
+		return { width: w, height: Math.round((w * 9) / 16) };
 	});
 </script>
 
@@ -175,7 +175,7 @@
 	.media {
 		position: relative;
 		min-width: 0;
-		aspect-ratio: 16 / 11;
+		aspect-ratio: 16 / 9;
 		background: #e8e8e2;
 		overflow: hidden;
 	}

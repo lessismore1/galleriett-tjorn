@@ -21,8 +21,8 @@
 	} = $props();
 
 	/** 84px CSS × upp till 3x DPR */
-	const src = $derived(withSanityQuality(image, 60));
-	const srcset = $derived(sanitySrcSet(image, [84, 168, 252, 336], 60));
+	const src = $derived(withSanityQuality(image, 65));
+	const srcset = $derived(sanitySrcSet(image, [84, 168, 252, 336], 65));
 	const dims = $derived(sanityImageDims(image, 1));
 </script>
 

@@ -32,7 +32,7 @@ export function withSanityWidth(url: string, width: number): string {
 /**
  * Responsive srcset from an existing Sanity CDN URL.
  * Widths are capped to the original asset width when present in the filename.
- * Quality default 65 — PSI asks for stronger compression than former q=75.
+ * Quality default 65 — target for all card/hero Sanity WebP delivery.
  */
 export function sanitySrcSet(
 	url: string | null | undefined,
