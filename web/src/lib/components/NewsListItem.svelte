@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { sanityImageDims, sanitySrcSet } from '$lib/sanityImageDims';
+
 	let {
 		href = null,
 		external = false,
@@ -17,6 +19,10 @@
 		dateLabel: string;
 		alt?: string;
 	} = $props();
+
+	/** 84px CSS × upp till 3x DPR */
+	const srcset = $derived(sanitySrcSet(image, [84, 168, 252, 336]));
+	const dims = $derived(sanityImageDims(image, 1));
 </script>
 
 {#if href}
@@ -26,7 +32,16 @@
 		target={external ? '_blank' : undefined}
 		rel={external ? 'noopener noreferrer' : undefined}
 	>
-		<img src={image} {alt} loading="lazy" decoding="async" />
+		<img
+			src={image}
+			srcset={srcset || undefined}
+			sizes="84px"
+			{alt}
+			width={dims.width}
+			height={dims.height}
+			loading="lazy"
+			decoding="async"
+		/>
 		<div class="meta">
 			<p class="label">{category}</p>
 			<strong class="serif title">{title}</strong>
@@ -35,7 +50,16 @@
 	</a>
 {:else}
 	<article class="item static">
-		<img src={image} {alt} loading="lazy" decoding="async" />
+		<img
+			src={image}
+			srcset={srcset || undefined}
+			sizes="84px"
+			{alt}
+			width={dims.width}
+			height={dims.height}
+			loading="lazy"
+			decoding="async"
+		/>
 		<div class="meta">
 			<p class="label">{category}</p>
 			<strong class="serif title">{title}</strong>

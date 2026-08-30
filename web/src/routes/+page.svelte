@@ -24,6 +24,8 @@
 	);
 	const heroDims = $derived(sanityImageDims(hero?.image, 0.56));
 	const heroSrcSet = $derived(sanitySrcSet(hero?.image, [640, 1000, 1600]));
+	const aboutSrcSet = $derived(sanitySrcSet(about?.image, [640, 1000, 1400]));
+	const aboutDims = $derived(sanityImageDims(about?.image, 0.53));
 </script>
 
 <section class="hero">
@@ -91,7 +93,16 @@
 			<p class="body">{about.body}</p>
 			<a class="link-arrow" href="/om">Läs mer om GALLERIett</a>
 		</div>
-		<img src={about.image} alt="Galleri Ett vid kusten" loading="lazy" decoding="async" />
+		<img
+			src={about.image}
+			srcset={aboutSrcSet || undefined}
+			sizes="(min-width: 901px) 50vw, 100vw"
+			alt="Galleri Ett vid kusten"
+			width={aboutDims.width}
+			height={aboutDims.height}
+			loading="lazy"
+			decoding="async"
+		/>
 	</div>
 </section>
 

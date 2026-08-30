@@ -1,11 +1,14 @@
 <script lang="ts">
+	import { sanityImageDims, sanitySrcSet } from '$lib/sanityImageDims';
+
 	let {
 		href = null,
 		title,
 		image,
 		year = null,
 		medium = null,
-		dimensions = null
+		dimensions = null,
+		sizes = '(max-width: 600px) 50vw, (max-width: 900px) 33vw, 25vw'
 	}: {
 		href?: string | null;
 		title: string;
@@ -13,6 +16,7 @@
 		year?: number | string | null;
 		medium?: string | null;
 		dimensions?: string | null;
+		sizes?: string;
 	} = $props();
 
 	const subtitle = $derived(
@@ -20,11 +24,22 @@
 	);
 
 	const tag = $derived(href ? 'a' : 'div');
+	const srcset = $derived(sanitySrcSet(image, [320, 480, 720, 1000]));
+	const dims = $derived(sanityImageDims(image, 1.25));
 </script>
 
 <svelte:element this={tag} class="card" {...(href ? { href } : {})}>
 	<div class="media">
-		<img src={image} alt={title} loading="lazy" decoding="async" />
+		<img
+			src={image}
+			srcset={srcset || undefined}
+			{sizes}
+			alt={title}
+			width={dims.width}
+			height={dims.height}
+			loading="lazy"
+			decoding="async"
+		/>
 	</div>
 	<div class="meta">
 		<h3>{title}</h3>

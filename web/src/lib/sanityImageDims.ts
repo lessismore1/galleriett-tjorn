@@ -33,6 +33,8 @@ export function sanitySrcSet(
 ): string {
 	if (!url) return '';
 	const s = String(url);
+	// Lokala / externa URL:er utan Sanity-CDN — ingen w=-transform
+	if (!s.includes('cdn.sanity.io')) return '';
 	const origW = Number(s.match(/-(\d+)x(\d+)\./)?.[1]) || Infinity;
 	const unique = [...new Set(widths.map((w) => Math.min(w, origW)).filter((w) => w > 0))].sort(
 		(a, b) => a - b

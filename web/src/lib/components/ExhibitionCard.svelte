@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { statusLabels } from '$lib/labels.js';
+	import { sanityImageDims, sanitySrcSet } from '$lib/sanityImageDims';
 
 	let {
 		href,
@@ -9,7 +10,8 @@
 		status = null,
 		badge = null,
 		badgeMuted = false,
-		alt = ''
+		alt = '',
+		sizes = '(max-width: 900px) 100vw, 33vw'
 	}: {
 		href: string;
 		image: string;
@@ -19,6 +21,8 @@
 		badge?: string | null;
 		badgeMuted?: boolean;
 		alt?: string;
+		/** CSS sizes for srcset — default tre kolumner på desktop */
+		sizes?: string;
 	} = $props();
 
 	const tag = $derived.by(() => {
@@ -28,11 +32,23 @@
 		if (status === 'past') return { text: statusLabels.past, muted: true };
 		return null;
 	});
+
+	const srcset = $derived(sanitySrcSet(image, [480, 720, 1000, 1400]));
+	const dims = $derived(sanityImageDims(image, 0.75));
 </script>
 
 <a class="card" {href}>
 	<div class="media">
-		<img src={image} {alt} loading="lazy" decoding="async" />
+		<img
+			src={image}
+			srcset={srcset || undefined}
+			{sizes}
+			{alt}
+			width={dims.width}
+			height={dims.height}
+			loading="lazy"
+			decoding="async"
+		/>
 		{#if tag}
 			<span class="tag" class:muted={tag.muted}>{tag.text}</span>
 		{/if}
