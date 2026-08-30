@@ -11,7 +11,7 @@
 		badge = null,
 		badgeMuted = false,
 		alt = '',
-		sizes = '(max-width: 900px) 100vw, 33vw'
+		sizes = '(max-width: 599px) 100vw, (max-width: 899px) 50vw, (max-width: 1099px) 33vw, 25vw'
 	}: {
 		href: string;
 		image: string;
@@ -21,7 +21,7 @@
 		badge?: string | null;
 		badgeMuted?: boolean;
 		alt?: string;
-		/** CSS sizes for srcset — default tre kolumner på desktop */
+		/** Matchar ExhibitionIndex: 1 → 2 → 3 → 4 kolumner */
 		sizes?: string;
 	} = $props();
 

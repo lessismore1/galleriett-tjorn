@@ -68,6 +68,7 @@
 					subtitle={item.datesLabel}
 					status={item.status}
 					alt="{item.artist} — {item.title}"
+					sizes="(max-width: 900px) 100vw, 33vw"
 				/>
 			{/each}
 			{#if featuredNews}
@@ -79,6 +80,7 @@
 					badge={featuredNews.category}
 					badgeMuted
 					alt={featuredNews.title}
+					sizes="(max-width: 900px) 100vw, 33vw"
 				/>
 			{/if}
 		</div>
