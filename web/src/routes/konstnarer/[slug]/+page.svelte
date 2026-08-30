@@ -10,7 +10,7 @@
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import ContactDialog from '$lib/components/ContactDialog.svelte';
-	import { sanityImageDims, sanitySrcSet } from '$lib/sanityImageDims';
+	import { sanityImageDims, sanitySrcSet, withSanityQuality } from '$lib/sanityImageDims';
 
 	let { data } = $props();
 	const artist = $derived(data.artist);
@@ -25,7 +25,7 @@
 	);
 
 	const nextImage = $derived(
-		next?.image || next?.heroImage || next?.works?.[0]?.image || null
+		withSanityQuality(next?.image || next?.heroImage || next?.works?.[0]?.image || null, 65)
 	);
 	const nextWorkTitle = $derived(next?.works?.[0]?.title ?? null);
 
@@ -34,8 +34,10 @@
 	const lcpSrc = $derived(promoWork?.image || portraitSrc);
 	const lcpDims = $derived(sanityImageDims(lcpSrc, 1));
 	const portraitDims = $derived(sanityImageDims(portraitSrc, 1));
-	const promoSrcSet = $derived(sanitySrcSet(promoWork?.image, [480, 800, 1200]));
-	const portraitSrcSet = $derived(sanitySrcSet(portraitSrc, [360, 640, 900]));
+	const promoSrc = $derived(withSanityQuality(promoWork?.image, 65));
+	const portraitSrcQ = $derived(withSanityQuality(portraitSrc, 65));
+	const promoSrcSet = $derived(sanitySrcSet(promoWork?.image, [480, 800, 1200], 65));
+	const portraitSrcSet = $derived(sanitySrcSet(portraitSrc, [360, 640, 900], 65));
 	const isHistorical = $derived(
 		Boolean(artist.deceased || artist.died || artist.profileKind === 'historical')
 	);
@@ -145,7 +147,7 @@
 				<div class="hero-media" class:solo={!promoWork || !portraitSrc}>
 					{#if promoWork}
 						<img
-							src={promoWork.image}
+							src={promoSrc}
 							srcset={promoSrcSet}
 							sizes="(min-width: 900px) 40vw, 60vw"
 							alt={promoWork.title ? `${artist.name} — ${promoWork.title}` : artist.name}
@@ -157,7 +159,7 @@
 					{/if}
 					{#if portraitSrc}
 						<img
-							src={portraitSrc}
+							src={portraitSrcQ}
 							srcset={portraitSrcSet}
 							sizes="(min-width: 900px) 30vw, 45vw"
 							alt={artist.name}

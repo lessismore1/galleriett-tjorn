@@ -3,7 +3,7 @@
 	import NewsListItem from '$lib/components/NewsListItem.svelte';
 	import SponsorsCarousel from '$lib/components/SponsorsCarousel.svelte';
 	import { newsCardHref, newsCardExternal } from '$lib/newsLinks';
-	import { sanityImageDims, sanitySrcSet } from '$lib/sanityImageDims';
+	import { sanityImageDims, sanitySrcSet, withSanityQuality } from '$lib/sanityImageDims';
 
 	let { data } = $props();
 
@@ -23,15 +23,17 @@
 		hero?.status === 'ongoing' ? 'Pågående utställning' : 'Nästa utställning'
 	);
 	const heroDims = $derived(sanityImageDims(hero?.image, 0.56));
-	const heroSrcSet = $derived(sanitySrcSet(hero?.image, [640, 1000, 1600]));
-	const aboutSrcSet = $derived(sanitySrcSet(about?.image, [640, 1000, 1400]));
+	const heroSrc = $derived(withSanityQuality(hero?.image, 65));
+	const heroSrcSet = $derived(sanitySrcSet(hero?.image, [640, 1000, 1600], 65));
+	const aboutSrc = $derived(withSanityQuality(about?.image, 65));
+	const aboutSrcSet = $derived(sanitySrcSet(about?.image, [640, 1000, 1400], 65));
 	const aboutDims = $derived(sanityImageDims(about?.image, 0.53));
 </script>
 
 <section class="hero">
 	{#if hero}
 		<img
-			src={hero.image}
+			src={heroSrc}
 			srcset={heroSrcSet}
 			sizes="100vw"
 			alt="{hero.artist} — {hero.title}"
@@ -96,7 +98,7 @@
 			<a class="link-arrow" href="/om">Läs mer om GALLERIett</a>
 		</div>
 		<img
-			src={about.image}
+			src={aboutSrc}
 			srcset={aboutSrcSet || undefined}
 			sizes="(min-width: 901px) 50vw, 100vw"
 			alt="Galleri Ett vid kusten"

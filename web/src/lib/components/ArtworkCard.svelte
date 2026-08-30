@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { sanityImageDims, sanitySrcSet } from '$lib/sanityImageDims';
+	import { sanityImageDims, sanitySrcSet, withSanityQuality } from '$lib/sanityImageDims';
 
 	let {
 		href = null,
@@ -24,14 +24,19 @@
 	);
 
 	const tag = $derived(href ? 'a' : 'div');
-	const srcset = $derived(sanitySrcSet(image, [320, 480, 720, 1000]));
-	const dims = $derived(sanityImageDims(image, 1.25));
+	const src = $derived(withSanityQuality(image, 60));
+	const srcset = $derived(sanitySrcSet(image, [320, 480, 720, 1000], 60));
+	/** Display-box 4:5 — not the asset’s intrinsic ratio (avoids tall card stretch). */
+	const dims = $derived.by(() => {
+		const w = sanityImageDims(image, 1.25).width;
+		return { width: w, height: Math.round((w * 5) / 4) };
+	});
 </script>
 
 <svelte:element this={tag} class="card" {...(href ? { href } : {})}>
 	<div class="media">
 		<img
-			src={image}
+			src={src}
 			srcset={srcset || undefined}
 			{sizes}
 			alt={title}
@@ -61,14 +66,18 @@
 	}
 
 	.media {
+		position: relative;
 		background: #e8e8e2;
 		overflow: hidden;
+		aspect-ratio: 4 / 5;
 	}
 
 	.media img {
-		aspect-ratio: 4 / 5;
-		object-fit: cover;
+		position: absolute;
+		inset: 0;
 		width: 100%;
+		height: 100%;
+		object-fit: cover;
 		display: block;
 		margin: 0;
 	}

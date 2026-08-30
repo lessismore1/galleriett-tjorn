@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { statusLabels } from '$lib/labels.js';
-	import { sanityImageDims, sanitySrcSet } from '$lib/sanityImageDims';
+	import { sanityImageDims, sanitySrcSet, withSanityQuality } from '$lib/sanityImageDims';
 
 	let {
 		href,
@@ -33,14 +33,19 @@
 		return null;
 	});
 
-	const srcset = $derived(sanitySrcSet(image, [480, 720, 1000, 1400]));
-	const dims = $derived(sanityImageDims(image, 0.75));
+	const src = $derived(withSanityQuality(image, 60));
+	const srcset = $derived(sanitySrcSet(image, [480, 720, 1000, 1400], 60));
+	/** Display-box 4:3 — not the asset’s intrinsic ratio. */
+	const dims = $derived.by(() => {
+		const w = sanityImageDims(image, 0.75).width;
+		return { width: w, height: Math.round((w * 3) / 4) };
+	});
 </script>
 
 <a class="card" {href}>
 	<div class="media">
 		<img
-			src={image}
+			src={src}
 			srcset={srcset || undefined}
 			{sizes}
 			{alt}
@@ -76,12 +81,15 @@
 		position: relative;
 		overflow: hidden;
 		background: #e8e8e2;
+		aspect-ratio: 4 / 3;
 	}
 
 	.media img {
-		aspect-ratio: 4 / 3;
-		object-fit: cover;
+		position: absolute;
+		inset: 0;
 		width: 100%;
+		height: 100%;
+		object-fit: cover;
 		display: block;
 		transition: transform 0.5s ease;
 	}

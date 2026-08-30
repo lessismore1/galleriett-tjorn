@@ -6,16 +6,26 @@
 
 	let { children, data } = $props();
 	const site = $derived(data.site);
+
+	const fontsHref =
+		'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap';
 </script>
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+	<link rel="preconnect" href="https://cdn.sanity.io" crossorigin="anonymous" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+	<!-- Non-blocking: print media until load, then apply to screen (PSI render-blocking fonts) -->
 	<link
-		href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
 		rel="stylesheet"
+		href={fontsHref}
+		media="print"
+		onload="this.media='all'"
 	/>
+	<noscript>
+		<link rel="stylesheet" href={fontsHref} />
+	</noscript>
 	<title>{site.name} — Tjörn</title>
 </svelte:head>
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { statusLabels } from '$lib/labels.js';
-	import { sanityImageDims, sanitySrcSet } from '$lib/sanityImageDims';
+	import { sanityImageDims, sanitySrcSet, withSanityQuality } from '$lib/sanityImageDims';
 
 	let {
 		href = null,
@@ -35,8 +35,12 @@
 
 	const el = $derived(href ? 'a' : 'div');
 	/** Mobil full bredd; desktop ~55% (1.15fr av hero-liknande rad) */
-	const srcset = $derived(sanitySrcSet(image, [480, 720, 1000, 1400]));
-	const dims = $derived(sanityImageDims(image, 0.69));
+	const src = $derived(withSanityQuality(image, 60));
+	const srcset = $derived(sanitySrcSet(image, [480, 720, 1000, 1400], 60));
+	const dims = $derived.by(() => {
+		const w = sanityImageDims(image, 0.69).width;
+		return { width: w, height: Math.round((w * 11) / 16) };
+	});
 </script>
 
 <li class="item">
@@ -68,7 +72,7 @@
 		{#if image}
 			<div class="media">
 				<img
-					src={image}
+					src={src}
 					srcset={srcset || undefined}
 					sizes="(min-width: 800px) 55vw, 100vw"
 					alt=""
@@ -177,6 +181,8 @@
 	}
 
 	.media img {
+		position: absolute;
+		inset: 0;
 		width: 100%;
 		height: 100%;
 		object-fit: cover;

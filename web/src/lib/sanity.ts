@@ -48,7 +48,7 @@ export function sanityImageSource(source: unknown): unknown {
 }
 
 /** WebP-URL för listor/kort. Returnerar tom sträng om source saknas. */
-export function urlForWebp(source: unknown, width?: number, quality = 75): string {
+export function urlForWebp(source: unknown, width?: number, quality = 65): string {
 	if (!source) return '';
 	let b = builder.image(sanityImageSource(source) as Parameters<typeof builder.image>[0]).format('webp');
 	if (width) b = b.width(width);

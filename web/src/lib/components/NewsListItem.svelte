@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { sanityImageDims, sanitySrcSet } from '$lib/sanityImageDims';
+	import { sanityImageDims, sanitySrcSet, withSanityQuality } from '$lib/sanityImageDims';
 
 	let {
 		href = null,
@@ -21,7 +21,8 @@
 	} = $props();
 
 	/** 84px CSS × upp till 3x DPR */
-	const srcset = $derived(sanitySrcSet(image, [84, 168, 252, 336]));
+	const src = $derived(withSanityQuality(image, 60));
+	const srcset = $derived(sanitySrcSet(image, [84, 168, 252, 336], 60));
 	const dims = $derived(sanityImageDims(image, 1));
 </script>
 
@@ -33,7 +34,7 @@
 		rel={external ? 'noopener noreferrer' : undefined}
 	>
 		<img
-			src={image}
+			src={src}
 			srcset={srcset || undefined}
 			sizes="84px"
 			{alt}
@@ -51,7 +52,7 @@
 {:else}
 	<article class="item static">
 		<img
-			src={image}
+			src={src}
 			srcset={srcset || undefined}
 			sizes="84px"
 			{alt}
