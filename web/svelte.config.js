@@ -13,7 +13,9 @@ const config = {
 		}
 	},
 	kit: {
-		adapter: adapter({ config: 'wrangler.toml' })
+		adapter: adapter({ config: 'wrangler.toml' }),
+		// Inline small route/component CSS into HTML to cut render-blocking link requests (PSI)
+		inlineStyleThreshold: 14000
 	}
 };
 
