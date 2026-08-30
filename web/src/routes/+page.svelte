@@ -163,9 +163,9 @@
 		margin-top: -2vh;
 		padding: 1.15rem 1.1rem 1.35rem;
 		box-sizing: border-box;
-		/* Lokal scrim — dämpar inbakad bildtext bakom CTA */
-		background: rgba(20, 20, 16, 0.58);
-		box-shadow: 0 0 2.75rem 1.35rem rgba(20, 20, 16, 0.42);
+		/* Mobil: lokal scrim — dämpar inbakad bildtext bakom CTA */
+		background: rgba(20, 20, 16, 0.72);
+		box-shadow: 0 0 2.5rem 1.5rem rgba(20, 20, 16, 0.55);
 		-webkit-backdrop-filter: blur(8px);
 		backdrop-filter: blur(8px);
 	}
@@ -180,11 +180,6 @@
 			);
 		}
 
-		.hero-copy {
-			background: rgba(20, 20, 16, 0.72);
-			box-shadow: 0 0 2.5rem 1.5rem rgba(20, 20, 16, 0.55);
-		}
-
 		.hero-artist,
 		.hero-title,
 		.dates {
@@ -194,12 +189,22 @@
 
 	@media (min-width: 800px) {
 		.hero-copy {
-			/* Desktop: inåt/centrerad i vänsterfältet, något upp */
-			margin-left: clamp(1.75rem, 22vw, 14rem);
+			/* Desktop: smalare block i vänsterfältet — text i bilden, inte kort */
+			width: fit-content;
+			max-width: min(32rem, 48vw);
+			margin-left: clamp(1.75rem, 18vw, 12rem);
 			margin-top: -5vh;
-			padding: 1.35rem 1.5rem 1.5rem;
-			background: rgba(20, 20, 16, 0.42);
-			box-shadow: 0 0 3rem 1.75rem rgba(20, 20, 16, 0.28);
+			padding: 0.35rem 0.85rem 0.5rem 0;
+			background: transparent;
+			box-shadow: none;
+			-webkit-backdrop-filter: none;
+			backdrop-filter: none;
+		}
+
+		.hero-artist,
+		.hero-title,
+		.dates {
+			text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
 		}
 	}
 
