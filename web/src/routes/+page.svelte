@@ -157,12 +157,20 @@
 	.hero-copy {
 		position: relative;
 		z-index: 1;
-		/* Bred vänsterkolumn, men inne i sidans rytm — inte kant-flush */
 		width: min(44rem, 100%);
-		margin-left: clamp(1.75rem, 28vw, 18rem);
-		margin-top: -5vh;
+		/* Mobil: ingen sidoförskjutning (28vw + width:100% stackade ut till höger). */
+		margin-left: 0;
+		margin-top: -2vh;
 		padding-block: 2rem 2.25rem;
 		box-sizing: border-box;
+	}
+
+	@media (min-width: 800px) {
+		.hero-copy {
+			/* Desktop: inåt/centrerad i vänsterfältet, något upp */
+			margin-left: clamp(1.75rem, 22vw, 14rem);
+			margin-top: -5vh;
+		}
 	}
 
 	.hero-label {
