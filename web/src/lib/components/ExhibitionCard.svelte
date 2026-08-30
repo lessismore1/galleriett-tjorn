@@ -32,7 +32,7 @@
 
 <a class="card" {href}>
 	<div class="media">
-		<img src={image} {alt} />
+		<img src={image} {alt} loading="lazy" decoding="async" />
 		{#if tag}
 			<span class="tag" class:muted={tag.muted}>{tag.text}</span>
 		{/if}

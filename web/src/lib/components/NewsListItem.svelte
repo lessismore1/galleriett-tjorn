@@ -26,7 +26,7 @@
 		target={external ? '_blank' : undefined}
 		rel={external ? 'noopener noreferrer' : undefined}
 	>
-		<img src={image} {alt} />
+		<img src={image} {alt} loading="lazy" decoding="async" />
 		<div class="meta">
 			<p class="label">{category}</p>
 			<strong class="serif title">{title}</strong>
@@ -35,7 +35,7 @@
 	</a>
 {:else}
 	<article class="item static">
-		<img src={image} {alt} />
+		<img src={image} {alt} loading="lazy" decoding="async" />
 		<div class="meta">
 			<p class="label">{category}</p>
 			<strong class="serif title">{title}</strong>

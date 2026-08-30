@@ -21,6 +21,16 @@
 	const heroLabel = $derived(
 		hero?.status === 'ongoing' ? 'Pågående utställning' : 'Nästa utställning'
 	);
+
+	/** Intrinsic size from Sanity filename (`…-2682x1264.jpg?w=1000`) for CLS / LCP. */
+	const heroDims = $derived.by(() => {
+		const url = hero?.image || '';
+		const m = String(url).match(/-(\d+)x(\d+)\./);
+		const reqW = Number(String(url).match(/[?&]w=(\d+)/)?.[1]) || 1000;
+		if (!m) return { width: reqW, height: Math.round(reqW * 0.56) };
+		const [, ow, oh] = m;
+		return { width: reqW, height: Math.round((reqW * Number(oh)) / Number(ow)) };
+	});
 </script>
 
 <section class="hero">
@@ -29,6 +39,10 @@
 			src={hero.image}
 			alt="{hero.artist} — {hero.title}"
 			class="hero-img"
+			width={heroDims.width}
+			height={heroDims.height}
+			fetchpriority="high"
+			decoding="async"
 		/>
 		<div class="hero-copy">
 			<p class="label hero-label">{heroLabel}</p>
@@ -82,7 +96,7 @@
 			<p class="body">{about.body}</p>
 			<a class="link-arrow" href="/om">Läs mer om GALLERIett</a>
 		</div>
-		<img src={about.image} alt="Galleri Ett vid kusten" />
+		<img src={about.image} alt="Galleri Ett vid kusten" loading="lazy" decoding="async" />
 	</div>
 </section>
 

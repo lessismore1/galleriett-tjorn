@@ -24,7 +24,7 @@
 
 <svelte:element this={tag} class="card" {...(href ? { href } : {})}>
 	<div class="media">
-		<img src={image} alt={title} />
+		<img src={image} alt={title} loading="lazy" decoding="async" />
 	</div>
 	<div class="meta">
 		<h3>{title}</h3>
