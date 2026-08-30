@@ -6,6 +6,7 @@
 	import VideoCard from '$lib/components/VideoCard.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+	import { sanityImageDims } from '$lib/sanityImageDims';
 
 	let { data } = $props();
 	const ex = $derived(data.exhibition);
@@ -14,6 +15,7 @@
 			email: 'info@galleriett-tjorn.se'
 		}
 	);
+	const heroDims = $derived(sanityImageDims(ex.image, 0.75));
 
 	const worksWithLinks = $derived(
 		(ex.works ?? []).map((work) => ({
@@ -166,7 +168,15 @@
 					</div>
 				{/if}
 			</div>
-			<img class="hero-img" src={ex.image} alt="{ex.artist} — {ex.title}" />
+			<img
+				class="hero-img"
+				src={ex.image}
+				alt="{ex.artist} — {ex.title}"
+				width={heroDims.width}
+				height={heroDims.height}
+				fetchpriority="high"
+				decoding="async"
+			/>
 		</div>
 	</div>
 </section>
@@ -273,7 +283,12 @@
 			<div class="install">
 				{#each ex.installationViews as view, i}
 					<figure>
-						<img src={view.src} alt={view.alt || `Installation ${i + 1}`} />
+						<img
+							src={view.src}
+							alt={view.alt || `Installation ${i + 1}`}
+							loading="lazy"
+							decoding="async"
+						/>
 						{#if view.caption}
 							<figcaption>{view.caption}</figcaption>
 						{/if}

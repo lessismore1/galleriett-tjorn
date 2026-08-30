@@ -204,7 +204,12 @@
 		{/if}
 
 		{#if current}
-			<img src={current.src} alt={`${artist.name} — ${current.label}`} />
+			<img
+				src={current.src}
+				alt={`${artist.name} — ${current.label}`}
+				loading="lazy"
+				decoding="async"
+			/>
 		{/if}
 
 		{#if canCarousel}
@@ -234,12 +239,12 @@
 		{#if showIconBlock}
 			<div class="icon" aria-hidden="true">
 				{#if canIconAlternate}
-					<img src={workSrc!} alt="" class="icon-img square" class:show={iconSlide === 0} />
-					<img src={portraitSrc!} alt="" class="icon-img circle" class:show={iconSlide === 1} />
+					<img src={workSrc!} alt="" class="icon-img square" class:show={iconSlide === 0} loading="lazy" decoding="async" />
+					<img src={portraitSrc!} alt="" class="icon-img circle" class:show={iconSlide === 1} loading="lazy" decoding="async" />
 				{:else if portraitSrc}
-					<img src={portraitSrc} alt="" class="icon-img circle show" />
+					<img src={portraitSrc} alt="" class="icon-img circle show" loading="lazy" decoding="async" />
 				{:else if workSrc}
-					<img src={workSrc} alt="" class="icon-img square show" />
+					<img src={workSrc} alt="" class="icon-img square show" loading="lazy" decoding="async" />
 				{/if}
 			</div>
 		{/if}

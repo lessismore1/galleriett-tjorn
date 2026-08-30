@@ -3,6 +3,7 @@
 	import NewsListItem from '$lib/components/NewsListItem.svelte';
 	import SponsorsCarousel from '$lib/components/SponsorsCarousel.svelte';
 	import { newsCardHref, newsCardExternal } from '$lib/newsLinks';
+	import { sanityImageDims } from '$lib/sanityImageDims';
 
 	let { data } = $props();
 
@@ -21,16 +22,7 @@
 	const heroLabel = $derived(
 		hero?.status === 'ongoing' ? 'Pågående utställning' : 'Nästa utställning'
 	);
-
-	/** Intrinsic size from Sanity filename (`…-2682x1264.jpg?w=1000`) for CLS / LCP. */
-	const heroDims = $derived.by(() => {
-		const url = hero?.image || '';
-		const m = String(url).match(/-(\d+)x(\d+)\./);
-		const reqW = Number(String(url).match(/[?&]w=(\d+)/)?.[1]) || 1000;
-		if (!m) return { width: reqW, height: Math.round(reqW * 0.56) };
-		const [, ow, oh] = m;
-		return { width: reqW, height: Math.round((reqW * Number(oh)) / Number(ow)) };
-	});
+	const heroDims = $derived(sanityImageDims(hero?.image, 0.56));
 </script>
 
 <section class="hero">

@@ -10,6 +10,7 @@
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import ContactDialog from '$lib/components/ContactDialog.svelte';
+	import { sanityImageDims } from '$lib/sanityImageDims';
 
 	let { data } = $props();
 	const artist = $derived(data.artist);
@@ -30,6 +31,9 @@
 
 	const promoWork = $derived(artist.works?.[0] ?? null);
 	const portraitSrc = $derived(artist.image || artist.heroImage || null);
+	const lcpSrc = $derived(promoWork?.image || portraitSrc);
+	const lcpDims = $derived(sanityImageDims(lcpSrc, 1));
+	const portraitDims = $derived(sanityImageDims(portraitSrc, 1));
 	const isHistorical = $derived(
 		Boolean(artist.deceased || artist.died || artist.profileKind === 'historical')
 	);
@@ -141,10 +145,22 @@
 						<img
 							src={promoWork.image}
 							alt={promoWork.title ? `${artist.name} — ${promoWork.title}` : artist.name}
+							width={lcpDims.width}
+							height={lcpDims.height}
+							fetchpriority="high"
+							decoding="async"
 						/>
 					{/if}
 					{#if portraitSrc}
-						<img src={portraitSrc} alt={artist.name} />
+						<img
+							src={portraitSrc}
+							alt={artist.name}
+							width={portraitDims.width}
+							height={portraitDims.height}
+							loading={promoWork ? 'lazy' : undefined}
+							fetchpriority={promoWork ? undefined : 'high'}
+							decoding="async"
+						/>
 					{/if}
 				</div>
 			{/if}
@@ -360,7 +376,7 @@
 		{#if next}
 			<a class="next" href={`/konstnarer/${next.slug}`}>
 				{#if nextImage}
-					<img class="next-img" src={nextImage} alt="" />
+					<img class="next-img" src={nextImage} alt="" loading="lazy" decoding="async" />
 				{/if}
 				<div class="next-copy">
 					<span class="label">Nästa konstnär</span>
